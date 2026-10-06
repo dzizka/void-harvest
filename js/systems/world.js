@@ -136,6 +136,7 @@ function dungeonDirector(dt) {
   if (G.dungeon.climb) { climbDirector(dt); return; }
   if (G.dungeon.vault) { vaultDirector(dt); return; }
   if (G.dungeon.rush) { rushDirector(dt); return; }
+  if (G.dungeon.horde) { hordeDirector(dt); return; }
   const D = G.dungeon, def = roomDef(D);
   if (D.portal) D.portal.t += dt;
   if (D.nm && D.state !== 'done') {
@@ -217,6 +218,7 @@ function onBossKilled(e) {
   if (e.bossKey === 'architect') { onArchitectKilled(e); return; }
   if (e.wb) { worldBossKilled(e); return; }
   if (e.rushB) { rushBossKilled(e); return; }
+  if (e.hordeB) { hordeBossKilled(e); return; }
   if (e.climbG) {
     G.boss = null; addShards(2); if (Math.random() < 0.5) dropGem(e.x, e.y, 1);
     ring(e.x, e.y, '#9a8cff', 320, 0.9); burst(e.x, e.y, '#9a8cff', 90, 600, 3, 1); shake(10);

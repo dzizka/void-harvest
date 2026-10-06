@@ -62,7 +62,7 @@ function zoneLevel() {
 function isSafe() {
   if (G.dungeon) return false;
   if (curSector().kind === 'safe') return true;
-  return !!G.station && d2(P.x, P.y, G.station.x, G.station.y) < G.station.r * G.station.r;
+  return (!!G.station && d2(P.x, P.y, G.station.x, G.station.y) < G.station.r * G.station.r) || inOutpost();
 }
 
 function makeAsteroid(x, y, size, kind, weights) {
@@ -128,6 +128,7 @@ function spawnEnemy(type, x, y, lvl, elite) {
     fireT: rand(1, 2.2), burst: 0, state: 'seek', stateT: 0, dashA: 0, orbit: Math.random() < 0.5 ? 1 : -1,
     flash: 0, contactT: 0, dead: false, spin: 0, roam: null, patClock: 0 };
   if (elite && type !== 'boss' && lvl >= 3 && G) rollEliteMods(e);
+  if (G && G.dungeon && G.dungeon.horde) hordeScale(e);
   enemies.push(e);
   return e;
 }

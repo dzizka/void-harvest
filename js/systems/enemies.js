@@ -11,12 +11,12 @@ function director(dt) {
   G.hunterT -= dt;
   if (G.hunterT <= 0) { G.hunterT = rand(150, 240); if (!enemies.some(e => e.hunter) && !G.safe && Math.random() < 0.7) spawnHunter(); }
   const zone = zoneLevel();
-  const target = Math.min(4 + Math.round(zone * 1.3), 24);
+  const target = Math.round(Math.min(4 + Math.round(zone * 1.3), 24) * (stormHere() ? 1.5 : 1));
   G.spawnT -= dt;
   if (G.spawnT <= 0 && enemies.length < target && !G.safe) {
-    G.spawnT = rand(0.7, 1.5) * (zone < 3 ? 1.3 : 1);
+    G.spawnT = rand(0.7, 1.5) * (zone < 3 ? 1.3 : 1) * (stormHere() ? 0.6 : 1);
     const p = spawnPoint();
-    if (p) { const dp = depthAt(p.x, p.y); spawnEnemy(weighted(S.enemies), p.x, p.y, zone + dp + (Math.random() < 0.3 ? 1 : 0), zone >= 2 && Math.random() < 0.06 + 0.04 * dp); }
+    if (p) { const dp = depthAt(p.x, p.y); spawnEnemy(weighted(S.enemies), p.x, p.y, zone + dp + stormLvl() + (Math.random() < 0.3 ? 1 : 0), zone >= 2 && Math.random() < 0.06 + 0.04 * dp + (stormHere() ? 0.04 : 0)); }
   }
   G.waveT -= dt;
   if (G.waveT <= 0 && !G.safe) {
@@ -44,6 +44,7 @@ function updateInteract() {
       it = p.kind === 'next'
         ? { txt: _L('Prejsť do ďalšej komnaty'), sub: `${G.dungeon.room + 2}/${DUNGEON.rooms.length}`, col: '#5fd4ff', act: () => { G.dungeon.room++; transition(_L('Ďalšia komnata'), loadRoom); } }
         : { txt: _L('Návrat do sektora'), sub: SECTORS[G.dungeon.sector].name, col: '#5be09a', act: exitDungeon };
+    if (G.dungeon.horde) { const hx = hordeInteract(); if (hx) it = hx; }
   } else {
     if (G.station && d2(G.station.x, G.station.y, P.x, P.y) < G.station.dock ** 2)
       it = { txt: _L('Dokovať na stanici'), sub: _L('servis · obchod · mapa'), col: '#5fd4ff', act: () => { P.hull = P.stats.maxHull; P.shield = P.stats.maxShield; openPanel('station'); tutTick('dock'); } };
@@ -54,6 +55,7 @@ function updateInteract() {
           act: () => { if (P.keys.length) { G.gateSel = g; openPanel('gate'); } else enterDungeon(g); } };
       }
     }
+    const ex = endgameInteract(); if (ex) it = ex;
   }
   G.interact = it;
 }

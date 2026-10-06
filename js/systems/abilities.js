@@ -68,7 +68,7 @@ const dodgeDef = () => (P.stats.legend.phaseCut ? PHASE_DODGE : DODGES[P.cls]);
 const dodgeCharges = () => (dodgeDef().charges || 1) + (skMod('dodge', 0) ? 1 : 0);
 const dodgeCd = () => dodgeDef().cd * (skRank('dodge') >= 1 ? 0.8 : 1) * cdMult();
 function skillIn(slot) { const id = skState().sel[slot]; return id && SKILLS[id] && SKILLS[id].cls === P.cls && P.level >= SKILLS[id].lvl ? id : null; }
-const cdMult = () => 1 - Math.min(40, (P.stats.skCdr || 0)) / 100;
+const cdMult = () => (1 - Math.min(40, (P.stats.skCdr || 0)) / 100) * (1 - hb('cd'));
 const skillCd = id => SKILLS[id].cd * (skRank(id) >= 1 ? 0.85 : 1) * cdMult();
 const skDmg = id => (1 + (P.stats.skDmg || 0) / 100) * (skRank(id) >= 1 ? 1.25 : 1) * dmgBuff();
 function resetAbilities() {
@@ -147,7 +147,7 @@ function castSkill(slot, auto) {
   if (ok) P.skCd[id] = skillCd(id);
   return ok;
 }
-const critRoll = () => Math.random() * 100 < P.stats.crit + (P.critT > 0 ? 20 : 0);
+const critRoll = () => Math.random() * 100 < P.stats.crit + (P.critT > 0 ? 20 : 0) + hb('crit');
 const nearMouseEnemy = (r, from) => {
   const mw = from || mouseWorld(); let t = null, b = r * r;
   for (const e of enemies) { if (e.dead || e.shielded) continue; const dd = d2(e.x, e.y, mw.x, mw.y); if (dd < b) { b = dd; t = e; } }

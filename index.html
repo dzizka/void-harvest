@@ -54,6 +54,7 @@
     <div id="hMods" hidden></div>
     <div id="hTut" hidden></div>
     <div id="hWb" hidden></div>
+    <div id="hStorm" hidden></div>
     <div id="hContracts" hidden></div>
     <dl>
       <dt>Úroveň zóny</dt><dd id="hThreat">1</dd>
@@ -224,6 +225,11 @@
           <div class="climb-board" id="rushBoard"></div>
         </div>
         <div class="st-card" data-st-card="chal">
+          <span class="eyebrow">Horda Prázdnoty<span class="info" title="6 vĺn po 60 s. Po každej vlne si vyberieš požehnanie – niektoré so zlorečením, ktoré dá viac éteru. Éter padá zo zabitých nepriateľov (elita 5). Na konci pán hordy a hromady pokladov, ktoré otváraš éterom. Od úrovne 30, obťažnosť podľa sveta.">ⓘ</span></span>
+          <p id="hordeInfo"></p>
+          <button type="button" class="btn primary" id="hordeBtn">Vstúpiť do hordy</button>
+        </div>
+        <div class="st-card" data-st-card="chal">
           <span class="eyebrow">Týždenná výzva<span class="info" title="Výstup do Prázdnoty od 1. poschodia s dvomi modifikátormi, ktoré sa menia každý pondelok. Prvé dosiahnutie 10. poschodia za týždeň (každá loď zvlášť): 50 úlomkov a kus setu.">ⓘ</span></span>
           <p id="weekInfo"></p>
           <button type="button" class="btn primary" id="weekBtn">Spustiť</button>
@@ -303,6 +309,16 @@
   </div>
 </section>
 
+<section id="horde" class="bay frame station-bay" hidden>
+  <div class="in">
+    <header>
+      <h2>Ponuka hordy</h2>
+      <span class="hint" id="hordeHint"></span>
+    </header>
+    <div class="bay-body"><div class="horde-offers" id="hordeOffers"></div><p class="note" id="hordePicks"></p></div>
+  </div>
+</section>
+
 <!-- ============ DEV MENU (secret: Backquote key) ============ -->
 <section id="cheat" class="bay frame cheat-bay" hidden>
   <div class="in">
@@ -355,6 +371,7 @@
 <script src="js/systems/enemies.js"></script>
 <script src="js/systems/projectiles.js"></script>
 <script src="js/systems/abilities.js"></script>
+<script src="js/systems/endgame-events.js"></script>
 <script src="js/render/background.js"></script>
 <script src="js/render/sprites.js"></script>
 <script src="js/render/render.js"></script>

@@ -11,7 +11,7 @@ function renderMap() {
     const locked = P.level < S.min && !G.cheat.unlock;
     return `<button type="button" class="snode ${S.kind} ${locked ? 'locked' : ''} ${id === G.mapSel ? 'sel' : ''} ${id === G.sector ? 'here' : ''}" data-sec="${id}"
       style="left:${S.pos[0]}%;top:${S.pos[1]}%;--nc:${sectorColor(S)}">
-      <span class="dot"></span><span class="nm">${S.name}${G.wb && G.wb.sec === id && G.wb.state !== 'idle' ? ' <span style="color:#ffb000">☄</span>' : ''}</span><span class="lv">${locked ? _L('zamknuté · úr. ') + S.min : levelRange(S)}</span></button>`;
+      <span class="dot"></span><span class="nm">${S.name}${G.wb && G.wb.sec === id && G.wb.state !== 'idle' ? ' <span style="color:#ffb000">☄</span>' : ''}${G.storm && G.storm.sec === id && G.storm.state === 'active' ? ' <span style="color:#c86bff">⚡</span>' : ''}${S.kind === 'hostile' && fortFree(id) ? ' <span style="color:#5fd4ff">⛨</span>' : ''}</span><span class="lv">${locked ? _L('zamknuté · úr. ') + S.min : levelRange(S)}</span></button>`;
   }).join('');
   const id = G.mapSel, S = SECTORS[id], why = canWarp(id), col = sectorColor(S);
   const kills = G.bossKills[id] || 0;

@@ -2,6 +2,9 @@
 /* ---------- challenge journal (account-wide) ---------- */
 const BOSS6 = ['brood', 'warden', 'dread', 'queen', 'gravit', 'leviathan'];
 const ACH = [
+  { id: 'storm10',  desc: _L('Otvor 10 prekliatych truhlíc v Búrke Prázdnoty'), n: 10, v: () => ACC.st.stormChests || 0, sh: 15, title: _L('Lovec búrok') },
+  { id: 'forts6',   desc: _L('Osloboď všetkých 6 pevností jednou loďou'), n: 6, v: () => ACC.st.forts || 0, sh: 30, title: _L('Osloboditeľ') },
+  { id: 'horde5',   desc: _L('Dokonči Hordu Prázdnoty 5×'), n: 5, v: () => ACC.st.hordes || 0, sh: 25, title: _L('Krotiteľ hordy') },
   { id: 'kill1k',   desc: _L('Zostreľ 1 000 nepriateľov'),                 n: 1000,  v: () => ACC.st.kills,   sh: 10, title: _L('Lovec') },
   { id: 'kill10k',  desc: _L('Zostreľ 10 000 nepriateľov'),                n: 10000, v: () => ACC.st.kills,   sh: 30, title: _L('Metla Prázdnoty') },
   { id: 'elite100', desc: _L('Zostreľ 100 elít'),                          n: 100,   v: () => ACC.st.elites,  sh: 15, title: _L('Krotiteľ elít') },

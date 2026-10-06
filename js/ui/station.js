@@ -40,6 +40,9 @@ function renderStation() {
   const okR = P.level >= CLIMB_REQ || G.cheat.unlock, rb = (ACC.rush || {})[P.cls];
   $('rushInfo').innerHTML = _T`Rekord lode: <b>${rb ? fmtTime(rb) : '—'}</b>${okR ? '' : _L(' · od úrovne 50')}`;
   $('rushBtn').disabled = !okR;
+  const okH = P.level >= HORDE_REQ || G.cheat.unlock;
+  $('hordeInfo').innerHTML = _T`Dokončené: <b>${ACC.st.hordes || 0}×</b> · najviac éteru ${Math.floor(ACC.hordeBest || 0)}${okH ? '' : _L(' · od úrovne 30')}`;
+  $('hordeBtn').disabled = !okH;
   $('rushBoard').innerHTML = (ACC.rushRuns || []).slice(0, 3).map((r, i) => `<div>${i + 1}. <b style="color:${CLASSES[r.cls].color}">${CLASSES[r.cls].name}</b> · <b>${fmtTime(r.t)}</b></div>`).join('');
   const W = weekData(), wm = weekMods(W.w);
   $('weekInfo').innerHTML = _T`Týždeň ${W.w + 1}: ${wm.map(m => `<span style="color:#ff8a7a" title="${NM_MODS[m].desc}">${NM_MODS[m].name}</span>`).join(' · ')}<br>Tvoj rekord: <b>${W.best[P.cls] || 0}</b>. poschodie${W.claimed[P.cls] ? _L(' · odmena vybraná') : _L(' · odmena za 10. poschodie čaká')}`;

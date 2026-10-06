@@ -105,6 +105,7 @@ $('craftBack').addEventListener('click', () => { G.panel = 'station'; syncPanels
 $('archBtn').addEventListener('click', enterPinnacle);
 $('vaultBtn').addEventListener('click', enterVault);
 $('rushBtn').addEventListener('click', enterRush);
+$('hordeBtn').addEventListener('click', enterHorde);
 $('weekBtn').addEventListener('click', () => enterClimb(1, true));
 $('climbStart').addEventListener('click', e => { const b = e.target.closest('[data-climb]'); if (b && !b.disabled) enterClimb(+b.dataset.climb); });
 $('abPara').addEventListener('click', () => openPanel('para'));
@@ -179,7 +180,7 @@ addEventListener('keydown', e => {
   if (!G && /^Digit[1-4]$/.test(e.code) && !$('select').hidden) { $('ships').children[+e.code.slice(5) - 1].click(); return; }
   if (!G) return;
   const typing = /^(INPUT|SELECT|TEXTAREA)$/.test(e.target.tagName);
-  if (e.code === 'Escape') { if (!$('morePop').hidden) { setMore(false); return; } closePanels(); return; }
+  if (e.code === 'Escape') { if (!$('morePop').hidden) { setMore(false); return; } if (G.panel === 'horde') return; closePanels(); return; }
   if (typing) return;
   if (e.code === 'Backquote') { openPanel('cheat'); return; }
   if (e.code === 'KeyF' && !e.repeat && !G.panel) { G.autoFire = !G.autoFire; log(_T`Auto-boj ${G.autoFire ? _L('zapnutý') : _L('vypnutý')}.`); updateHUD(); return; }
@@ -187,6 +188,7 @@ addEventListener('keydown', e => {
   if (e.code === 'KeyI') { openPanel('inv'); return; }
   if (e.code === 'KeyK') { openPanel('tal'); return; }
   if (e.code === 'KeyP') { openPanel('para'); return; }
+  if (G.panel === 'horde' && /^Digit[123]$/.test(e.code)) { hordePick(+e.code.slice(5) - 1); return; }
   if (e.code === 'KeyJ') { openPanel('ach'); return; }
   if (e.code === 'KeyH' && !e.repeat && !typing) { goToHangar(); return; }
   if (e.code === 'KeyM') { if (G.panel !== 'map') G.mapSel = G.sector; openPanel('map'); return; }

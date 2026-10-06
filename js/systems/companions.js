@@ -60,6 +60,7 @@ function dmgBuff() {
   const tx = P.stats.tx || {};
   if (tx.iFlow && P.vx * P.vx + P.vy * P.vy > (P.stats.speed * 0.7) ** 2) m *= 1 + tx.iFlow / 100;
   if (P.ghostT > 0) m *= 1.3;
+  if (G.dungeon && G.dungeon.horde) m *= 1 + hb('dmg');
   if (P.rockStacks > 0 && tx.sCrush) m *= 1 + tx.sCrush / 100 * P.rockStacks;
   if (P.goldT > 0) m *= 1.4;
   if (tx.kOreShield && P.oshield > 0) m *= 1.3;

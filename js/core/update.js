@@ -23,6 +23,8 @@ function update(dt) {
   updateDrones(dt);
   updateMinions(dt);
   tickWorldBoss(dt);
+  tickStorm(dt);
+  if (!G.dungeon) tickFort(dt);
   updateTrails(dt);
   if (asteroids.some(a => a.dead)) asteroids = asteroids.filter(a => !a.dead);
   if (enemies.some(e => e.dead)) enemies = enemies.filter(e => !e.dead);
@@ -79,7 +81,7 @@ function updatePlayer(dt) {
   }
   P.fireT -= dt;
   if (firing) { P.heat = Math.min(15, P.heat + dt); P.idle = 0; } else if ((P.idle += dt) > 1) P.heat = 0;
-  const rate = s.fireRate * (s.legend.overheat ? 1 + Math.min(0.6, P.heat * 0.04) : 1) * (P.goldT > 0 ? 1.2 : 1) * (P.hasteT > 0 ? 1.3 : 1);
+  const rate = s.fireRate * (s.legend.overheat ? 1 + Math.min(0.6, P.heat * 0.04) : 1) * (P.goldT > 0 ? 1.2 : 1) * (P.hasteT > 0 ? 1.3 : 1) * (1 + hb('fr'));
   if (firing && P.fireT <= 0) { fireLaser(); P.fireT = Math.max(P.fireT, -0.05) + 1 / rate; }
   if (P.fireT < 0 && !firing) P.fireT = 0;
   P.missileT -= dt;

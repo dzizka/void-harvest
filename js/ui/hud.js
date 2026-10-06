@@ -40,6 +40,10 @@ function updateHUD() {
     const D = G.dungeon;
     zone = D.vault ? (D.state === 'over' ? _L('Trezor zatvorený') : _T`Trezor · ${fmtTime(Math.max(0, VAULT_TIME - D.t))}`) : (D.state === 'over' ? _T`Aréna dokončená · ${fmtTime(D.t)}` : _T`Aréna · boss ${Math.min(6, D.idx + 1)}/6 · ${fmtTime(D.t)}`);
     zc = D.vault ? '#ffb000' : '#ffd36b'; $('hSector').textContent = D.vault ? _L('Trezor pašerákov') : _L('Aréna veliteľov');
+  } else if (G.dungeon && G.dungeon.horde) {
+    const D = G.dungeon;
+    zone = D.state === 'horde' || D.state === 'pick' ? _T`Horda · vlna ${Math.min(HORDE_WAVES, D.wave + 1)}/${HORDE_WAVES} · ${fmtTime(Math.max(0, D.t))}` : D.state === 'lord' ? _L('Horda · pán hordy') : _L('Horda · poklady');
+    zc = '#c86bff'; $('hSector').textContent = _L('Horda Prázdnoty');
   } else if (G.dungeon && G.dungeon.climb) {
     const D = G.dungeon;
     zone = D.state === 'over' ? _T`Výstup skončil · poschodie ${D.floor}` : _T`Výstup · poschodie ${D.floor} · ${fmtTime(Math.max(0, CLIMB_LIMIT - D.t))}`;
@@ -98,7 +102,21 @@ function updateHUD() {
     $('evName').textContent = _T`Aréna veliteľov · ${Math.min(6, D.idx + (D.state === 'over' ? 0 : 1))}/6`;
     $('evObj').textContent = _T`Čas ${fmtTime(D.t)}${best ? _T` · rekord ${fmtTime(best)}` : ''}${D.state === 'over' ? _L(' · hotovo') : ''}`;
     $('evBar').style.width = (D.idx / 6 * 100).toFixed(1) + '%';
+  } else if (G.dungeon && G.dungeon.horde) {
+    const D = G.dungeon;
+    $('evBox').hidden = false; $('evBox').style.setProperty('--ec', '#c86bff'); $('evBox').style.top = G.boss ? '96px' : '';
+    $('evName').textContent = D.state === 'horde' || D.state === 'pick' ? _T`Horda Prázdnoty · vlna ${Math.min(HORDE_WAVES, D.wave + 1)}/${HORDE_WAVES}` : D.state === 'lord' ? _L('Horda Prázdnoty · pán hordy') : _L('Horda Prázdnoty · poklady');
+    $('evObj').textContent = _T`Éter ${Math.floor(D.aether)}${D.state === 'horde' ? ' · ' + fmtTime(Math.max(0, D.t)) : ''}`;
+    $('evBar').style.width = (D.state === 'horde' ? clamp(1 - D.t / HORDE_WAVE_T, 0, 1) * 100 : 100).toFixed(1) + '%';
+  } else if (G.siege) {
+    $('evBox').hidden = false; $('evBox').style.setProperty('--ec', '#ff6b5a'); $('evBox').style.top = '';
+    $('evName').textContent = _T`Pevnosť · ${SECTORS[G.siege.id].name}`;
+    $('evObj').textContent = G.siege.cmd ? _L('Zostreľ veliteľa pevnosti') : _T`Vlna ${G.siege.wave}/3 · zostáva ${enemies.filter(e => e.fort && !e.dead).length}`;
+    $('evBar').style.width = ((G.siege.wave + (G.siege.cmd ? 1 : 0)) / 4 * 100).toFixed(1) + '%';
   } else $('evBox').style.top = '';
+  const Sm = G.storm, smOn = Sm && Sm.state === 'active';
+  $('hStorm').hidden = !smOn;
+  if (smOn) $('hStorm').textContent = _T`⚡ Búrka Prázdnoty · ${SECTORS[Sm.sec].name} · ${fmtTime(Math.max(0, Sm.t))} · žiara ${Sm.ember}`;
   const W = G.wb, wbOn = W && (W.state === 'warn' || W.state === 'active');
   $('hWb').hidden = !wbOn;
   if (wbOn) $('hWb').textContent = `☄ ${BOSSES.devourer.name} · ${SECTORS[W.sec].name} · ${W.state === 'warn' ? _L('príchod o ') + fmtTime(W.t) : _L('odletí o ') + fmtTime(W.t)}`;
@@ -156,7 +174,7 @@ function updateHUD() {
   }
 }
 
-const PANELS = ['inv', 'tal', 'map', 'station', 'cheat', 'gate', 'craft', 'para', 'ach'];
+const PANELS = ['inv', 'tal', 'map', 'station', 'cheat', 'gate', 'craft', 'para', 'ach', 'horde'];
 function syncPanels() {
   const open = G ? G.panel : null;
   for (const p of PANELS) $(p).hidden = open !== p;
@@ -167,6 +185,7 @@ function syncPanels() {
   if (open === 'inv') renderInventory();
   if (open === 'tal') { renderTalents(); setTalTab(G.talTab || 'tree'); renderSkills(); }
   if (open === 'map') renderMap();
+  if (open === 'horde') renderHordeOffer();
   if (open === 'station') renderStation();
   if (open === 'cheat') renderCheat();
   if (open === 'gate') renderGate();
@@ -176,6 +195,7 @@ function syncPanels() {
 }
 function openPanel(name) {
   if (!G || G.mode !== 'play' || transitioning) return;
+  if (G.panel === 'horde') return;
   G.panel = G.panel === name ? null : name;
   syncPanels();
 }
@@ -200,3 +220,12 @@ function updateSkillBar() {
     el.classList.toggle('locked', !open); el.classList.toggle('ready', open && c <= 0);
   }
 }
+
+// Void Horde offer panel
+function renderHordeOffer() {
+  const D = G.dungeon; if (!D || !D.offer) return;
+  $('hordeHint').textContent = _T`Vlna ${D.wave}/${HORDE_WAVES} prežitá · éter ${Math.floor(D.aether)} · vyber požehnanie (1–3)`;
+  $('hordeOffers').innerHTML = D.offer.map((o, i) => `<button type="button" data-hp="${i}"><kbd>${i + 1}</kbd><span class="boon">▲ ${o.boon.txt}</span>${o.bane ? `<span class="bane">▼ ${o.bane.txt}</span><small>${_L('+30 % éteru')}</small>` : `<small>${_L('bez zlorečenia')}</small>`}</button>`).join('');
+  $('hordePicks').textContent = D.picks.length ? _L('Doteraz: ') + D.picks.join(' · ') : '';
+}
+$('hordeOffers').addEventListener('click', e => { const b = e.target.closest('[data-hp]'); if (b) hordePick(+b.dataset.hp); });

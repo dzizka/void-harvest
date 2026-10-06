@@ -59,6 +59,7 @@ function render() {
   drawEvent();
   drawHazards();
   drawAbilityFx();
+  drawEndgameFx();
   drawMythicFx();
   ctx.globalCompositeOperation = 'lighter'; ctx.lineCap = 'round';
   for (const b of bullets) {
@@ -171,6 +172,7 @@ function render() {
     ctx.fillStyle = t.color; ctx.fillText(t.txt, t.x, t.y);
   }
   ctx.globalAlpha = 1;
+  drawStormOverlay(W, H, dpr);
   if (G.freezeT > 0) { ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.fillStyle = 'rgba(150,200,255,.09)'; ctx.fillRect(0, 0, W, H); }
   if (G.intro) {
     const I = G.intro, k = clamp(Math.min(I.t, I.t0 - I.t) / 0.35, 0, 1), bh = H * 0.11 * k, col = I.e.B.color;
@@ -207,6 +209,7 @@ function drawMinimap() {
   mctx.fillStyle = '#5d6780';
   for (const a of asteroids) mctx.fillRect(a.x * k - 0.7, a.y * k - 0.7, a.size > 1 ? 2 : 1.3, a.size > 1 ? 2 : 1.3);
   for (const p of pickups) if (p.kind === 'item') { mctx.fillStyle = RARITY[p.item.rarity].color; mctx.fillRect(p.x * k - 1.5, p.y * k - 1.5, 3, 3); }
+  drawMinimapEndgame(k);
   mctx.font = '700 9px "JetBrains Mono", monospace'; mctx.textAlign = 'center';
   for (const g of G.gates) {
     const col = BOSSES[g.boss].color;

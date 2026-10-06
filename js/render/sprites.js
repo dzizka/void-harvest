@@ -147,7 +147,7 @@ function drawEnemy(e) {
     ctx.fillStyle = e.elite ? '#ffd36b' : col; ctx.fillRect(e.x - w / 2, y, w * clamp(e.hp / e.maxHp, 0, 1), 3);
     if (e.elite) {
       ctx.font = '600 10px "JetBrains Mono", monospace'; ctx.textAlign = 'center'; ctx.fillStyle = e.hunter ? '#ff8a5c' : '#ffd36b';
-      ctx.fillText(e.hunter ? `${e.hunter.name.toUpperCase()} · ${e.lvl}` : `${eliteAdj(e.T).toUpperCase()} ${e.T.name.toUpperCase()} · ${e.lvl}`, e.x, y - (e.mods ? 15 : 4));
+      ctx.fillText(e.hunter ? `${e.hunter.name.toUpperCase()} · ${e.lvl}` : e.label ? `${e.label.toUpperCase()} · ${e.lvl}` : `${eliteAdj(e.T).toUpperCase()} ${e.T.name.toUpperCase()} · ${e.lvl}`, e.x, y - (e.mods ? 15 : 4));
       if (e.mods) { let x0 = e.x - e.mods.reduce((w, m) => w + ctx.measureText(ELITE_MODS[m].name).width + 8, -8) / 2; for (const m of e.mods) { const w = ctx.measureText(ELITE_MODS[m].name).width; ctx.fillStyle = ELITE_MODS[m].color; ctx.textAlign = 'left'; ctx.fillText(ELITE_MODS[m].name, x0, y - 4); x0 += w + 8; } ctx.textAlign = 'center'; }
     }
   }
