@@ -147,7 +147,7 @@ function drawEnemy(e) {
     ctx.fillStyle = e.elite ? '#ffd36b' : col; ctx.fillRect(e.x - w / 2, y, w * clamp(e.hp / e.maxHp, 0, 1), 3);
     if (e.elite) {
       ctx.font = '600 10px "JetBrains Mono", monospace'; ctx.textAlign = 'center'; ctx.fillStyle = e.hunter ? '#ff8a5c' : '#ffd36b';
-      ctx.fillText(e.hunter ? `${e.hunter.name.toUpperCase()} · ${e.lvl}` : `ELITNÝ ${e.T.name.toUpperCase()} · ${e.lvl}`, e.x, y - (e.mods ? 15 : 4));
+      ctx.fillText(e.hunter ? `${e.hunter.name.toUpperCase()} · ${e.lvl}` : `${eliteAdj(e.T).toUpperCase()} ${e.T.name.toUpperCase()} · ${e.lvl}`, e.x, y - (e.mods ? 15 : 4));
       if (e.mods) { let x0 = e.x - e.mods.reduce((w, m) => w + ctx.measureText(ELITE_MODS[m].name).width + 8, -8) / 2; for (const m of e.mods) { const w = ctx.measureText(ELITE_MODS[m].name).width; ctx.fillStyle = ELITE_MODS[m].color; ctx.textAlign = 'left'; ctx.fillText(ELITE_MODS[m].name, x0, y - 4); x0 += w + 8; } ctx.textAlign = 'center'; }
     }
   }
@@ -272,7 +272,7 @@ function drawPickup(p) {
     ctx.strokeStyle = '#ff6b5a'; ctx.fillStyle = '#2a0c10'; ctx.lineWidth = 2;
     ctx.beginPath(); for (let i = 0; i < 6; i++) { const a = i / 6 * TAU; i ? ctx.lineTo(Math.cos(a) * 10, Math.sin(a) * 10) : ctx.moveTo(10, 0); } ctx.closePath(); ctx.fill(); ctx.stroke();
     ctx.restore();
-    worldLabel(`KĽÚČ ${p.key.lvl}`, p.x, p.y + 28, '#ff6b5a', 10);
+    worldLabel(_T`KĽÚČ ${p.key.lvl}`, p.x, p.y + 28, '#ff6b5a', 10);
   } else if (p.kind === 'ore') {
     ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.spin * 0.5);
     ctx.fillStyle = '#5a4430'; ctx.strokeStyle = '#e0bb8f'; ctx.lineWidth = 1.2;
@@ -311,7 +311,7 @@ function drawPickup(p) {
 }
 
 function worldLabel(txt, x, y, col, size) {
-  ctx.font = `700 ${size || 11}px "JetBrains Mono", monospace`; ctx.textAlign = 'center';
+  ctx.font = _T`700 ${size || 11}px "JetBrains Mono", monospace`; ctx.textAlign = 'center';
   ctx.fillStyle = 'rgba(5,8,15,.7)'; const w = ctx.measureText(txt).width + 12;
   ctx.fillRect(x - w / 2, y - 12, w, 17);
   ctx.fillStyle = col; ctx.fillText(txt, x, y);
@@ -341,7 +341,7 @@ function drawStation(st) {
   ctx.beginPath(); ctx.arc(0, 0, 24, 0, TAU); ctx.fill(); ctx.stroke();
   ctx.fillStyle = 'rgba(95,212,255,' + (0.5 + Math.sin(t * 3) * 0.3) + ')'; ctx.beginPath(); ctx.arc(0, 0, 8, 0, TAU); ctx.fill();
   ctx.restore();
-  worldLabel(S.kind === 'safe' ? S.name.toUpperCase() : 'MAJÁK · BEZPEČNÁ ZÓNA', st.x, st.y + 108, '#5fd4ff');
+  worldLabel(S.kind === 'safe' ? S.name.toUpperCase() : _L('MAJÁK · BEZPEČNÁ ZÓNA'), st.x, st.y + 108, '#5fd4ff');
 }
 
 function drawPortalRing(x, y, col, r, t, label, sub) {

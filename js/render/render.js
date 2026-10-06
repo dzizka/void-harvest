@@ -22,10 +22,10 @@ function render() {
     ctx.fillRect(-2000, 0, 2000, WORLD.h); ctx.fillRect(WORLD.w, 0, 2000, WORLD.h);
   }
   if (G.station && vis(G.station.x, G.station.y, Math.max(G.station.r, 200))) drawStation(G.station);
-  for (const g of G.gates) if (vis(g.x, g.y, 120)) { const B = BOSSES[g.boss]; drawPortalRing(g.x, g.y, B.color, 62, G.time + g.t, `BRÁNA · ÚR. ${g.lvl}`, B.lair); }
+  for (const g of G.gates) if (vis(g.x, g.y, 120)) { const B = BOSSES[g.boss]; drawPortalRing(g.x, g.y, B.color, 62, G.time + g.t, _T`BRÁNA · ÚR. ${g.lvl}`, B.lair); }
   if (G.dungeon && G.dungeon.portal && G.dungeon.portal.t > -1.5) {
     const p = G.dungeon.portal, ready = p.t > 0;
-    drawPortalRing(p.x, p.y, p.kind === 'next' ? '#5fd4ff' : '#5be09a', ready ? 60 : 30 + 30 * clamp(p.t + 1.5, 0, 1.5) / 1.5, G.time, ready ? (p.kind === 'next' ? 'ĎALŠIA KOMNATA' : 'NÁVRAT DO SEKTORA') : '', '');
+    drawPortalRing(p.x, p.y, p.kind === 'next' ? '#5fd4ff' : '#5be09a', ready ? 60 : 30 + 30 * clamp(p.t + 1.5, 0, 1.5) / 1.5, G.time, ready ? (p.kind === 'next' ? _L('ĎALŠIA KOMNATA') : _L('NÁVRAT DO SEKTORA')) : '', '');
   }
 
   if (trails.length) {
@@ -160,7 +160,7 @@ function render() {
   ctx.textAlign = 'center';
   for (const t of texts) {
     ctx.globalAlpha = clamp(t.life / t.max * 1.6, 0, 1);
-    ctx.font = `700 ${t.size}px "JetBrains Mono", monospace`;
+    ctx.font = _T`700 ${t.size}px "JetBrains Mono", monospace`;
     ctx.fillStyle = '#05080f'; ctx.fillText(t.txt, t.x + 1, t.y + 1);
     ctx.fillStyle = t.color; ctx.fillText(t.txt, t.x, t.y);
   }
@@ -174,9 +174,9 @@ function render() {
     const ty = H * 0.68, band = ctx.createLinearGradient(0, ty - 70, 0, ty + 30);
     band.addColorStop(0, 'rgba(0,0,0,0)'); band.addColorStop(0.5, 'rgba(0,0,0,.55)'); band.addColorStop(1, 'rgba(0,0,0,0)');
     ctx.fillStyle = band; ctx.fillRect(0, ty - 70, W, 100);
-    ctx.font = `700 ${Math.round(clamp(W / 26, 24, 46))}px "Chakra Petch", sans-serif`; ctx.fillStyle = col;
+    ctx.font = _T`700 ${Math.round(clamp(W / 26, 24, 46))}px "Chakra Petch", sans-serif`; ctx.fillStyle = col;
     ctx.fillText(I.e.B.name.toUpperCase(), W / 2, ty);
-    ctx.font = '700 12px "JetBrains Mono", monospace'; ctx.fillStyle = '#9aa6c0'; ctx.fillText(`ÚROVEŇ ${I.e.lvl} · ${I.e.B.lair.toUpperCase()}`, W / 2, ty + 22);
+    ctx.font = '700 12px "JetBrains Mono", monospace'; ctx.fillStyle = '#9aa6c0'; ctx.fillText(_T`ÚROVEŇ ${I.e.lvl} · ${I.e.B.lair.toUpperCase()}`, W / 2, ty + 22);
     ctx.globalAlpha = 1;
   }
 }

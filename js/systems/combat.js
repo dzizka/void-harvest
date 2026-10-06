@@ -113,24 +113,24 @@ function explodeMissile(m) {
 
 function damageEnemy(e, amt, crit, quiet, echo) {
   if (e.dead) return;
-  if (e.shielded) { if (!e.shTxt || G.time - e.shTxt > 0.6) { addText(e.x, e.y - e.r - 14, 'IMÚNNY', '#e8e2ff', 12, 0.5); e.shTxt = G.time; } return; }
+  if (e.shielded) { if (!e.shTxt || G.time - e.shTxt > 0.6) { addText(e.x, e.y - e.r - 14, _L('IMÚNNY'), '#e8e2ff', 12, 0.5); e.shTxt = G.time; } return; }
   if ((e.elite || e.isBoss) && P.stats.eliteDmg) amt *= 1 + P.stats.eliteDmg / 100;
   if (e.prot > G.time) amt *= 0.5;   // covered by a shield bearer
   e.lastHitT = G.time;
   if (e.esh > 0) {
     const a = Math.min(e.esh, amt); e.esh -= a; amt -= a;
-    if (amt <= 0) { if (!quiet || crit) addText(e.x, e.y - e.r, fmtN(a), '#6fb8ff', 11, 0.5); return; }
+    if (amt <= 0) { if (!quiet || crit) addText(e.x, e.y - e.r, fmtD(a), '#6fb8ff', 11, 0.5); return; }
   }
   if (G.cheat.oneHit) amt = Math.max(amt, e.hp);
   e.hp -= amt; e.flash = 0.08;
   const L = P.stats.legend;
   if (L.vampiric) P.shield = Math.min(P.stats.maxShield, P.shield + amt * 0.03);
   if (L.voidecho && !echo && Math.random() < 0.2 * mres('voidecho')) echoes.push({ e, amt, t: 0.35 });
-  if (echo) addText(e.x, e.y - e.r - 10, fmtN(amt), '#e14bff', 13, 0.7);
-  else if (!quiet || crit) addText(e.x, e.y - e.r, crit ? fmtN(amt) + '!' : fmtN(amt), crit ? '#ffe14d' : '#e6e9ef', crit ? 16 : 11);
+  if (echo) addText(e.x, e.y - e.r - 10, fmtD(amt), '#e14bff', 13, 0.7);
+  else if (!quiet || crit) addText(e.x, e.y - e.r, crit ? fmtD(amt) + '!' : fmtD(amt), crit ? '#ffe14d' : '#e6e9ef', crit ? 16 : 11);
   else {
     e.qAcc = (e.qAcc || 0) + amt;
-    if (!e.qT || G.time - e.qT > 0.3 || e.hp <= 0) { addText(e.x, e.y - e.r, fmtN(e.qAcc), '#b48cff', 10, 0.5); e.qAcc = 0; e.qT = G.time; }
+    if (!e.qT || G.time - e.qT > 0.3 || e.hp <= 0) { addText(e.x, e.y - e.r, fmtD(e.qAcc), '#b48cff', 10, 0.5); e.qAcc = 0; e.qT = G.time; }
   }
   if (e.hp <= 0) killEnemy(e);
 }
@@ -139,7 +139,7 @@ function damageAsteroid(a, amt, crit) {
   if (a.dead) return;
   if (G.cheat.oneHit) amt = Math.max(amt, a.hp);
   a.hp -= amt; a.flash = 0.06;
-  if (crit) addText(a.x, a.y - a.r * 0.6, fmtN(amt) + '!', '#ffe14d', 12, 0.6);
+  if (crit) addText(a.x, a.y - a.r * 0.6, fmtD(amt) + '!', '#ffe14d', 12, 0.6);
   if (a.hp <= 0) breakAsteroid(a);
 }
 
@@ -160,13 +160,13 @@ function dropOre(x, y, total) {
 function dropItem(x, y, ilvl, tier) {
   const item = generateItem(ilvl, rollRarity(tier));
   dropPickup('item', x, y, 1, item);
-  if (item.primal) { banner(`<span style="color:#ff5a5a">${item.name}</span><small>Prvotný predmet · všetky hody na maxime</small>`); ring(x, y, '#ff3b3b', 260, 1.1); }
+  if (item.primal) { banner(_T`<span style="color:#ff5a5a">${item.name}</span><small>Prvotný predmet · všetky hody na maxime</small>`); ring(x, y, '#ff3b3b', 260, 1.1); }
   const ns = gaExtra(item), gn = gaN(item);
   if (ns >= 2 && !(ASV().auto && shouldSalvage(item))) {
-    banner(`<span style="color:#ffd36b">${'✦'.repeat(gn)} ${item.name}</span><small>${gn} väčšie afixy · ${item.affixes.filter(a => a.greater).map(a => AFFIXES[a.key].label(a.val)).join(' · ')}</small>`);
+    banner(_T`<span style="color:#ffd36b">${'✦'.repeat(gn)} ${item.name}</span><small>${gn} väčšie afixy · ${item.affixes.filter(a => a.greater).map(a => AFFIXES[a.key].label(a.val)).join(' · ')}</small>`);
     ring(x, y, '#ffd36b', ns >= 3 ? 320 : 200, ns >= 3 ? 1.3 : 0.9); if (ns >= 3) shake(6);
   } else if (item.rarity === 'legendary' && !item.primal && !(ASV().auto && shouldSalvage(item))) {
-    banner(`<span style="color:${RARITY.legendary.color}">${item.name}</span><small>Legendárny predmet padol</small>`);
+    banner(_T`<span style="color:${RARITY.legendary.color}">${item.name}</span><small>Legendárny predmet padol</small>`);
     ring(x, y, RARITY.legendary.color, 160, 0.9);
   }
 }
@@ -221,16 +221,16 @@ function killEnemy(e) {
     if (Math.random() < 0.6) dropKey(e.x, e.y, keyBaseLevel() + 1);
     dropGem(e.x, e.y, 1); addShards(3);
     ring(e.x, e.y, '#ff8a5c', 260, 0.9);
-    banner(`<span style="color:#ff8a5c">${e.hunter.name}</span><small>Lovec zlikvidovaný · garantovaný legendárny predmet</small>`);
+    banner(_T`<span style="color:#ff8a5c">${e.hunter.name}</span><small>Lovec zlikvidovaný · garantovaný legendárny predmet</small>`);
     contractTick('hunter');
     return;
   }
   if (Math.random() < 0.25) dropOre(e.x, e.y, randi(1, 3) * P.stats.yieldMult);
   if (e.elite) {
-    if (P.level >= 15 && !(G.dungeon && G.dungeon.vault) && Math.random() < 0.08) { P.vaultFrags = (P.vaultFrags || 0) + 1; addText(e.x, e.y - 30, 'ÚLOMOK MAPY', '#ffb000', 12, 1); log(`<span style="color:#ffb000">Úlomok mapy trezoru</span> (${P.vaultFrags}/5).`); }
+    if (P.level >= 15 && !(G.dungeon && G.dungeon.vault) && Math.random() < 0.08) { P.vaultFrags = (P.vaultFrags || 0) + 1; addText(e.x, e.y - 30, _L('ÚLOMOK MAPY'), '#ffb000', 12, 1); log(_T`<span style="color:#ffb000">Úlomok mapy trezoru</span> (${P.vaultFrags}/5).`); }
     dropItem(e.x, e.y, e.lvl, 2);
     if (Math.random() < 0.5) dropItem(e.x, e.y, e.lvl, 1);
-    log(`Elitný ${e.T.name} zničený.`);
+    log(`${eliteAdj(e.T)} ${e.T.name} ${e.T.g === 'f' ? _L('zničená') : e.T.g === 'n' ? _L('zničené') : _L('zničený')}.`);
     if (Math.random() < (G.dungeon && G.dungeon.nm ? 0.2 : 0.12)) dropKey(e.x, e.y, G.dungeon && G.dungeon.nm ? G.dungeon.nm.k : keyBaseLevel());
   } else if (Math.random() < e.T.gear * (e.small ? 0.3 : 1) * (nmHas('loot') ? 1.5 : 1) * (1 + (P.stats.tx.sDiv || 0) / 100)) {
     dropItem(e.x, e.y, e.lvl, e.T.tier);
@@ -257,7 +257,7 @@ function breakAsteroid(a) {
     dropGem(a.x, a.y, 1); addShards(5);
     if (mythTier() > 0 && Math.random() < LEGEND_INDEX.tessarEye.chance * mythTier() * mythMult()) dropMythic('tessarEye', a.x, a.y, zoneLevel() + 2);
     ring(a.x, a.y, '#e14bff', 160, 0.7);
-    log('<span style="color:#e14bff">Žiarivý kryštál rozbitý.</span>');
+    log(_L('<span style="color:#e14bff">Žiarivý kryštál rozbitý.</span>'));
   }
   if (Math.random() < (a.kind === 'crystal' ? 0.05 * a.size : 0.008 * a.size)) dropItem(a.x, a.y, zoneLevel(), a.kind === 'crystal' ? 1 : 0);
   if (a.size > 1) {
@@ -275,8 +275,8 @@ function hurtPlayer(amt) {
   if (G.cheat.god) { P.shieldFlash = 0.1; return; }
   if (P.dashT > 0) return;
   const s = P.stats;
-  if (P.crystal > 0) { P.crystal--; addText(P.x, P.y - 24, 'KRYŠTÁL', '#e14bff', 12, 0.6); burst(P.x, P.y, '#e14bff', 14, 220, 2, 0.4); return; }
-  if (Math.random() * 100 < s.dodge) { addText(P.x, P.y - 24, 'ÚHYB', '#9fe6ff', 12, 0.6); if (s.legend.blinkcore) P.forceCrit = 3; onDodge(); return; }
+  if (P.crystal > 0) { P.crystal--; addText(P.x, P.y - 24, _L('KRYŠTÁL'), '#e14bff', 12, 0.6); burst(P.x, P.y, '#e14bff', 14, 220, 2, 0.4); return; }
+  if (Math.random() * 100 < s.dodge) { addText(P.x, P.y - 24, _L('ÚHYB'), '#9fe6ff', 12, 0.6); if (s.legend.blinkcore) P.forceCrit = 3; onDodge(); return; }
   if (P.stasisT > 0) return;
   const tx = s.tx;
   let red = s.dr || 0;
@@ -301,9 +301,9 @@ function hurtPlayer(amt) {
     P.hull -= rem; P.hitFlash = 0.25; shake(4);
     if (G.dungeon) G.dungeon.hurt = true;
     if (rem > s.maxHull * 0.15) G.hitStop = Math.max(G.hitStop || 0, 0.05);
-    addText(P.x, P.y - 22, '-' + fmtN(rem), '#ff6b5a', 13, 0.7);
+    addText(P.x, P.y - 22, '-' + fmtD(rem), '#ff6b5a', 13, 0.7);
     if (s.legend.stasis && P.stasisCd <= 0 && P.hull > 0 && P.hull < s.maxHull * 0.3) {
-      P.stasisT = 3; P.stasisCd = 30; ring(P.x, P.y, '#ffd36b', 90, 0.5); addText(P.x, P.y - 36, 'STÁZA', '#ffd36b', 13, 1);
+      P.stasisT = 3; P.stasisCd = 30; ring(P.x, P.y, '#ffd36b', 90, 0.5); addText(P.x, P.y - 36, _L('STÁZA'), '#ffd36b', 13, 1);
     }
   }
   if (P.hull <= 0) die();
@@ -338,7 +338,7 @@ function triggerNova() {
   ring(P.x, P.y, '#ff8a1f', R, 0.6); ring(P.x, P.y, '#ffe0b0', R * 0.7, 0.4);
   burst(P.x, P.y, '#ff8a1f', 60, 600, 3, 0.6);
   shake(9);
-  log('<span style="color:#ff8a1f">Aegis: reaktívna nova!</span>');
+  log(_L('<span style="color:#ff8a1f">Aegis: reaktívna nova!</span>'));
 }
 
 function gainXp(amt) {
@@ -349,18 +349,18 @@ function gainXp(amt) {
       if (P.xp < need) break;
       P.xp -= need; P.para.lvl++; P.para.pts++;
       ring(P.x, P.y, '#e8e2ff', 240, 0.8); burst(P.x, P.y, '#e8e2ff', 40, 400, 2.5, 0.8);
-      banner(`Paragon ${P.para.lvl}<small>+1 hviezdny bod · stlač P</small>`);
+      banner(_T`Paragon ${P.para.lvl}<small>+1 hviezdny bod · stlač P</small>`);
       continue;
     }
     if (P.xp < xpNeed(P.level)) break;
     P.xp -= xpNeed(P.level); P.level++; P.points++;
-    if (P.level === LEVEL_CAP) log('<span style="color:#e8e2ff">Maximálna úroveň 50.</span> Ďalšie skúsenosti plnia hviezdne konštelácie (P).');
+    if (P.level === LEVEL_CAP) log(_L('<span style="color:#e8e2ff">Maximálna úroveň 50.</span> Ďalšie skúsenosti plnia hviezdne konštelácie (P).'));
     recalcStats();
     P.shield = P.stats.maxShield; P.hull = Math.min(P.stats.maxHull, P.hull + P.stats.maxHull * 0.35);
     ring(P.x, P.y, '#b48cff', 220, 0.8); burst(P.x, P.y, '#b48cff', 40, 400, 2.5, 0.8);
-    banner(`Úroveň ${P.level}<small>+1 bod talentu · stlač K</small>`);
-    log(`Úroveň ${P.level}. Máš ${P.points} ${P.points === 1 ? 'voľný bod' : 'voľné body'}.`);
-    for (const id in SECTORS) if (SECTORS[id].min === P.level && P.level > 1) log(`<span style="color:#5be09a">Odomknutý sektor ${SECTORS[id].name}.</span> Otvor mapu (M).`);
+    banner(_T`Úroveň ${P.level}<small>+1 bod talentu · stlač K</small>`);
+    log(_T`Úroveň ${P.level}. Máš ${P.points} ${P.points === 1 ? _L('voľný bod') : _L('voľné body')}.`);
+    for (const id in SECTORS) if (SECTORS[id].min === P.level && P.level > 1) log(_T`<span style="color:#5be09a">Odomknutý sektor ${SECTORS[id].name}.</span> Otvor mapu (M).`);
   }
 }
 
@@ -369,12 +369,12 @@ function collect(p) {
   if (p.kind === 'xp') { gainXp(p.amount); }
   else if (p.kind === 'gem') {
     P.gems[p.gem.t][p.gem.q]++;
-    log(`Drahokam: <span style="color:${GEMS[p.gem.t].color}">${gemName(p.gem.t, p.gem.q)}</span>`);
+    log(_T`Drahokam: <span style="color:${GEMS[p.gem.t].color}">${gemName(p.gem.t, p.gem.q)}</span>`);
   }
   else if (p.kind === 'key') {
-    if (P.keys.length >= 20) { P.ore += 40; log('Kľúčov máš 20. Nadbytočný kľúč premenený na 40 rudy.'); return true; }
+    if (P.keys.length >= 20) { P.ore += 40; log(_L('Kľúčov máš 20. Nadbytočný kľúč premenený na 40 rudy.')); return true; }
     P.keys.push(p.key);
-    log(`<span style="color:#ff6b5a">Kľúč od nočnej brány · úroveň ${p.key.lvl}</span>`);
+    log(_T`<span style="color:#ff6b5a">Kľúč od nočnej brány · úroveň ${p.key.lvl}</span>`);
     saveGame();
   }
   else if (p.kind === 'ore') {
@@ -388,26 +388,26 @@ function collect(p) {
     if (tx.kOreShield) P.oshield = Math.min(s.maxShield * 0.5, P.oshield + s.maxShield * 0.01 * amt);
     if (tx.kRush && (P.goldAcc += amt) >= 100) {
       P.goldAcc %= 100;
-      if (P.goldT <= 0) { addText(P.x, P.y - 40, 'ZLATÁ HORÚČKA', '#ffc94d', 14, 1); ring(P.x, P.y, '#ffc94d', 160, 0.5); }
+      if (P.goldT <= 0) { addText(P.x, P.y - 40, _L('ZLATÁ HORÚČKA'), '#ffc94d', 14, 1); ring(P.x, P.y, '#ffc94d', 160, 0.5); }
       P.goldT = 10;
     }
   } else {
     if (ASV().auto && shouldSalvage(p.item)) {
       const it = p.item, r = disposeItem(it);
-      if (r.res) { addText(P.x, P.y - 30, `Rezonancia ${r.res.res}/${RES_MAX}`, RARITY.mythic.color, 11, 0.8); log(`Auto-rozobratie · duplikát <span style="color:var(--r-mythic)">${it.name}</span> → rezonancia ${r.res.res}/${RES_MAX}.`); }
-      else addText(P.x, P.y - 30, `+${r.ore} rudy${r.sh ? ` · +${r.sh} úl.` : ''}`, '#c8a27c', 10, 0.5);
-      if (r.codex) log(`Auto-rozobratie · <span style="color:#ff8a1f">${it.name}</span> uložená do kódexu.`);
+      if (r.res) { addText(P.x, P.y - 30, _T`Rezonancia ${r.res.res}/${RES_MAX}`, RARITY.mythic.color, 11, 0.8); log(_T`Auto-rozobratie · duplikát <span style="color:var(--r-mythic)">${it.name}</span> → rezonancia ${r.res.res}/${RES_MAX}.`); }
+      else addText(P.x, P.y - 30, _T`+${r.ore} rudy${r.sh ? _T` · +${r.sh} úl.` : ''}`, '#c8a27c', 10, 0.5);
+      if (r.codex) log(_T`Auto-rozobratie · <span style="color:#ff8a1f">${it.name}</span> uložená do kódexu.`);
       return true;
     }
     if (P.inv.length >= 30) {
-      if (G.time - G.fullMsgT > 3) { log('<span style="color:#ff6b5a">Náklad je plný. Rozober predmety v inventári (I).</span>'); G.fullMsgT = G.time; }
+      if (G.time - G.fullMsgT > 3) { log(_L('<span style="color:#ff6b5a">Náklad je plný. Rozober predmety v inventári (I).</span>')); G.fullMsgT = G.time; }
       p.vx = (p.x - P.x) * 4; p.vy = (p.y - P.y) * 4; p.cool = 1.5;
       return false;
     }
     const it = p.item; P.inv.push(it);
     if (it.rarity === 'mythic') { G.found[it.legend] = true; saveGame(); }
     if (!P.bestItem || RARITY[it.rarity].rank > RARITY[P.bestItem.rarity].rank) P.bestItem = it;
-    log(`Získané: <span style="color:${RARITY[it.rarity].color}">${it.name}</span> <span style="color:#7f8ca8">iLvl ${it.ilvl}</span>`);
+    log(_T`Získané: <span style="color:${RARITY[it.rarity].color}">${it.name}</span> <span style="color:#7f8ca8">iLvl ${it.ilvl}</span>`);
     if (G.panel === 'inv') renderInventory();
   }
   return true;
@@ -419,7 +419,7 @@ function die() {
   G.mode = 'dead';
   burst(P.x, P.y, CLASSES[P.cls].color, 120, 600, 3, 1.2); ring(P.x, P.y, '#ff6b5a', 260, 0.9);
   const b = P.bestItem, loss = Math.floor(P.ore * 0.15);
-  $('deadStats').innerHTML = `
+  $('deadStats').innerHTML = _T`
     <dt>Miesto</dt><dd>${G.dungeon ? BOSSES[G.dungeon.boss].lair : curSector().name}</dd>
     <dt>Úroveň</dt><dd>${P.level}</dd>
     <dt>Čas letu</dt><dd>${fmtTime(G.time)}</dd>
@@ -427,7 +427,7 @@ function die() {
     <dt>Porazení bossovia</dt><dd>${Object.values(G.bossKills).reduce((a, b) => a + b, 0)}</dd>
     <dt>Najlepší nález</dt><dd style="color:${b ? RARITY[b.rarity].color : 'inherit'}">${b ? b.name : '—'}</dd>
     <dt>Cena opravy</dt><dd style="color:#c8a27c">${loss} rudy (15 %)</dd>
-    ${G.dungeon && G.dungeon.nm ? `<dt>Nočná brána</dt><dd style="color:#ff6b5a">úroveň ${G.dungeon.nm.k} nedokončená, kľúč stratený</dd>` : ''}`;
+    ${G.dungeon && G.dungeon.nm ? _T`<dt>Nočná brána</dt><dd style="color:#ff6b5a">úroveň ${G.dungeon.nm.k} nedokončená, kľúč stratený</dd>` : ''}`;
   G.panel = null; syncPanels();
   setTimeout(() => { if (G && G.mode === 'dead') $('dead').hidden = false; }, 900);
 }
@@ -439,7 +439,7 @@ function respawn() {
   G.mode = 'play'; G.saved = null; G.dungeon = null;
   $('dead').hidden = true;
   loadSector('haven');
-  log(`Loď opravená na stanici Haven. Oprava stála ${loss} rudy.`);
+  log(_T`Loď opravená na stanici Haven. Oprava stála ${loss} rudy.`);
 }
 
 /* =====================================================================

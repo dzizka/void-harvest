@@ -29,7 +29,7 @@ const starsOf = it => it.anc ? 1 : 0;
 const starMult = it => it.anc && it.rarity !== 'mythic' ? 1.2 : 1;
 const gaN = it => (it.affixes || []).filter(a => a.greater).length;
 const gaExtra = it => Math.max(0, gaN(it) - (it.rarity === 'mythic' ? 1 : 0));   // a mythic's first greater affix is guaranteed
-const starMark = it => { const n = gaN(it); return (it.anc ? '<span class="ancc" title="Pradávny"></span>' : '') + (n ? `<span class="ancm g${Math.min(3, gaExtra(it))}" title="${n}× väčší afix">${'✦'.repeat(n)}</span>` : ''); };
+const starMark = it => { const n = gaN(it); return (it.anc ? `<span class="ancc" title="${_L('Pradávny')}"></span>` : '') + (n ? `<span class="ancm g${Math.min(3, gaExtra(it))}" title="${n}× ${_L('väčší afix')}">${'✦'.repeat(n)}</span>` : ''); };
 const gaCls = it => gaExtra(it) >= 2 ? 'st' + Math.min(3, gaExtra(it)) : '';
 // chance per affix line to roll greater: world II 1 %, III 2,5 %, IV 5 % (+ nightmare level, climb floor, arena); rares half
 function gaChance(rarity) {
@@ -111,7 +111,7 @@ function generateItem(ilvl, rarity, slot, type, legendId) {
 }
 function starLabel(it) {
   const n = gaN(it);
-  return (it.anc && it.rarity !== 'mythic' ? '<span class="anc">Pradávny</span> · ' : '') + (n ? `<span class="anc ga">${'✦'.repeat(n)} ${n === 1 ? 'väčší afix' : n + ' väčšie afixy'}</span> · ` : '');
+  return (it.anc && it.rarity !== 'mythic' ? _L('<span class="anc">Pradávny</span> · ') : '') + (n ? `<span class="anc ga">${'✦'.repeat(n)} ${n === 1 ? _L('väčší afix') : n + _L(' väčšie afixy')}</span> · ` : '');
 }
 const shardsFor = it => SHARDS_FOR[RARITY[it.rarity].rank] + 3 * gaExtra(it);
 const salvageValue = it => Math.round([4, 10, 24, 60, 200][RARITY[it.rarity].rank] * (1 + 0.15 * (it.ilvl - 1)) * (1 + 0.3 * it.upg) * (1 + 0.25 * gaExtra(it)));

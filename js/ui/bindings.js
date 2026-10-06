@@ -12,7 +12,7 @@ for (const id of ['grid', 'eslots']) {
 }
 /* ---------- salvage: auto filter on pickup + bulk salvage of the hold ---------- */
 const SALV_RAR = ['common', 'magic', 'rare', 'legendary', 'set', 'mythic'];
-const SALV_HINT = { common: 'Common', magic: 'Magic', rare: 'Rare', legendary: 'Legendary · schopnosť sa uloží do kódexu', set: 'Set · dá úlomky', mythic: 'Mythic · duplikát nasadeného alebo uloženého mýtu sa použije na rezonanciu, inak sa rozoberie na úlomky' };
+const SALV_HINT = { common: _L('Bežné predmety'), magic: _L('Magické predmety'), rare: _L('Vzácne predmety'), legendary: _L('Legendárne · schopnosť sa uloží do kódexu'), set: _L('Setové · dajú úlomky'), mythic: _L('Mýtické · duplikát nasadeného alebo uloženého mýtu sa použije na rezonanciu, inak sa rozoberie na úlomky') };
 function asvFrom(f) { const rar = {}; SALV_RAR.forEach(r => rar[r] = r !== 'set' && r !== 'mythic' && RARITY[r].rank < (f > 0 ? f : 2)); if (f >= 4) rar.legendary = true; return { rar, auto: f > 0, protUp: true, protStar: true }; }
 function ASV() { if (!G.asv) G.asv = asvFrom(G.filter || 0); return G.asv; }
 // selected rarities minus protections (upgrades ▲ △, ✦✦+ and primal items); loadout items are guarded separately
@@ -48,16 +48,16 @@ function salvageCandidates() {
 function renderSalvBar() {
   const A = ASV(), c = salvageCandidates(), ore = c.reduce((a, it) => a + salvageValue(it), 0);
   const chip = (attr, on, txt, tip, col) => `<button type="button" class="chip" ${attr} aria-pressed="${on}" title="${tip}" ${col ? `style="--cc:${col}"` : ''}>${txt}</button>`;
-  $('salvBar').innerHTML = `<div class="row"><span class="lbl">Rozoberať</span><div class="chips">${SALV_RAR.map(r => chip(`data-ar="${r}"`, !!A.rar[r], RARITY[r].name, SALV_HINT[r], RARITY[r].color)).join('')}</div>
+  $('salvBar').innerHTML = _T`<div class="row"><span class="lbl">Rozoberať</span><div class="chips">${SALV_RAR.map(r => chip(`data-ar="${r}"`, !!A.rar[r], RARITY[r].name, SALV_HINT[r], RARITY[r].color)).join('')}</div>
 </div>
-    <div class="row"><span class="lbl">Chrániť</span><div class="chips">${chip('data-ap="protUp"', A.protUp, '▲ △ vylepšenia', 'Predmety lepšie než nasadené sa nerozoberú')}${chip('data-ap="protStar"', A.protStar, '✦✦ väčšie afixy a ✶', 'Predmety s 2 a viac väčšími afixmi ✦ (mýty: 2 navyše) a prvotné ✶ predmety sa nerozoberú', '#ffd36b')}</div>
+    <div class="row"><span class="lbl">Chrániť</span><div class="chips">${chip('data-ap="protUp"', A.protUp, _L('▲ △ vylepšenia'), _L('Predmety lepšie než nasadené sa nerozoberú'))}${chip('data-ap="protStar"', A.protStar, _L('✦✦ väčšie afixy a ✶'), _L('Predmety s 2 a viac väčšími afixmi ✦ (mýty: 2 navyše) a prvotné ✶ predmety sa nerozoberú'), '#ffd36b')}</div>
       <label class="sw sep" title="Označené rarity sa rozoberú hneď pri zbere. Predmety v zostavách sa nikdy nerozoberú."><input type="checkbox" id="asvAuto" ${A.auto ? 'checked' : ''}><span>Auto pri zbere</span></label>
       <button type="button" class="sb" data-salv ${c.length ? '' : 'disabled'} title="${c.length} predmetov · +${ore} rudy">Rozobrať označené · ${c.length}<em>+${fmtN(ore)}</em></button></div>`;
 }
 $('salvBar').addEventListener('change', e => {
   if (e.target.id !== 'asvAuto') return;
   ASV().auto = e.target.checked; saveGame(); renderSalvBar();
-  log(`Auto-rozobratie ${ASV().auto ? 'zapnuté' : 'vypnuté'}.`);
+  log(_T`Auto-rozobratie ${ASV().auto ? _L('zapnuté') : _L('vypnuté')}.`);
 });
 $('salvBar').addEventListener('click', e => {
   const ar = e.target.closest('[data-ar]'), ap = e.target.closest('[data-ap]'), sb = e.target.closest('[data-salv]');
@@ -66,7 +66,7 @@ $('salvBar').addEventListener('click', e => {
   if (ap) { A[ap.dataset.ap] = !A[ap.dataset.ap]; saveGame(); renderSalvBar(); return; }
   if (!sb || sb.disabled) return;
   if (sb.dataset.armed !== '1') {
-    sb.dataset.armed = '1'; sb.classList.add('confirm'); sb.innerHTML = 'Potvrdiť rozobratie';
+    sb.dataset.armed = '1'; sb.classList.add('confirm'); sb.innerHTML = _L('Potvrdiť rozobratie');
     setTimeout(() => { if (sb.isConnected && sb.dataset.armed === '1') renderSalvBar(); }, 2500);
     return;
   }
@@ -74,7 +74,7 @@ $('salvBar').addEventListener('click', e => {
   let gained = 0, sh = 0, n = 0, res = 0, cod = 0;
   P.inv = P.inv.filter(it => list.has(it) ? false : true);
   for (const it of list) { const r = disposeItem(it); gained += r.ore; sh += r.sh; n++; if (r.res) res++; if (r.codex) cod++; }
-  if (n) log(`Rozobraných ${n} predmetov → <span style="color:#c8a27c">+${gained} rudy</span>${sh ? ` · <span style="color:#9a8cff">+${sh} úlomkov</span>` : ''}${res ? ` · <span style="color:var(--r-mythic)">${res}× rezonancia</span>` : ''}${cod ? ` · ${cod} do kódexu` : ''}`);
+  if (n) log(_T`Rozobraných ${n} predmetov → <span style="color:#c8a27c">+${gained} rudy</span>${sh ? _T` · <span style="color:#9a8cff">+${sh} úlomkov</span>` : ''}${res ? _T` · <span style="color:var(--r-mythic)">${res}× rezonancia</span>` : ''}${cod ? _T` · ${cod} do kódexu` : ''}`);
   saveGame(); renderInventory(); hideTip();
 });
 $('talCols').addEventListener('click', e => { const el = e.target.closest('[data-tal]'); if (el) addTalent(el.dataset.tal); });
@@ -124,7 +124,7 @@ function goToHangar() {
   if (!G || transitioning) return;
   if (G.dungeon && G.mode === 'play' && performance.now() - hangarArmed > 3000) {
     hangarArmed = performance.now();
-    log('<span style="color:#ff6b5a">Si v bráne – rozbehnutý súboj sa stratí (vrátiš sa na Haven). Stlač Hangár znova.</span>');
+    log(_L('<span style="color:#ff6b5a">Si v bráne – rozbehnutý súboj sa stratí (vrátiš sa na Haven). Stlač Hangár znova.</span>'));
     return;
   }
   if (G.mode === 'play') { G.panel = null; saveGame(); }
@@ -135,7 +135,9 @@ function goToHangar() {
 }
 $('restart').addEventListener('click', goToHangar);
 $('abHangar').addEventListener('click', () => { setMore(false); goToHangar(); });
-$('abGfx').addEventListener('click', () => { setGfx(GFX.q === 'high' ? 'mid' : GFX.q === 'mid' ? 'low' : 'high'); log(`Grafika: ${GFX.q === 'high' ? 'vysoká (žiara, scenéria, stopy)' : GFX.q === 'mid' ? 'stredná (bez žiary)' : 'nízka (menej častíc, bez scenérie)'}.`); updateHUD(); });
+$('abLang').addEventListener('click', () => { setMore(false); setLang(LANG === 'sk' ? 'en' : 'sk'); });
+document.querySelector('.lang-pick').addEventListener('click', e => { const b = e.target.closest('[data-lang]'); if (b) setLang(b.dataset.lang); });
+$('abGfx').addEventListener('click', () => { setGfx(GFX.q === 'high' ? 'mid' : GFX.q === 'mid' ? 'low' : 'high'); log(_T`Grafika: ${GFX.q === 'high' ? _L('vysoká (žiara, scenéria, stopy)') : GFX.q === 'mid' ? _L('stredná (bez žiary)') : _L('nízka (menej častíc, bez scenérie)')}.`); updateHUD(); });
 $('contracts').addEventListener('click', e => {
   const c = e.target.closest('[data-claim]'), r = e.target.closest('[data-reroll]');
   if (c) claimContract(+c.dataset.claim);
@@ -145,16 +147,16 @@ $('tiers').addEventListener('click', e => { const el = e.target.closest('[data-t
 function renderContinue() {
   const keys = Object.keys(CLASSES), rows = keys.map(c => [c, readSave(c)]).filter(x => x[1]);
   $('cont').hidden = !rows.length;
-  $('saves').innerHTML = `<span class="eyebrow">Uložení piloti · každá loď má vlastné uloženie</span>` + rows.map(([k, d]) => {
+  $('saves').innerHTML = _T`<span class="eyebrow">Uložení piloti · každá loď má vlastné uloženie</span>` + rows.map(([k, d]) => {
     const c = CLASSES[k], g = d.G || {}, bosses = Object.values(g.bossKills || {}).reduce((a, b) => a + b, 0);
-    const para = d.P.para && d.P.para.lvl ? ` · paragon ${d.P.para.lvl}` : '';
-    return `<div class="srow"><div class="who"><b style="color:${c.color}">${c.name} · úroveň ${d.P.level}${para}</b>
+    const para = d.P.para && d.P.para.lvl ? _T` · paragon ${d.P.para.lvl}` : '';
+    return _T`<div class="srow"><div class="who"><b style="color:${c.color}">${c.name} · úroveň ${d.P.level}${para}</b>
       <small>${new Date(d.t).toLocaleString('sk-SK')} · svet ${TIERS[g.tier || 1].name} · ${d.P.ore} rudy · bossovia ${bosses} · mýtické ${Object.keys(g.found || {}).length}/${MYTHIC_LIST.length}</small></div>
       <div class="acts"><button type="button" class="btn primary" data-cont="${k}">Pokračovať</button><button type="button" class="btn" data-del="${k}">Zmazať</button></div></div>`;
   }).join('');
   [...$('ships').children].forEach((el, i) => {
     const d = readSave(keys[i]);
-    el.querySelector('.launch span').textContent = d ? `Pokračovať · úr. ${d.P.level}` : 'Nová hra';
+    el.querySelector('.launch span').textContent = d ? _T`Pokračovať · úr. ${d.P.level}` : _L('Nová hra');
   });
 }
 $('saves').addEventListener('click', e => {
@@ -162,8 +164,8 @@ $('saves').addEventListener('click', e => {
   if (c) { const d = readSave(c.dataset.cont); if (d) startGame(c.dataset.cont, d); }
   if (x) {
     if (x.dataset.armed !== '1') {
-      x.dataset.armed = '1'; x.classList.add('danger'); x.textContent = 'Potvrdiť zmazanie';
-      setTimeout(() => { if (x.isConnected) { x.dataset.armed = ''; x.classList.remove('danger'); x.textContent = 'Zmazať'; } }, 3000);
+      x.dataset.armed = '1'; x.classList.add('danger'); x.textContent = _L('Potvrdiť zmazanie');
+      setTimeout(() => { if (x.isConnected) { x.dataset.armed = ''; x.classList.remove('danger'); x.textContent = _L('Zmazať'); } }, 3000);
       return;
     }
     deleteSave(x.dataset.del); renderContinue();
@@ -180,8 +182,8 @@ addEventListener('keydown', e => {
   if (e.code === 'Escape') { if (!$('morePop').hidden) { setMore(false); return; } closePanels(); return; }
   if (typing) return;
   if (e.code === 'Backquote') { openPanel('cheat'); return; }
-  if (e.code === 'KeyF' && !e.repeat && !G.panel) { G.autoFire = !G.autoFire; log(`Auto-boj ${G.autoFire ? 'zapnutý' : 'vypnutý'}.`); updateHUD(); return; }
-  if (e.code === 'KeyR' && !e.repeat && !G.panel) { G.autoMine = !G.autoMine; log(`Auto-ťažba ${G.autoMine ? 'zapnutá' : 'vypnutá'}.`); updateHUD(); return; }
+  if (e.code === 'KeyF' && !e.repeat && !G.panel) { G.autoFire = !G.autoFire; log(_T`Auto-boj ${G.autoFire ? _L('zapnutý') : _L('vypnutý')}.`); updateHUD(); return; }
+  if (e.code === 'KeyR' && !e.repeat && !G.panel) { G.autoMine = !G.autoMine; log(_T`Auto-ťažba ${G.autoMine ? _L('zapnutá') : _L('vypnutá')}.`); updateHUD(); return; }
   if (e.code === 'KeyI') { openPanel('inv'); return; }
   if (e.code === 'KeyK') { openPanel('tal'); return; }
   if (e.code === 'KeyP') { openPanel('para'); return; }

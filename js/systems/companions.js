@@ -79,7 +79,7 @@ function spawnMinion(x, y) {
     fireT: rand(0.2, 0.6), titan: M.titan, isMinion: true, dead: false, tgt: null };
   minions.push(m);
   ring(x, y, M.titan ? '#ffcf6e' : '#ff9d6e', M.titan ? 90 : 30, 0.35);
-  if (M.titan) { burst(x, y, '#ffcf6e', 30, 300, 2.5, 0.6); addText(x, y - 32, 'KOLOS', '#ffcf6e', 13, 0.9); }
+  if (M.titan) { burst(x, y, '#ffcf6e', 30, 300, 2.5, 0.6); addText(x, y - 32, _L('KOLOS'), '#ffcf6e', 13, 0.9); }
   return m;
 }
 function minionGone(m, exploded) {

@@ -37,16 +37,16 @@ function renderInventory() {
   const s = P.stats;
   $('eslots').innerHTML = SLOT_ORDER.map(slot => {
     const it = P.equip[slot], col = RARITY[it.rarity].color;
-    const upTxt = it.upg >= MAX_UPG ? 'Max. vylepšenie' : `Vylepšiť: ${upgradeCost(it)} rudy`;
-    return `<button type="button" class="eslot" data-slot="${slot}" style="--rc:${col}">
+    const upTxt = it.upg >= MAX_UPG ? _L('Max. vylepšenie') : _T`Vylepšiť: ${upgradeCost(it)} rudy`;
+    return _T`<button type="button" class="eslot" data-slot="${slot}" style="--rc:${col}">
       <span class="ico">${ICONS[slot]}</span>
       <span><span class="eyebrow">${SLOTS[slot].name}</span><b>${it.name}${it.upg ? ' +' + it.upg : ''}</b><small>iLvl ${it.ilvl} · ${upTxt}</small></span>
     </button>`;
   }).join('');
   $('sheet').innerHTML = SUMMARY.map(([k, label, , f]) => `<dt>${label}</dt><dd>${f(s[k])}</dd>`).join('')
-    + `<dt>All Damage</dt><dd>+${Math.round(s.pct.allDmg)} %</dd><dt>Dosah magnetu</dt><dd>${Math.round(s.magnet)}</dd>`
-    + (s.aura ? `<dt>Aura DPS</dt><dd>${fmtN(s.aura.dps)}</dd>` : '')
-    + (s.minion ? `<dt>Minióni</dt><dd>${s.minion.titan ? 'Kolos' : 'max ' + s.minion.max} · ${fmtN(s.laserHit * s.minion.dmg)}/zásah</dd>` : '');
+    + _T`<dt>Všetko poškodenie</dt><dd>+${Math.round(s.pct.allDmg)} %</dd><dt>Dosah magnetu</dt><dd>${Math.round(s.magnet)}</dd>`
+    + (s.aura ? _T`<dt>Aura DPS</dt><dd>${fmtN(s.aura.dps)}</dd>` : '')
+    + (s.minion ? _T`<dt>Minióni</dt><dd>${s.minion.titan ? _L('Kolos') : 'max ' + s.minion.max} · ${fmtN(s.laserHit * s.minion.dmg)}/zásah</dd>` : '');
   $('invCap').textContent = `${P.inv.length}/30`;
   $('invOre').textContent = P.ore;
   $('invKeys').textContent = `${P.keys.length}/20`;
@@ -99,19 +99,19 @@ function itemAdvice(it) {
   const wish = buildWish(), out = [], mx = maxIlvlNow();
   if (it.ilvl < mx - 4) {
     const gain = Math.round(((1 + 0.05 * (mx - 1)) / (1 + 0.05 * (it.ilvl - 1)) - 1) * 100);
-    out.push(['warn', `Farmi vyšší iLvl: teraz padá až iLvl ${mx}, afixy by boli o ~${gain} % silnejšie.`]);
+    out.push(['warn', _T`Farmi vyšší iLvl: teraz padá až iLvl ${mx}, afixy by boli o ~${gain} % silnejšie.`]);
   }
   if (it.rarity !== 'mythic') {
     const junk = it.affixes.filter(a => !a.greater && !wish.includes(a.key));
-    if (junk.length) out.push(['bad', `Pretoč v dielni: ${junk.map(a => AFFIXES[a.key].label('').replace(/^\+%?\s*/, '')).join(', ')} (build ho nevyužíva).`]);
+    if (junk.length) out.push(['bad', _T`Pretoč v dielni: ${junk.map(a => AFFIXES[a.key].label('').replace(/^\+%?\s*/, '')).join(', ')} (build ho nevyužíva).`]);
     const weak = it.affixes.filter(a => wish.includes(a.key) && rollQ(a.val, affixRange(it, a.key, a.greater)) < 0.4);
-    if (weak.length) out.push(['warn', `Slabý hod: ${weak.map(a => AFFIXES[a.key].label('').replace(/^\+%?\s*/, '')).join(', ')}. Iný kus ho môže mať až o ${Math.round((affixRange(it, weak[0].key)[1] / Math.max(1, weak[0].val) - 1) * 100)} % vyšší.`]);
+    if (weak.length) out.push(['warn', _T`Slabý hod: ${weak.map(a => AFFIXES[a.key].label('').replace(/^\+%?\s*/, '')).join(', ')}. Iný kus ho môže mať až o ${Math.round((affixRange(it, weak[0].key)[1] / Math.max(1, weak[0].val) - 1) * 100)} % vyšší.`]);
   }
-  if (!out.length) out.push(['good', it.ilvl >= mx - 1 ? 'Na maxime pre tvoj build a svet.' : 'Dobrý kus pre tvoj build.']);
-  return `<div class="sec advice"><span class="eyebrow">Rada · build ${(TREES[P.cls].find(B => B.wish === wish) || { name: 'všeobecný' }).name}</span>${out.map(([c, t]) => `<span class="${c}">${t}</span>`).join('')}</div>`;
+  if (!out.length) out.push(['good', it.ilvl >= mx - 1 ? _L('Na maxime pre tvoj build a svet.') : _L('Dobrý kus pre tvoj build.')]);
+  return _T`<div class="sec advice"><span class="eyebrow">Rada · build ${(TREES[P.cls].find(B => B.wish === wish) || { name: _L('všeobecný') }).name}</span>${out.map(([c, t]) => `<span class="${c}">${t}</span>`).join('')}</div>`;
 }
 const qBar = it => { if (RARITY[it.rarity].rank < 1) return ''; const q = itemQuality(it); return q == null ? '' : `<i class="qbar" style="width:${Math.round(q * 100)}%;background:${qCol(q)}"></i>`; };
-const betterMark = st => st === 2 ? '<span class="better" title="Zlepšenie už teraz">▲</span>' : st === 1 ? '<span class="better pot" title="Zlepšenie po vylepšení na úroveň nasadeného predmetu">△</span>' : '';
+const betterMark = st => st === 2 ? `<span class="better" title="${_L('Zlepšenie už teraz')}">▲</span>` : st === 1 ? `<span class="better pot" title="${_L('Zlepšenie po vylepšení na úroveň nasadeného predmetu')}">△</span>` : '';
 function itemStatsHTML(it) {
   const up = 1 + 0.1 * it.upg;
   let h = '<div class="sec">';
@@ -127,18 +127,18 @@ function itemStatsHTML(it) {
   }).join('') + '</div>';
   if (it.tal && TNODE[it.tal.id]) {
     const n = TNODE[it.tal.id], ok = P && it.tal.cls === P.cls;
-    h += `<div class="sec"><div class="aff tal ${ok ? '' : 'off'}">+${it.tal.v} ${it.tal.v === 1 ? 'rank' : 'ranky'} k talentu „${n.name}“ · ${n.B.name}${ok ? '' : ` (${CLASSES[it.tal.cls].name})`}</div></div>`;
+    h += _T`<div class="sec"><div class="aff tal ${ok ? '' : 'off'}">+${it.tal.v} ${it.tal.v === 1 ? _L('rank') : _L('ranky')} k talentu „${n.name}“ · ${n.B.name}${ok ? '' : ` (${CLASSES[it.tal.cls].name})`}</div></div>`;
   }
-  if ((it.sockets || []).length) h += '<div class="sec">' + it.sockets.map(g => g ? `<div class="sock" style="color:${GEMS[g.t].color}">◆ ${gemName(g.t, g.q)}: +${GEMS[g.t].vals[g.q]}% ${GEMS[g.t].label}</div>` : '<div class="sock">◇ Prázdna pätica</div>').join('') + '</div>';
+  if ((it.sockets || []).length) h += '<div class="sec">' + it.sockets.map(g => g ? `<div class="sock" style="color:${GEMS[g.t].color}">◆ ${gemName(g.t, g.q)}: +${GEMS[g.t].vals[g.q]}% ${GEMS[g.t].label}</div>` : _L('<div class="sock">◇ Prázdna pätica</div>')).join('') + '</div>';
   if (it.set && it.setCls) {
     const B = TBRANCH[it.setCls + ':' + it.set], own = P && P.cls === it.setCls, n = own ? (P.stats.sets[it.set] || 0) : 0;
     const have = sl => own && P.equip[sl] && P.equip[sl].set === it.set;
-    h += `<div class="sec setb"><span class="eyebrow" style="color:${RARITY.set.color}">${setName(it.set)} · ${n}/4${own ? '' : ` · ${CLASSES[it.setCls].name}`}</span>
+    h += _T`<div class="sec setb"><span class="eyebrow" style="color:${RARITY.set.color}">${setName(it.set)} · ${n}/4${own ? '' : ` · ${CLASSES[it.setCls].name}`}</span>
       <span>${SET_SLOTS.map(sl => `<span class="${have(sl) ? 'on' : 'off'}">${have(sl) ? '◆' : '◇'} ${SET_NOUN[sl]}</span>`).join(' · ')}</span>
-      <span class="${n >= 2 ? 'on' : 'off'}">(2) +15 % All Damage a +1 ku talentom vetvy ${B.name}</span>
+      <span class="${n >= 2 ? 'on' : 'off'}">(2) +15 % Všetko poškodenie a +1 ku talentom vetvy ${B.name}</span>
       <span class="${n >= 4 ? 'on' : 'off'}">(4) ${SET4[it.set].t}</span></div>`;
   }
-  if (it.legend) { const L = LEGEND_INDEX[it.legend]; h += `<div class="sec leg ${it.rarity === 'mythic' ? 'myth' : ''}">${it.res ? `<b style="color:var(--r-mythic)">Rezonancia ${it.res}/${RES_MAX} · sila +${it.res * 10} %</b><br>` : ''}${L.power}${L.cls ? `<span class="cls">Triedny predmet: ${CLASSES[L.cls].name}</span>` : ''}</div>`; }
+  if (it.legend) { const L = LEGEND_INDEX[it.legend]; h += `<div class="sec leg ${it.rarity === 'mythic' ? 'myth' : ''}">${it.res ? _T`<b style="color:var(--r-mythic)">Rezonancia ${it.res}/${RES_MAX} · sila +${it.res * 10} %</b><br>` : ''}${L.power}${L.cls ? _T`<span class="cls">Triedny predmet: ${CLASSES[L.cls].name}</span>` : ''}</div>`; }
   return h;
 }
 function statRows(cur, next) {
@@ -149,42 +149,42 @@ function statRows(cur, next) {
     const better = (b - a) * dir > 0;
     rows += `<div class="kv"><span>${label}</span><span class="${better ? 'up' : 'dn'}">${f(a)} → ${f(b)} ${better ? '▲' : '▼'}</span></div>`;
   }
-  return rows || '<div class="eq">Bez zmeny štatistík lode.</div>';
+  return rows || _L('<div class="eq">Bez zmeny štatistík lode.</div>');
 }
 function compareHTML(it) {
   const cur = P.stats, eq = P.equip[it.slot];
-  let h = `<div class="sec"><span class="eyebrow">Porovnanie s nasadeným · tak, ako je</span>
-    <div class="eq">Nasadené: <span style="color:${RARITY[eq.rarity].color}">${eq.name}${eq.upg ? ' +' + eq.upg : ''}</span> · iLvl ${eq.ilvl}${(eq.sockets || []).some(Boolean) ? ` · ${(eq.sockets || []).filter(Boolean).length} drahokamy` : ''}</div>
+  let h = _T`<div class="sec"><span class="eyebrow">Porovnanie s nasadeným · tak, ako je</span>
+    <div class="eq">Nasadené: <span style="color:${RARITY[eq.rarity].color}">${eq.name}${eq.upg ? ' +' + eq.upg : ''}</span> · iLvl ${eq.ilvl}${(eq.sockets || []).some(Boolean) ? _T` · ${(eq.sockets || []).filter(Boolean).length} drahokamy` : ''}</div>
     ${statRows(cur, statsWith(it))}</div>`;
   if (eq === it) return h;
   const pot = potentialOf(it);
   if (pot.upg > it.upg || pot.moved) {
     const c = potentialCost(it, pot), st = gearScore(statsWith(pot.item)) > gearScore(cur) * 1.01;
-    h += `<div class="sec pot"><span class="eyebrow">Po vylepšení na +${pot.upg}${pot.moved ? ` · s ${pot.moved} presunutými drahokamami` : ''}</span>
+    h += _T`<div class="sec pot"><span class="eyebrow">Po vylepšení na +${pot.upg}${pot.moved ? _T` · s ${pot.moved} presunutými drahokamami` : ''}</span>
       ${statRows(cur, statsWith(pot.item))}
-      <div class="eq">Cena: ${c.ore} rudy${c.sh ? ` · ${c.sh} úlomkov` : ''}${pot.drill ? ` (vrátane ${pot.drill} ${pot.drill === 1 ? 'pätice' : 'pätíc'})` : ''} · ${st ? '<span class="up">celkovo lepší</span>' : '<span class="dn">celkovo nie je lepší</span>'}</div></div>`;
+      <div class="eq">Cena: ${c.ore} rudy${c.sh ? _T` · ${c.sh} úlomkov` : ''}${pot.drill ? _T` (vrátane ${pot.drill} ${pot.drill === 1 ? _L('pätice') : _L('pätíc')})` : ''} · ${st ? _L('<span class="up">celkovo lepší</span>') : _L('<span class="dn">celkovo nie je lepší</span>')}</div></div>`;
   }
   return h;
 }
 function tooltipFor(it, mode) {
   const R = RARITY[it.rarity];
   let h = `<h4>${it.name}${it.upg ? ' +' + it.upg : ''}</h4>
-    <div class="sub">${it.primal ? '<span class="primal">Prvotný</span> · ' : ''}${starLabel(it)}${R.name} · ${SLOTS[it.slot].name} · ${it.typeName} · iLvl ${it.ilvl}</div>`;
+    <div class="sub">${it.primal ? _L('<span class="primal">Prvotný</span> · ') : ''}${starLabel(it)}${R.name} · ${SLOTS[it.slot].name} · ${it.typeName} · iLvl ${it.ilvl}</div>`;
   const Q = itemQuality(it);
-  if (Q != null && R.rank >= 1) h += `<div class="qual" style="color:${qCol(Q)}">Kvalita hodov ${Math.round(Q * 100)} %</div>`;
+  if (Q != null && R.rank >= 1) h += _T`<div class="qual" style="color:${qCol(Q)}">Kvalita hodov ${Math.round(Q * 100)} %</div>`;
   h += itemStatsHTML(it);
   h += itemAdvice(it);
   if (mode === 'inv') {
     h += compareHTML(it);
     const ng = (it.sockets || []).filter(Boolean).length;
-    h += `<div class="foot">Klik: nasadiť · Pravý klik: rozobrať (+${salvageValue(it)} rudy)${ng ? `<br><span class="gemret">◆ ${ng} ${ng === 1 ? 'drahokam sa vráti' : 'drahokamy sa vrátia'} do zásoby</span>` : ''}</div>`;
+    h += _T`<div class="foot">Klik: nasadiť · Pravý klik: rozobrať (+${salvageValue(it)} rudy)${ng ? _T`<br><span class="gemret">◆ ${ng} ${ng === 1 ? _L('drahokam sa vráti') : _L('drahokamy sa vrátia')} do zásoby</span>` : ''}</div>`;
   } else if (it.upg < MAX_UPG) {
     const c = upgradeCost(it), ok = P.ore >= c;
-    h += `<div class="sec"><span class="eyebrow">Vylepšenie +${it.upg} → +${it.upg + 1}</span>
+    h += _T`<div class="sec"><span class="eyebrow">Vylepšenie +${it.upg} → +${it.upg + 1}</span>
       <div class="kv"><span>Základné hodnoty</span><span class="up">+10 %</span></div>
       <div class="kv"><span>Cena</span><span class="${ok ? 'up' : 'dn'}">${c} rudy (máš ${P.ore})</span></div></div>
-      <div class="foot">${ok ? 'Klik: vylepšiť' : 'Nedostatok rudy. Ťaž asteroidy alebo rozober predmety.'}</div>`;
-  } else if (mode === 'eq') h += `<div class="foot">${it.upg < maxTemper(it) ? `Vylepšené na +5. Zušľachtenie až na +${maxTemper(it)} nájdeš v dielni na stanici.` : 'Predmet je zušľachtený na maximum.'}</div>`;
+      <div class="foot">${ok ? _L('Klik: vylepšiť') : _L('Nedostatok rudy. Ťaž asteroidy alebo rozober predmety.')}</div>`;
+  } else if (mode === 'eq') h += `<div class="foot">${it.upg < maxTemper(it) ? _T`Vylepšené na +5. Zušľachtenie až na +${maxTemper(it)} nájdeš v dielni na stanici.` : _L('Predmet je zušľachtený na maximum.')}</div>`;
   else if (mode === 'craft' && P.equip[it.slot] !== it) h += compareHTML(it);
   return h;
 }
@@ -220,7 +220,7 @@ function equipFromInv(idx) {
   const old = P.equip[it.slot];
   P.equip[it.slot] = it; P.inv[idx] = old;
   recalcStats(); tutTick('equip');
-  log(`Nasadené: <span style="color:${RARITY[it.rarity].color}">${it.name}</span>`);
+  log(_T`Nasadené: <span style="color:${RARITY[it.rarity].color}">${it.name}</span>`);
   renderInventory();
 }
 function salvage(idx) {
@@ -228,16 +228,16 @@ function salvage(idx) {
   const v = salvageValue(it), sh = shardsFor(it);
   const g = returnGems(it);
   P.inv.splice(idx, 1); P.ore += v; P.shards += sh;
-  log(`Rozobrané: ${it.name} → <span style="color:#c8a27c">+${v} rudy</span>${sh ? ` · <span style="color:#9a8cff">+${sh} úlomkov</span>` : ''}${g ? ` · <span style="color:#ff8fa3">${g} drahokamy vrátené</span>` : ''}`);
+  log(_T`Rozobrané: ${it.name} → <span style="color:#c8a27c">+${v} rudy</span>${sh ? _T` · <span style="color:#9a8cff">+${sh} úlomkov</span>` : ''}${g ? _T` · <span style="color:#ff8fa3">${g} drahokamy vrátené</span>` : ''}`);
   renderInventory();
 }
 function upgradeSlot(slot) {
   const it = P.equip[slot];
   if (it.upg >= MAX_UPG) return;
   const c = upgradeCost(it);
-  if (P.ore < c) { log('<span style="color:#ff6b5a">Na vylepšenie nemáš dosť rudy.</span>'); return; }
+  if (P.ore < c) { log(_L('<span style="color:#ff6b5a">Na vylepšenie nemáš dosť rudy.</span>')); return; }
   P.ore -= c; it.upg++;
   recalcStats(); tutTick('upgrade');
-  log(`Vylepšené: ${it.name} <span style="color:#5be09a">+${it.upg}</span>`);
+  log(_T`Vylepšené: ${it.name} <span style="color:#5be09a">+${it.upg}</span>`);
   renderInventory();
 }

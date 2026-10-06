@@ -6,7 +6,7 @@ function update(dt) {
   G.safe = isSafe();
   G.bubble = G.safe && curSector().kind === 'hostile';
   if (G.safe !== G.wasSafe && !G.dungeon && curSector().kind === 'hostile') {
-    log(G.safe ? '<span style="color:#5fd4ff">Vstup do bezpečnej zóny.</span> Zbrane neprestrelia bariéru.' : '<span style="color:#ff6b5a">Opúšťaš bezpečnú zónu.</span>');
+    log(G.safe ? _L('<span style="color:#5fd4ff">Vstup do bezpečnej zóny.</span> Zbrane neprestrelia bariéru.') : _L('<span style="color:#ff6b5a">Opúšťaš bezpečnú zónu.</span>'));
     G.wasSafe = G.safe;
   }
   updatePlayer(dt);

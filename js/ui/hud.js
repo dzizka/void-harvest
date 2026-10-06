@@ -38,24 +38,24 @@ function updateHUD() {
   let zone, zc;
   if (G.dungeon && (G.dungeon.vault || G.dungeon.rush)) {
     const D = G.dungeon;
-    zone = D.vault ? (D.state === 'over' ? 'Trezor zatvorený' : `Trezor · ${fmtTime(Math.max(0, VAULT_TIME - D.t))}`) : (D.state === 'over' ? `Aréna dokončená · ${fmtTime(D.t)}` : `Aréna · boss ${Math.min(6, D.idx + 1)}/6 · ${fmtTime(D.t)}`);
-    zc = D.vault ? '#ffb000' : '#ffd36b'; $('hSector').textContent = D.vault ? 'Trezor pašerákov' : 'Aréna veliteľov';
+    zone = D.vault ? (D.state === 'over' ? _L('Trezor zatvorený') : _T`Trezor · ${fmtTime(Math.max(0, VAULT_TIME - D.t))}`) : (D.state === 'over' ? _T`Aréna dokončená · ${fmtTime(D.t)}` : _T`Aréna · boss ${Math.min(6, D.idx + 1)}/6 · ${fmtTime(D.t)}`);
+    zc = D.vault ? '#ffb000' : '#ffd36b'; $('hSector').textContent = D.vault ? _L('Trezor pašerákov') : _L('Aréna veliteľov');
   } else if (G.dungeon && G.dungeon.climb) {
     const D = G.dungeon;
-    zone = D.state === 'over' ? `Výstup skončil · poschodie ${D.floor}` : `Výstup · poschodie ${D.floor} · ${fmtTime(Math.max(0, CLIMB_LIMIT - D.t))}`;
-    zc = '#9a8cff'; $('hSector').textContent = 'Výstup do Prázdnoty';
+    zone = D.state === 'over' ? _T`Výstup skončil · poschodie ${D.floor}` : _T`Výstup · poschodie ${D.floor} · ${fmtTime(Math.max(0, CLIMB_LIMIT - D.t))}`;
+    zc = '#9a8cff'; $('hSector').textContent = _L('Výstup do Prázdnoty');
   } else if (G.dungeon) {
     const D = G.dungeon, def = roomDef(D);
-    zone = D.pinnacle ? 'Trhlina · vrcholný boss' : def.boss ? 'Brána · súboj s bossom' : `Brána · komnata ${D.room + 1}/${DUNGEON.rooms.length} · vlna ${Math.min(D.wave, def.waves)}/${def.waves}`;
+    zone = D.pinnacle ? _L('Trhlina · vrcholný boss') : def.boss ? _L('Brána · súboj s bossom') : _T`Brána · komnata ${D.room + 1}/${DUNGEON.rooms.length} · vlna ${Math.min(D.wave, def.waves)}/${def.waves}`;
     zc = BOSSES[D.boss].color;
     if (D.nm) {
       const left = NM_LIMIT - D.nm.t;
-      zone = `Nočná brána ${D.nm.k} · ${left >= 0 ? fmtTime(left) : '+' + fmtTime(-left)} · komnata ${D.room + 1}/${DUNGEON.rooms.length}`;
+      zone = _T`Nočná brána ${D.nm.k} · ${left >= 0 ? fmtTime(left) : '+' + fmtTime(-left)} · komnata ${D.room + 1}/${DUNGEON.rooms.length}`;
       zc = left < 30 ? '#ff6b5a' : '#ff9a5a';
     }
     $('hSector').textContent = BOSSES[D.boss].lair;
   } else {
-    zone = G.safe ? 'Bezpečná zóna' : 'Bojová zóna'; zc = G.safe ? '#5fd4ff' : '#ff6b5a';
+    zone = G.safe ? _L('Bezpečná zóna') : _L('Bojová zóna'); zc = G.safe ? '#5fd4ff' : '#ff6b5a';
     $('hSector').textContent = S.name;
   }
   $('hZone').textContent = zone;
@@ -66,12 +66,12 @@ function updateHUD() {
     $('evBox').style.setProperty('--ec', ev.E.color);
     $('evName').textContent = ev.E.name;
     let obj, frac;
-    if (ev.state === 'wait') { obj = `Leť k značke · ${Math.round(Math.sqrt(d2(P.x, P.y, ev.x, ev.y)))} m · zmizne o ${fmtTime(ev.wait)}`; frac = 0; }
+    if (ev.state === 'wait') { obj = _T`Leť k značke · ${Math.round(Math.sqrt(d2(P.x, P.y, ev.x, ev.y)))} m · zmizne o ${fmtTime(ev.wait)}`; frac = 0; }
     else {
-      if (ev.type === 'meteor') obj = `Rozbité asteroidy roja ${ev.prog}/${ev.E.goal}`;
-      else if (ev.type === 'invasion') obj = `Zostrelení votrelci ${ev.prog}/${ev.E.goal}`;
-      else if (ev.type === 'convoy') obj = `Konvoj: trup ${Math.round(Math.max(0, ev.ship.hp) / ev.ship.maxHp * 100)} % · cesta ${Math.round(ev.prog * 100)} %`;
-      else obj = `Hacknuté uzly ${ev.prog}/3 · drž sa v kruhu uzla`;
+      if (ev.type === 'meteor') obj = _T`Rozbité asteroidy roja ${ev.prog}/${ev.E.goal}`;
+      else if (ev.type === 'invasion') obj = _T`Zostrelení votrelci ${ev.prog}/${ev.E.goal}`;
+      else if (ev.type === 'convoy') obj = _T`Konvoj: trup ${Math.round(Math.max(0, ev.ship.hp) / ev.ship.maxHp * 100)} % · cesta ${Math.round(ev.prog * 100)} %`;
+      else obj = _T`Hacknuté uzly ${ev.prog}/3 · drž sa v kruhu uzla`;
       obj += ` · ${fmtTime(Math.max(0, ev.t))}`;
       frac = ev.type === 'convoy' ? ev.prog : ev.prog / ev.E.goal;
     }
@@ -79,29 +79,29 @@ function updateHUD() {
   }
   const tu = P.tut != null && P.tut < TUT.length ? TUT[P.tut] : null;
   $('hTut').hidden = !tu;
-  if (tu) { const th = `<div>▸ ${tu.text} <b>${P.tutP || 0}/${tu.n}</b></div><small>${tu.hint} · úloha ${P.tut + 1}/${TUT.length}</small>`; if ($('hTut').innerHTML !== th) $('hTut').innerHTML = th; }
+  if (tu) { const th = _T`<div>▸ ${tu.text} <b>${P.tutP || 0}/${tu.n}</b></div><small>${tu.hint} · úloha ${P.tut + 1}/${TUT.length}</small>`; if ($('hTut').innerHTML !== th) $('hTut').innerHTML = th; }
   if (G.dungeon && G.dungeon.climb) {
     const D = G.dungeon;
     $('evBox').hidden = false; $('evBox').style.setProperty('--ec', '#9a8cff'); $('evBox').style.top = G.boss ? '96px' : '';
-    $('evName').textContent = `${D.weekly ? 'Týždenná výzva' : 'Výstup do Prázdnoty'} · poschodie ${D.floor}`;
-    $('evObj').textContent = D.state === 'over' ? 'Koniec · odmeny pri lodi, portál domov' : D.guardian ? `Zabi Strážcu hlbiny · zostáva ${fmtTime(Math.max(0, CLIMB_LIMIT - D.t))}` : `Postup ${Math.floor(D.prog)}/${CLIMB_NEED} · zostáva ${fmtTime(Math.max(0, CLIMB_LIMIT - D.t))} · rekord ${climbBest()}`;
+    $('evName').textContent = _T`${D.weekly ? _L('Týždenná výzva') : _L('Výstup do Prázdnoty')} · poschodie ${D.floor}`;
+    $('evObj').textContent = D.state === 'over' ? _L('Koniec · odmeny pri lodi, portál domov') : D.guardian ? _T`Zabi Strážcu hlbiny · zostáva ${fmtTime(Math.max(0, CLIMB_LIMIT - D.t))}` : _T`Postup ${Math.floor(D.prog)}/${CLIMB_NEED} · zostáva ${fmtTime(Math.max(0, CLIMB_LIMIT - D.t))} · rekord ${climbBest()}`;
     $('evBar').style.width = (D.state === 'over' ? 100 : clamp(D.prog / CLIMB_NEED, 0, 1) * 100).toFixed(1) + '%';
   } else if (G.dungeon && G.dungeon.vault) {
     const D = G.dungeon;
     $('evBox').hidden = false; $('evBox').style.setProperty('--ec', '#ffb000'); $('evBox').style.top = '';
-    $('evName').textContent = 'Trezor pašerákov';
-    $('evObj').textContent = D.state === 'over' ? 'Zatvorené · portál domov' : `Truhlice ${D.chests} · pašeráci ${D.gobs} · zostáva ${fmtTime(Math.max(0, VAULT_TIME - D.t))}`;
+    $('evName').textContent = _L('Trezor pašerákov');
+    $('evObj').textContent = D.state === 'over' ? _L('Zatvorené · portál domov') : _T`Truhlice ${D.chests} · pašeráci ${D.gobs} · zostáva ${fmtTime(Math.max(0, VAULT_TIME - D.t))}`;
     $('evBar').style.width = (clamp(1 - D.t / VAULT_TIME, 0, 1) * 100).toFixed(1) + '%';
   } else if (G.dungeon && G.dungeon.rush) {
     const D = G.dungeon, best = (ACC.rush || {})[P.cls];
     $('evBox').hidden = false; $('evBox').style.setProperty('--ec', '#ffd36b'); $('evBox').style.top = G.boss ? '96px' : '';
-    $('evName').textContent = `Aréna veliteľov · ${Math.min(6, D.idx + (D.state === 'over' ? 0 : 1))}/6`;
-    $('evObj').textContent = `Čas ${fmtTime(D.t)}${best ? ` · rekord ${fmtTime(best)}` : ''}${D.state === 'over' ? ' · hotovo' : ''}`;
+    $('evName').textContent = _T`Aréna veliteľov · ${Math.min(6, D.idx + (D.state === 'over' ? 0 : 1))}/6`;
+    $('evObj').textContent = _T`Čas ${fmtTime(D.t)}${best ? _T` · rekord ${fmtTime(best)}` : ''}${D.state === 'over' ? _L(' · hotovo') : ''}`;
     $('evBar').style.width = (D.idx / 6 * 100).toFixed(1) + '%';
   } else $('evBox').style.top = '';
   const W = G.wb, wbOn = W && (W.state === 'warn' || W.state === 'active');
   $('hWb').hidden = !wbOn;
-  if (wbOn) $('hWb').textContent = `☄ ${BOSSES.devourer.name} · ${SECTORS[W.sec].name} · ${W.state === 'warn' ? 'príchod o ' + fmtTime(W.t) : 'odletí o ' + fmtTime(W.t)}`;
+  if (wbOn) $('hWb').textContent = `☄ ${BOSSES.devourer.name} · ${SECTORS[W.sec].name} · ${W.state === 'warn' ? _L('príchod o ') + fmtTime(W.t) : _L('odletí o ') + fmtTime(W.t)}`;
   const cts = P.contracts || [];
   $('hContracts').hidden = !cts.length;
   const chtml = cts.map(c => `<div class="${c.done ? 'done' : ''}">${c.done ? '✓' : '▸'} ${CONTRACTS[c.type].text(c)} <b>${c.prog}/${c.n}</b></div>`).join('');
@@ -126,9 +126,10 @@ function updateHUD() {
   $('abParaN').textContent = P.para.pts ? `+${P.para.pts}` : '';
   $('abPara').classList.toggle('alert', P.para.pts > 0);
   $('abTal').classList.toggle('alert', P.points > 0);
-  $('abAutoS').textContent = G.autoFire ? 'ZAP' : 'VYP'; $('abAuto').classList.toggle('on', G.autoFire);
-  $('abMineS').textContent = G.autoMine ? 'ZAP' : 'VYP'; $('abMine').classList.toggle('on', G.autoMine);
-  $('abGfxS').textContent = GFX.q === 'high' ? 'vysoká' : GFX.q === 'mid' ? 'stredná' : 'nízka';
+  $('abAutoS').textContent = G.autoFire ? _L('ZAP') : _L('VYP'); $('abAuto').classList.toggle('on', G.autoFire);
+  $('abLangS').textContent = LANG === 'sk' ? 'SK' : 'EN';
+  $('abMineS').textContent = G.autoMine ? _L('ZAP') : _L('VYP'); $('abMine').classList.toggle('on', G.autoMine);
+  $('abGfxS').textContent = GFX.q === 'high' ? _L('vysoká') : GFX.q === 'mid' ? _L('stredná') : _L('nízka');
   const C = G.cheat;
   $('devTag').hidden = !(C.god || C.oneHit || C.unlock || C.mythBoost || C.speed !== 1);
   $('hTier').textContent = TIERS[G.tier].roman;
@@ -138,9 +139,9 @@ function updateHUD() {
   $('abDash').hidden = !hasDash;
   if (hasDash) $('abDashS').textContent = P.dashCd > 0 ? P.dashCd.toFixed(1) + ' s' : '✓';
   $('abMin').hidden = !s.minion;
-  if (s.minion) $('abMinS').textContent = s.minion.titan ? (minions.length ? 'Kolos' : `Kolos o ${Math.max(0, P.titanT).toFixed(1)} s`) : `${minions.length}/${s.minion.max}`;
+  if (s.minion) $('abMinS').textContent = s.minion.titan ? (minions.length ? _L('Kolos') : _T`Kolos o ${Math.max(0, P.titanT).toFixed(1)} s`) : `${minions.length}/${s.minion.max}`;
   $('debug').hidden = !C.debug;
-  if (C.debug) $('debug').textContent = `FPS ${Math.round(G.fps)} · ×${C.speed}\nnepriatelia ${enemies.length} · strely ${ebullets.length}\nasteroidy ${asteroids.length} · častice ${particles.length}\nloot ${pickups.length} · lasery ${bullets.length}\npos ${Math.round(P.x)}, ${Math.round(P.y)}\nzóna ${zoneLevel()} · ${G.dungeon ? 'brána ' + (G.dungeon.room + 1) + ' / ' + G.dungeon.state : G.sector}`;
+  if (C.debug) $('debug').textContent = _T`FPS ${Math.round(G.fps)} · ×${C.speed}\nnepriatelia ${enemies.length} · strely ${ebullets.length}\nasteroidy ${asteroids.length} · častice ${particles.length}\nloot ${pickups.length} · lasery ${bullets.length}\npos ${Math.round(P.x)}, ${Math.round(P.y)}\nzóna ${zoneLevel()} · ${G.dungeon ? _L('brána ') + (G.dungeon.room + 1) + ' / ' + G.dungeon.state : G.sector}`;
   const it = G.interact;
   $('prompt').hidden = !it || !!G.panel || transitioning;
   if (it) { $('promptTxt').innerHTML = `${it.txt} <small>${it.sub}</small>`; $('prompt').style.setProperty('--pc', it.col); }
@@ -149,7 +150,7 @@ function updateHUD() {
   if (b) {
     $('bossBar').style.setProperty('--bc', b.B.color);
     $('bossName').textContent = b.B.name;
-    $('bossLvl').textContent = `Úroveň ${b.lvl}${b.ph2 ? ' · fáza 2' : ''}`;
+    $('bossLvl').textContent = _T`Úroveň ${b.lvl}${b.ph2 ? _L(' · fáza 2') : ''}`;
     $('bBoss').style.width = (Math.max(0, b.hp) / b.maxHp * 100).toFixed(1) + '%';
     $('bBossPh').hidden = !!b.arch || b.ph2;
   }

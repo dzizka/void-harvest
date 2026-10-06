@@ -4,10 +4,12 @@
 
 **Hrať online:** https://dzizka.github.io/void-harvest/
 
+**Jazyk:** angličtina alebo slovenčina – prepínač v hangári alebo v Menu (≡).
+
 **Hrať lokálne:** stiahni repozitár a otvor `index.html` v prehliadači (stačí dvojklik, server netreba).
 
 ## Ovládanie
-`WASD` pohyb · myš mierenie · `LMB` laser · `RMB` rakety · `Shift` schopnosť · `F` auto-boj · `R` auto-ťažba · `I` inventár · `K` talenty · `P` paragon · `M` mapa · `E` interakcia · `Esc` zavrieť
+`WASD` pohyb · myš mierenie · `LMB` laser a ťažba · `RMB` rakety · `Shift` schopnosť · `F` / `R` auto-boj / auto-ťažba (aj v Menu) · `I` inventár · `K` talenty · `P` paragon · `M` mapa · `E` interakcia · `Esc` zavrieť
 
 ## Štruktúra
 ```
@@ -18,6 +20,7 @@ css/
   panels.css            inventár, talenty, mapa, stanica, tooltip, rozoberanie
   features.css          cheat menu, mýty, brány, udalosti, dielňa, paragon
 js/
+  i18n.js, i18n-en.js  preklady (_L / _T, anglický slovník)
   core/                 util, stats (computeStats), state, save (ukladanie/načítanie), update (hlavná aktualizácia, hráč)
   data/                 game-data (lode, rarity, sloty, afixy, legendárky, svety…), talents, sets
   systems/              loot, world (sektory, brány), climb, vault-rush, world-boss, combat,
@@ -29,6 +32,7 @@ js/
 tools/
   build.js              zloží všetko do jedného súboru dist/void-harvest.html
   smoke.js              rýchly automatický test (Playwright)
+  i18n-check.js         nájde slovenské texty bez anglického prekladu
 ```
 
 Skripty sú obyčajné `<script>` súbory (nie moduly) a zdieľajú globálny scope. Preto záleží na poradí v `index.html` a hra funguje aj priamo zo súboru (`file://`).

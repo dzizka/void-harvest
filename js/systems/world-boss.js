@@ -8,13 +8,13 @@ function tickWorldBoss(dt) {
     if ((W.t -= dt) <= 0) {
       const pool = Object.keys(SECTORS).filter(id => SECTORS[id].kind === 'hostile' && P.level >= SECTORS[id].min);
       Object.assign(W, { sec: pick(pool), state: 'warn', t: WB_WARN, hp: 1, pos: null, w30: false });
-      banner(`<span style="color:#ffb000">${BOSSES.devourer.name}</span><small>Svetový boss · o 2:00 v sektore ${SECTORS[W.sec].name}</small>`);
-      log(`<span style="color:#ffb000">Svetový boss ${BOSSES.devourer.name}</span> sa o 2:00 objaví v sektore ${SECTORS[W.sec].name}. Okno na boj: 5 minút.`);
+      banner(_T`<span style="color:#ffb000">${BOSSES.devourer.name}</span><small>Svetový boss · o 2:00 v sektore ${SECTORS[W.sec].name}</small>`);
+      log(_T`<span style="color:#ffb000">Svetový boss ${BOSSES.devourer.name}</span> sa o 2:00 objaví v sektore ${SECTORS[W.sec].name}. Okno na boj: 5 minút.`);
     }
   } else if (W.state === 'warn') {
     W.t -= dt;
-    if (W.t <= 30 && !W.w30) { W.w30 = true; log(`<span style="color:#ffb000">${BOSSES.devourer.name}</span> prichádza o 0:30 · ${SECTORS[W.sec].name}.`); }
-    if (W.t <= 0) { W.state = 'active'; W.t = WB_WINDOW; log(`<span style="color:#ffb000">${BOSSES.devourer.name} dorazil</span> do sektora ${SECTORS[W.sec].name}.`); }
+    if (W.t <= 30 && !W.w30) { W.w30 = true; log(_T`<span style="color:#ffb000">${BOSSES.devourer.name}</span> prichádza o 0:30 · ${SECTORS[W.sec].name}.`); }
+    if (W.t <= 0) { W.state = 'active'; W.t = WB_WINDOW; log(_T`<span style="color:#ffb000">${BOSSES.devourer.name} dorazil</span> do sektora ${SECTORS[W.sec].name}.`); }
   } else if (W.state === 'active') {
     W.t -= dt;
     const alive = enemies.find(e => e.wb && !e.dead);
@@ -23,7 +23,7 @@ function tickWorldBoss(dt) {
     if (W.t <= 0) {
       if (alive) { alive.dead = true; ring(alive.x, alive.y, '#ffb000', 300, 0.8); if (G.boss === alive) G.boss = null; }
       Object.assign(W, { state: 'idle', t: WB_EVERY });
-      log(`${BOSSES.devourer.name} odletel. Ďalší svetový boss o 20 minút.`);
+      log(_T`${BOSSES.devourer.name} odletel. Ďalší svetový boss o 20 minút.`);
     }
   }
 }
@@ -46,15 +46,15 @@ function worldBossKilled(e) {
   dropKey(e.x, e.y, keyBaseLevel() + 2);
   for (const m of enemies) if (m.minion && !m.dead) killEnemy(m);
   ring(e.x, e.y, '#ffb000', 520, 1.4); burst(e.x, e.y, '#ffb000', 180, 800, 4, 1.3); burst(e.x, e.y, '#ffffff', 60, 500, 2.5, 0.9); shake(16);
-  banner(`<span style="color:#ffb000">${BOSSES.devourer.name} porazený</span><small>Svetový boss · bohatá korisť</small>`);
-  log(`<span style="color:#ffb000">${BOSSES.devourer.name}</span> porazený (${ACC.st.wb}×).`);
+  banner(_T`<span style="color:#ffb000">${BOSSES.devourer.name} porazený</span><small>Svetový boss · bohatá korisť</small>`);
+  log(_T`<span style="color:#ffb000">${BOSSES.devourer.name}</span> porazený (${ACC.st.wb}×).`);
   G.boss = null;
 }
 function exitDungeon() {
   // gear left lying in the arena goes straight to the hold so nothing is lost
   for (const p of pickups) if ((p.kind === 'item' && P.inv.length < 30 || p.kind === 'key' || p.kind === 'gem') && !p.dead) { collect(p); p.dead = true; }
   const sv = G.saved; G.saved = null;
-  transition('Návrat · ' + SECTORS[sv.sector].name, () => { loadSector(sv.sector, { x: sv.x, y: sv.y }, sv); });
+  transition(_L('Návrat · ') + SECTORS[sv.sector].name, () => { loadSector(sv.sector, { x: sv.x, y: sv.y }, sv); });
 }
 
 let transitioning = false;

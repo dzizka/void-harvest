@@ -26,13 +26,13 @@ function director(dt) {
       const n = 4 + Math.floor(zone / 2), dp = depthAt(p.x, p.y);
       for (let i = 0; i < n; i++) spawnEnemy(weighted(S.enemies), p.x + rand(-80, 80), p.y + rand(-80, 80), zone + dp, false);
       spawnEnemy(weighted(S.enemies), p.x, p.y, zone + dp + 1, true);
-      banner(`Nepriateľská letka<small>Elitný veliteľ nesie vzácnu výbavu</small>`);
+      banner(_T`Nepriateľská letka<small>Elitný veliteľ nesie vzácnu výbavu</small>`);
     }
   }
   for (const g of G.gates) g.lvl = zone + 1;   // gates follow the pilot's level
   if (G.gates.length < 2) {
     G.gateT -= dt;
-    if (G.gateT <= 0) { G.gateT = 120; makeGate(); log('Radar zachytil novú bránu.'); }
+    if (G.gateT <= 0) { G.gateT = 120; makeGate(); log(_L('Radar zachytil novú bránu.')); }
   }
 }
 
@@ -42,15 +42,15 @@ function updateInteract() {
     const p = G.dungeon.portal;
     if (p && p.t > 0 && d2(p.x, p.y, P.x, P.y) < 95 * 95)
       it = p.kind === 'next'
-        ? { txt: 'Prejsť do ďalšej komnaty', sub: `${G.dungeon.room + 2}/${DUNGEON.rooms.length}`, col: '#5fd4ff', act: () => { G.dungeon.room++; transition('Ďalšia komnata', loadRoom); } }
-        : { txt: 'Návrat do sektora', sub: SECTORS[G.dungeon.sector].name, col: '#5be09a', act: exitDungeon };
+        ? { txt: _L('Prejsť do ďalšej komnaty'), sub: `${G.dungeon.room + 2}/${DUNGEON.rooms.length}`, col: '#5fd4ff', act: () => { G.dungeon.room++; transition(_L('Ďalšia komnata'), loadRoom); } }
+        : { txt: _L('Návrat do sektora'), sub: SECTORS[G.dungeon.sector].name, col: '#5be09a', act: exitDungeon };
   } else {
     if (G.station && d2(G.station.x, G.station.y, P.x, P.y) < G.station.dock ** 2)
-      it = { txt: 'Dokovať na stanici', sub: 'servis · obchod · mapa', col: '#5fd4ff', act: () => { P.hull = P.stats.maxHull; P.shield = P.stats.maxShield; openPanel('station'); tutTick('dock'); } };
+      it = { txt: _L('Dokovať na stanici'), sub: _L('servis · obchod · mapa'), col: '#5fd4ff', act: () => { P.hull = P.stats.maxHull; P.shield = P.stats.maxShield; openPanel('station'); tutTick('dock'); } };
     for (const g of G.gates) {
       if (d2(g.x, g.y, P.x, P.y) < 100 * 100) {
         const B = BOSSES[g.boss];
-        it = { txt: `Vstúpiť do brány: ${B.lair}`, sub: `úroveň ${g.lvl} · boss ${B.name}${P.keys.length ? ` · kľúče ${P.keys.length}` : ''}`, col: B.color,
+        it = { txt: _T`Vstúpiť do brány: ${B.lair}`, sub: _T`úroveň ${g.lvl} · boss ${B.name}${P.keys.length ? _T` · kľúče ${P.keys.length}` : ''}`, col: B.color,
           act: () => { if (P.keys.length) { G.gateSel = g; openPanel('gate'); } else enterDungeon(g); } };
       }
     }
@@ -245,7 +245,7 @@ function updateEnemies(dt) {
       case 'boss': {
         if (e.arch) archUpdate(e);
         const ph2 = e.arch ? e.arch.phase >= 2 : e.hp < e.maxHp * 0.5;
-        if (ph2 && !e.ph2 && !e.arch) { e.ph2 = true; banner(`<span style="color:${e.B.color}">${e.B.name}</span><small>Fáza 2 · zúrivosť</small>`); ring(e.x, e.y, e.B.color, 300, 0.7); shake(8); }
+        if (ph2 && !e.ph2 && !e.arch) { e.ph2 = true; banner(_T`<span style="color:${e.B.color}">${e.B.name}</span><small>Fáza 2 · zúrivosť</small>`); ring(e.x, e.y, e.B.color, 300, 0.7); shake(8); }
         const radial = clamp((d - 330) / 160, -1, 1);
         tx = (ux * radial - uy * e.orbit * 0.5) * sp; ty = (uy * radial + ux * e.orbit * 0.5) * sp;
         if (Math.random() < dt * 0.15) e.orbit *= -1;

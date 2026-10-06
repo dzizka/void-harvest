@@ -105,17 +105,17 @@ function computeStats(clsKey, equip, tal, level, para) {
   return s;
 }
 const SUMMARY = [
-  ['laserDps', 'Laser DPS', 1, v => fmtN(v)],
-  ['missileHit', 'Poškodenie rakety', 1, v => fmtN(v)],
-  ['missileCd', 'Nabíjanie rakiet', -1, v => v.toFixed(2) + ' s'],
-  ['maxShield', 'Štít', 1, v => fmtN(v)],
-  ['shieldRegen', 'Obnova štítu', 1, v => fmtN(v) + '/s'],
-  ['maxHull', 'Trup', 1, v => fmtN(v)],
-  ['dr', 'Redukcia poškodenia', 1, v => fmtN(v) + ' %'],
-  ['speed', 'Rýchlosť', 1, v => Math.round(v)],
-  ['dodge', 'Úhyb', 1, v => (Math.round(v * 10) / 10) + ' %'],
-  ['crit', 'Critical Chance', 1, v => (Math.round(v * 10) / 10) + ' %'],
-  ['yieldMult', 'Mining Yield', 1, v => '×' + v.toFixed(2)],
-  ['miningPower', 'Ťažobná sila', 1, v => '×' + v.toFixed(2)],
-  ['areaPct', 'Area Damage', 1, v => Math.round(v) + ' %']
+  ['laserDps', _L('Laser DPS'), 1, v => fmtN(v)],
+  ['missileHit', _L('Poškodenie rakety'), 1, v => fmtN(v)],
+  ['missileCd', _L('Nabíjanie rakiet'), -1, v => v.toFixed(2) + ' s'],
+  ['maxShield', _L('Štít'), 1, v => fmtN(v)],
+  ['shieldRegen', _L('Obnova štítu'), 1, v => fmtN(v) + '/s'],
+  ['maxHull', _L('Trup'), 1, v => fmtN(v)],
+  ['dr', _L('Redukcia poškodenia'), 1, v => fmtN(v) + ' %'],
+  ['speed', _L('Rýchlosť'), 1, v => Math.round(v)],
+  ['dodge', _L('Úhyb'), 1, v => (Math.round(v * 10) / 10) + ' %'],
+  ['crit', _L('Kritická šanca'), 1, v => (Math.round(v * 10) / 10) + ' %'],
+  ['yieldMult', _L('Výnos ťažby'), 1, v => '×' + v.toFixed(2)],
+  ['miningPower', _L('Ťažobná sila'), 1, v => '×' + v.toFixed(2)],
+  ['areaPct', _L('Plošné poškodenie'), 1, v => Math.round(v) + ' %']
 ];

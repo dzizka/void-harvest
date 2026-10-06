@@ -5,10 +5,10 @@ function renderCheat() {
   const tog = (key, label) => `<button type="button" class="btn tog" data-cheat="tog" data-key="${key}" aria-pressed="${C[key]}">${label}</button>`;
   const btn = (act, label, extra) => `<button type="button" class="btn devbtn" data-cheat="${act}" ${extra || ''}>${label}</button>`;
   const inDungeon = !!G.dungeon, S = curSector();
-  $('cheatBody').innerHTML = `
+  $('cheatBody').innerHTML = _T`
     <div class="st-card">
       <span class="eyebrow">Prepínače</span>
-      <div class="cheat-row">${tog('god', 'Nesmrteľnosť')}${tog('oneHit', 'Zabitie na 1 ránu')}${tog('unlock', 'Odomknúť sektory')}${tog('debug', 'Debug info')}${tog('mythBoost', 'Mýtické ×1000')}</div>
+      <div class="cheat-row">${tog('god', _L('Nesmrteľnosť'))}${tog('oneHit', _L('Zabitie na 1 ránu'))}${tog('unlock', _L('Odomknúť sektory'))}${tog('debug', _L('Debug info'))}${tog('mythBoost', _L('Mýtické ×1000'))}</div>
       <span class="eyebrow">Rýchlosť hry</span>
       <span class="eyebrow">Svetová úroveň</span>
       <div class="seg">${[1, 2, 3, 4].map(t => `<button type="button" data-cheat="tier" data-v="${t}" aria-pressed="${G.tier === t}">${TIERS[t].roman}</button>`).join('')}</div>
@@ -17,7 +17,7 @@ function renderCheat() {
     </div>
     <div class="st-card">
       <span class="eyebrow">Pilot · úroveň <b>${P.level}</b> · ruda <b>${P.ore}</b> · body <b>${P.points}</b></span>
-      <div class="cheat-row">${btn('lvl1', '+1 úroveň')}${btn('lvl5', '+5 úrovní')}${btn('ore', '+1000 rudy')}${btn('pts', '+5 bodov talentu')}${btn('heal', 'Plná oprava')}</div>
+      <div class="cheat-row">${btn('lvl1', _L('+1 úroveň'))}${btn('lvl5', _L('+5 úrovní'))}${btn('ore', _L('+1000 rudy'))}${btn('pts', _L('+5 bodov talentu'))}${btn('heal', _L('Plná oprava'))}</div>
     </div>
     <div class="st-card">
       <span class="eyebrow">Výbava · náklad <b>${P.inv.length}/30</b></span>
@@ -25,30 +25,30 @@ function renderCheat() {
         <label class="field">Rarita<select id="chRar">${Object.keys(RARITY).map(r => `<option value="${r}" ${r === 'legendary' ? 'selected' : ''}>${RARITY[r].name}</option>`).join('')}</select></label>
         <label class="field">Slot<select id="chSlot"><option value="">Náhodný</option>${SLOT_ORDER.map(sl => `<option value="${sl}">${SLOTS[sl].name}</option>`).join('')}</select></label>
         <label class="field">iLvl<input id="chIlvl" type="number" min="1" max="60" value="${P.level}"></label>
-        ${btn('item', 'Pridať predmet')}
+        ${btn('item', _L('Pridať predmet'))}
       </div>
-      <div class="cheat-row">${btn('legset', 'Nasadiť legendárny set')}${btn('fill', 'Naplniť náklad')}${btn('clear', 'Vyprázdniť náklad')}</div>
-      <div class="cheat-row">${btn('para5', '+5 paragon')}${btn('frags', '+úlomky Architekta')}${btn('shards', '+50 úlomkov')}${btn('gems', '+drahokamy')}${btn('codex', 'Celý kódex')}${btn('keys10', '+3 kľúče úr. 10')}${btn('keys30', '+1 kľúč úr. 30')}${btn('nmwin', 'Vyhrať nočnú bránu', G.dungeon && G.dungeon.nm ? '' : 'disabled')}</div>
+      <div class="cheat-row">${btn('legset', _L('Nasadiť legendárny set'))}${btn('fill', _L('Naplniť náklad'))}${btn('clear', _L('Vyprázdniť náklad'))}</div>
+      <div class="cheat-row">${btn('para5', _L('+5 paragon'))}${btn('frags', _L('+úlomky Architekta'))}${btn('shards', _L('+50 úlomkov'))}${btn('gems', _L('+drahokamy'))}${btn('codex', _L('Celý kódex'))}${btn('keys10', _L('+3 kľúče úr. 10'))}${btn('keys30', _L('+1 kľúč úr. 30'))}${btn('nmwin', _L('Vyhrať nočnú bránu'), G.dungeon && G.dungeon.nm ? '' : 'disabled')}</div>
     </div>
     <div class="st-card">
       <span class="eyebrow">Svet · ${inDungeon ? BOSSES[G.dungeon.boss].lair : S.name}</span>
       <div class="cheat-row">
-        ${btn('boss', 'Privolať bossa', S.kind === 'safe' && !inDungeon ? 'disabled' : '')}
-        ${btn('elite', 'Elitná letka', S.kind === 'safe' && !inDungeon ? 'disabled' : '')}
-        ${btn('killall', 'Zničiť nepriateľov')}
-        ${btn('gate', 'Brána pri lodi', S.kind === 'safe' || inDungeon ? 'disabled' : '')}
-        ${btn('skiproom', 'Preskočiť komnatu', inDungeon && G.dungeon.state === 'fight' ? '' : 'disabled')}
-        ${btn('event', 'Spustiť udalosť', inDungeon || G.event ? 'disabled' : '')}
-        ${btn('hunter', 'Privolať lovca', S.kind === 'safe' || inDungeon ? 'disabled' : '')}
-        ${btn('contracts', 'Splniť kontrakty')}
+        ${btn('boss', _L('Privolať bossa'), S.kind === 'safe' && !inDungeon ? 'disabled' : '')}
+        ${btn('elite', _L('Elitná letka'), S.kind === 'safe' && !inDungeon ? 'disabled' : '')}
+        ${btn('killall', _L('Zničiť nepriateľov'))}
+        ${btn('gate', _L('Brána pri lodi'), S.kind === 'safe' || inDungeon ? 'disabled' : '')}
+        ${btn('skiproom', _L('Preskočiť komnatu'), inDungeon && G.dungeon.state === 'fight' ? '' : 'disabled')}
+        ${btn('event', _L('Spustiť udalosť'), inDungeon || G.event ? 'disabled' : '')}
+        ${btn('hunter', _L('Privolať lovca'), S.kind === 'safe' || inDungeon ? 'disabled' : '')}
+        ${btn('contracts', _L('Splniť kontrakty'))}
       </div>
       <span class="cheat-note">Bossa mimo brány dostaneš aj s lootom, ale bez portálu.</span>
     </div>
     <div class="st-card full">
       <span class="eyebrow">Testovacie buildy · ${CLASSES[P.cls].name}</span>
-      <div class="cheat-row">${btn('top', 'Top výbava (mýtické + drahokamy)', 'data-v=""')}${TREES[P.cls].map(B => btn('top', 'Build: ' + B.name, `data-v="${B.id}"`)).join('')}${btn('talreset', 'Reset talentov zadarmo')}</div>
-      <div class="cheat-row">${TREES[P.cls].map(B => btn('set', 'Set: ' + B.name, `data-v="${B.id}"`)).join('')}${btn('runes', 'Všetky runy úr. 20')}${btn('achall', 'Splniť výzvy (test)')}${btn('primal', '+Prvotný predmet')}${btn('stars', '+Legendárka ✦✦✦')}${btn('vfrags', '+5 úlomkov mapy')}${btn('mythdup', '+Duplikát mýtu zbrane')}</div>
-      <div class="cheat-row">${btn('wbnow', 'Svetový boss sem (5 s)', S.kind === 'safe' || inDungeon ? 'disabled' : '')}${btn('climb', 'Výstup od poschodia 1', inDungeon ? 'disabled' : '')}${btn('climbfloor', 'Výstup: zdolať poschodie', inDungeon && G.dungeon.climb ? '' : 'disabled')}${btn('climbend', 'Výstup: ukončiť časom', inDungeon && G.dungeon.climb ? '' : 'disabled')}</div>
+      <div class="cheat-row">${btn('top', _L('Top výbava (mýtické + drahokamy)'), 'data-v=""')}${TREES[P.cls].map(B => btn('top', _L('Build: ') + B.name, `data-v="${B.id}"`)).join('')}${btn('talreset', _L('Reset talentov zadarmo'))}</div>
+      <div class="cheat-row">${TREES[P.cls].map(B => btn('set', _L('Set: ') + B.name, `data-v="${B.id}"`)).join('')}${btn('runes', _L('Všetky runy úr. 20'))}${btn('achall', _L('Splniť výzvy (test)'))}${btn('primal', _L('+Prvotný predmet'))}${btn('stars', _L('+Legendárka ✦✦✦'))}${btn('vfrags', _L('+5 úlomkov mapy'))}${btn('mythdup', _L('+Duplikát mýtu zbrane'))}</div>
+      <div class="cheat-row">${btn('wbnow', _L('Svetový boss sem (5 s)'), S.kind === 'safe' || inDungeon ? 'disabled' : '')}${btn('climb', _L('Výstup od poschodia 1'), inDungeon ? 'disabled' : '')}${btn('climbfloor', _L('Výstup: zdolať poschodie'), inDungeon && G.dungeon.climb ? '' : 'disabled')}${btn('climbend', _L('Výstup: ukončiť časom'), inDungeon && G.dungeon.climb ? '' : 'disabled')}</div>
       <span class="cheat-note">Top výbava: 5 mýtických + 2 legendárne, iLvl 60+, pradávne, +10, najlepšie afixy a dokonalé rubíny (zbraň má topás). Build navyše nastaví úroveň 50, legendárku buildu, ranky talentov na výbave a rozdelí body: celá vetva + kľúčový talent, zvyšok do ďalších vetiev.</span>
     </div>
     <div class="st-card full">
@@ -61,7 +61,7 @@ function cheatLevels(n) {
   P.xp = 0; recalcStats();
   P.hull = P.stats.maxHull; P.shield = P.stats.maxShield;
   ring(P.x, P.y, '#b48cff', 220, 0.8);
-  log(`DEV: úroveň ${P.level}.`);
+  log(_T`DEV: úroveň ${P.level}.`);
 }
 function autoAllocTalents(bid) {
   const T = TREES[P.cls], first = T.find(b => b.id === bid) || T[0];
@@ -100,7 +100,7 @@ function cheatTopGear(bid) {
     P.equip[sl] = it;
   });
   recalcStats(); P.hull = P.stats.maxHull; P.shield = P.stats.maxShield;
-  log(`DEV: ${B ? `build <span style="color:${B.color}">${B.name}</span>` : 'top výbava'} nasadený · ${fmtN(P.stats.laserDps)} laser DPS.`);
+  log(_T`DEV: ${B ? `build <span style="color:${B.color}">${B.name}</span>` : _L('top výbava')} nasadený · ${fmtN(P.stats.laserDps)} laser DPS.`);
 }
 function cheatAction(el) {
   const act = el.dataset.cheat, C = G.cheat, S = curSector();
@@ -121,7 +121,7 @@ function cheatAction(el) {
         const B = TBRANCH[P.cls + ':' + el.dataset.v], it = generateItem(il, 'set', sl, (B.types || {})[sl] || P.equip[sl].type, el.dataset.v);
         P.equip[sl] = perfectItem(it, B.wish, B.nodes[SET_SLOTS.indexOf(sl)].id);
       }
-      recalcStats(); P.shield = P.stats.maxShield; log(`DEV: ${setName(el.dataset.v)} nasadený (4/4).`);
+      recalcStats(); P.shield = P.stats.maxShield; log(_T`DEV: ${setName(el.dataset.v)} nasadený (4/4).`);
       break;
     }
     case 'runes': { const PA = P.para; PA.rl = PA.rl || {}; for (const r in RUNES) PA.rl[r] = 20; recalcStats(); break; }
@@ -135,14 +135,14 @@ function cheatAction(el) {
     case 'mythdup': { const w = P.equip.weapon; if (w.rarity === 'mythic' && P.inv.length < 30) P.inv.push(generateItem(w.ilvl, 'mythic', null, null, w.legend)); break; }
     case 'achall': for (const A of ACH) ACC.ach[A.id] = ACC.ach[A.id] || Date.now(); saveAccount(); break;
     case 'item': {
-      if (P.inv.length >= 30) { log('DEV: náklad je plný.'); break; }
+      if (P.inv.length >= 30) { log(_L('DEV: náklad je plný.')); break; }
       const it = generateItem(clamp(+$('chIlvl').value || P.level, 1, 60), $('chRar').value, $('chSlot').value || null);
       P.inv.push(it); log(`DEV: <span style="color:${RARITY[it.rarity].color}">${it.name}</span> iLvl ${it.ilvl}`);
       break;
     }
     case 'legset':
       for (const sl of SLOT_ORDER) P.equip[sl] = generateItem(P.level, 'legendary', sl);
-      recalcStats(); P.shield = P.stats.maxShield; log('DEV: legendárny set nasadený.');
+      recalcStats(); P.shield = P.stats.maxShield; log(_L('DEV: legendárny set nasadený.'));
       break;
     case 'fill': while (P.inv.length < 30) P.inv.push(generateItem(P.level, rollRarity(1))); break;
     case 'clear': P.inv = []; break;
@@ -185,7 +185,7 @@ function cheatAction(el) {
       const id = el.dataset.v;
       closePanels();
       G.saved = null;
-      transition('DEV teleport · ' + SECTORS[id].name, () => { loadSector(id); });
+      transition(_L('DEV teleport · ') + SECTORS[id].name, () => { loadSector(id); });
       return;
     }
   }

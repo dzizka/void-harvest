@@ -19,6 +19,7 @@
 <!-- ============ SELECT SCREEN ============ -->
 <section id="select">
   <div class="sel-wrap">
+    <div class="lang-pick" role="group" aria-label="Language"><button type="button" data-lang="en">English</button><button type="button" data-lang="sk">Slovenčina</button></div>
     <div class="sel-head">
       <span class="eyebrow">Hangár · Hviezdokopa Kepler</span>
       <h1>Void <span>Harvest</span></h1>
@@ -32,8 +33,6 @@
       <span>Myš – mierenie</span>
       <span><kbd>LMB</kbd> laser a ťažba</span>
       <span><kbd>RMB</kbd>/<kbd>Space</kbd> rakety</span>
-      <span><kbd>F</kbd> auto-boj</span>
-      <span><kbd>R</kbd> auto-ťažba</span>
       <span><kbd>E</kbd> stanica, brána, portál</span>
       <span><kbd>M</kbd> hviezdna mapa</span>
       <span><kbd>I</kbd> inventár</span>
@@ -84,8 +83,6 @@
       <div class="ab"><kbd>RMB</kbd> Rakety <em id="abMis"></em><i class="cd" id="misCd"></i></div>
       <div class="ab" id="abDash" hidden><kbd>Shift</kbd> Fázový rez <em id="abDashS"></em></div>
       <div class="ab" id="abMin" hidden><kbd>◆</kbd> Minióni <em id="abMinS"></em></div>
-      <button class="ab toggle" id="abAuto" type="button" title="Automaticky mieri a strieľa na najbližšieho nepriateľa"><kbd>F</kbd> Auto-boj <em id="abAutoS"></em></button>
-      <button class="ab toggle" id="abMine" type="button" title="Automaticky ťaží najbližší asteroid, keď nie je s kým bojovať"><kbd>R</kbd> Auto-ťažba <em id="abMineS"></em></button>
       <button class="ab" id="abInv" type="button"><kbd>I</kbd> Inventár <em id="abInvN"></em></button>
       <button class="ab" id="abTal" type="button"><kbd>K</kbd> Talenty <em id="abTalN"></em></button>
       <button class="ab" id="abPara" type="button" hidden><kbd>P</kbd> Paragon <em id="abParaN"></em></button>
@@ -96,6 +93,9 @@
         <div class="more-pop" id="morePop" hidden>
           <button type="button" id="abAch"><kbd>J</kbd><span>Denník výziev</span><em id="abAchN"></em></button>
           <button type="button" id="abEnc"><kbd>?</kbd><span>Encyklopédia</span><em></em></button>
+          <button type="button" id="abAuto" title="Loď sama mieri a strieľa na najbližšieho nepriateľa"><kbd>F</kbd><span>Auto-boj</span><em id="abAutoS"></em></button>
+          <button type="button" id="abMine" title="Loď sama ťaží najbližší asteroid, keď nie je s kým bojovať"><kbd>R</kbd><span>Auto-ťažba</span><em id="abMineS"></em></button>
+          <button type="button" id="abLang" title="Jazyk hry · Game language"><kbd>文</kbd><span>Jazyk · Language</span><em id="abLangS"></em></button>
           <button type="button" id="abGfx" title="Žiara, scenéria, častice"><kbd>⚙</kbd><span>Grafika</span><em id="abGfxS"></em></button>
           <button type="button" id="abHangar" title="Uloží postup a vráti ťa do hangára k výberu lode"><kbd>H</kbd><span>Hangár · iná loď</span><em></em></button>
         </div>
@@ -325,6 +325,8 @@
 </div>
 
 <!-- Skripty sa načítavajú v tomto poradí a zdieľajú globálny scope (žiadne moduly, funguje aj z file://). -->
+<script src="js/i18n.js"></script>
+<script src="js/i18n-en.js"></script>
 <script src="js/core/util.js"></script>
 <script src="js/data/game-data.js"></script>
 <script src="js/data/talents.js"></script>

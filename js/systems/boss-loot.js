@@ -15,14 +15,14 @@ function dropSet(x, y, ilvl, branch) {
   const it = generateItem(Math.max(1, ilvl), 'set', null, null, branch);
   dropPickup('item', x, y, 1, it);
   ring(x, y, RARITY.set.color, 200, 0.9);
-  banner(`<span style="color:${RARITY.set.color}">${it.name}</span><small>Kus setu · ${TBRANCH[it.setCls + ':' + it.set].name}</small>`);
+  banner(_T`<span style="color:${RARITY.set.color}">${it.name}</span><small>Kus setu · ${TBRANCH[it.setCls + ':' + it.set].name}</small>`);
 }
 function dropMythic(id, x, y, ilvl) {
   const it = generateItem(Math.max(1, ilvl || zoneLevel() + 2), 'mythic', null, null, id);
   dropPickup('item', x, y, 1, it);
   const col = RARITY.mythic.color;
-  banner(`<span style="color:${col}">${it.name}</span><small>Mýtický predmet · ${LEGEND_INDEX[id].source}</small>`);
-  log(`<span style="color:${col}">MÝTICKÝ PREDMET: ${it.name}</span>`);
+  banner(_T`<span style="color:${col}">${it.name}</span><small>Mýtický predmet · ${LEGEND_INDEX[id].source}</small>`);
+  log(_T`<span style="color:${col}">MÝTICKÝ PREDMET: ${it.name}</span>`);
   ring(x, y, col, 320, 1.4); ring(x, y, '#ffffff', 180, 0.8); burst(x, y, col, 90, 600, 3, 1.2); shake(10);
 }
 function chainLightning(src, dmg) {
@@ -39,7 +39,7 @@ function reflectShot(b) {
   for (const e of enemies) { if (e.dead) continue; const dd = d2(e.x, e.y, P.x, P.y); if (dd < best) { best = dd; t = e; } }
   const a = t ? Math.atan2(t.y - P.y, t.x - P.x) : Math.atan2(-b.vy, -b.vx);
   bullets.push({ x: P.x, y: P.y, px: P.x, py: P.y, vx: Math.cos(a) * 980, vy: Math.sin(a) * 980, dmg: P.stats.laserHit * 2 * dmgBuff(), crit: false, life: 0.8, w: 2.5, color: '#9fe6ff', bubble: false });
-  addText(P.x, P.y - 24, 'ODRAZ', '#9fe6ff', 11, 0.5);
+  addText(P.x, P.y - 24, _L('ODRAZ'), '#9fe6ff', 11, 0.5);
 }
 function updateMythic(dt) {
   const s = P.stats, st = G.station;

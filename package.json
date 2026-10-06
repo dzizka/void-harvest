@@ -5,9 +5,12 @@
   "description": "2D vesmírna strieľačka s ARPG progresiou (HTML5 Canvas + čistý JavaScript)",
   "scripts": {
     "build": "node tools/build.js",
-    "test": "node tools/build.js && node tools/smoke.js"
+    "test": "node tools/build.js && node tools/i18n-check.js && node tools/smoke.js",
+    "i18n": "node tools/i18n-check.js"
   },
   "devDependencies": {
-    "playwright": "^1.47.0"
+    "playwright": "^1.47.0",
+    "acorn": "^8.12.0",
+    "acorn-walk": "^8.3.0"
   }
 }

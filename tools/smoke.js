@@ -8,12 +8,13 @@ const root = path.join(__dirname, '..');
 (async () => {
   const b = await chromium.launch();
   let bad = 0;
-  for (const file of ['index.html', 'dist/void-harvest.html']) {
+  for (const [file, lang] of [['index.html', 'sk'], ['index.html', 'en'], ['dist/void-harvest.html', 'en']]) {
     const pg = await b.newPage({ viewport: { width: 1400, height: 860 } });
     const errs = [];
     pg.on('pageerror', e => errs.push(e.message));
     await pg.route(/fonts\.g/, r => r.abort());
     try { await pg.goto('file://' + path.join(root, file)); } catch (e) { console.log(`${file}: preskočené (${e.message.split('\n')[0]})`); await pg.close(); continue; }
+    await pg.evaluate(l => localStorage.setItem('void-harvest-lang', l), lang); await pg.reload();
     await pg.waitForTimeout(300);
     const res = await pg.evaluate(() => {
       window.saveGame = () => {}; window.saveAccount = () => {};
@@ -30,7 +31,7 @@ const root = path.join(__dirname, '..');
       }
       return out;
     });
-    console.log(`== ${file}\n  ` + res.join('\n  '));
+    console.log(`== ${file} [${lang}]\n  ` + res.join('\n  '));
     if (errs.length) { bad++; console.log('  CHYBY:\n  ' + errs.join('\n  ')); } else console.log('  bez chýb');
     await pg.close();
   }

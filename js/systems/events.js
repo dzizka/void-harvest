@@ -1,10 +1,10 @@
 'use strict';
 /* ---------- world events ---------- */
 const EVENT_TYPES = {
-  meteor:   { name: 'Meteorický roj',  color: '#ffb347', limit: 45,  goal: 12 },
-  invasion: { name: 'Invázia',         color: '#ff6b5a', limit: 75,  goal: 24 },
-  convoy:   { name: 'Eskorta konvoja', color: '#7ee0a8', limit: 150, goal: 1 },
-  wreck:    { name: 'Opustený vrak',   color: '#9fe6ff', limit: 90,  goal: 3 }
+  meteor:   { name: _L('Meteorický roj'),  color: '#ffb347', limit: 45,  goal: 12 },
+  invasion: { name: _L('Invázia'),         color: '#ff6b5a', limit: 75,  goal: 24 },
+  convoy:   { name: _L('Eskorta konvoja'), color: '#7ee0a8', limit: 150, goal: 1 },
+  wreck:    { name: _L('Opustený vrak'),   color: '#9fe6ff', limit: 90,  goal: 3 }
 };
 function startEvent(type) {
   if (G.dungeon || G.event) return;
@@ -23,8 +23,8 @@ function startEvent(type) {
   }
   if (type === 'wreck') ev.nodes = [0, 1, 2].map(i => { const a = i / 3 * TAU + rand(-0.3, 0.3); return { x: p.x + Math.cos(a) * 230, y: p.y + Math.sin(a) * 230, prog: 0, done: false }; });
   G.event = ev;
-  banner(`<span style="color:${E.color}">${E.name}</span><small>Udalosť v sektore · leť k značke na minimape</small>`);
-  log(`<span style="color:${E.color}">Udalosť: ${E.name}.</span> Leť k značke „!“.`);
+  banner(_T`<span style="color:${E.color}">${E.name}</span><small>Udalosť v sektore · leť k značke na minimape</small>`);
+  log(_T`<span style="color:${E.color}">Udalosť: ${E.name}.</span> Leť k značke „!“.`);
 }
 function spawnEventPack(ev, n, target) {
   const pool = curSector().enemies || { drone: 1 };
@@ -48,7 +48,7 @@ function activateEvent(ev) {
       asteroids.push(ast);
     }
   }
-  banner(`<span style="color:${ev.E.color}">${ev.E.name}</span><small>Udalosť začala · ${fmtTime(ev.t)} na splnenie</small>`);
+  banner(_T`<span style="color:${ev.E.color}">${ev.E.name}</span><small>Udalosť začala · ${fmtTime(ev.t)} na splnenie</small>`);
 }
 function endEvent(success, quiet) {
   const ev = G.event; G.event = null; G.eventT = rand(80, 130);
@@ -63,13 +63,13 @@ function endEvent(success, quiet) {
     dropXp(at.x, at.y, 20 * (1 + 0.15 * (ev.lvl - 1)));
     if (curSector().kind === 'hostile' && Math.random() < 0.35) dropKey(at.x, at.y, keyBaseLevel());
     ring(at.x, at.y, ev.E.color, 220, 0.9);
-    banner(`<span style="color:${ev.E.color}">${ev.E.name}</span><small>Splnené · odmena čaká na mieste</small>`);
-    log(`<span style="color:#5be09a">Udalosť splnená:</span> ${ev.E.name}.`);
+    banner(_T`<span style="color:${ev.E.color}">${ev.E.name}</span><small>Splnené · odmena čaká na mieste</small>`);
+    log(_T`<span style="color:#5be09a">Udalosť splnená:</span> ${ev.E.name}.`);
     contractTick('event');
     addShards(2); if (Math.random() < 0.5) dropGem(at.x, at.y, 0);
   } else {
-    banner(`${ev.E.name}<small>Udalosť zlyhala</small>`);
-    log(`<span style="color:#ff6b5a">Udalosť zlyhala:</span> ${ev.E.name}.`);
+    banner(_T`${ev.E.name}<small>Udalosť zlyhala</small>`);
+    log(_T`<span style="color:#ff6b5a">Udalosť zlyhala:</span> ${ev.E.name}.`);
   }
 }
 function updateEvent(dt) {
@@ -77,7 +77,7 @@ function updateEvent(dt) {
   if (!ev) { G.eventT -= dt; if (G.eventT <= 0) { G.eventT = rand(80, 130); startEvent(); } return; }
   if (ev.state === 'wait') {
     ev.wait -= dt;
-    if (ev.wait <= 0) { log(`Udalosť ${ev.E.name} pominula.`); endEvent(false, true); return; }
+    if (ev.wait <= 0) { log(_T`Udalosť ${ev.E.name} pominula.`); endEvent(false, true); return; }
     if (d2(P.x, P.y, ev.x, ev.y) < 480 * 480) activateEvent(ev);
     return;
   }
@@ -95,7 +95,7 @@ function updateEvent(dt) {
   } else if (ev.type === 'wreck') {
     for (const n of ev.nodes) if (!n.done && d2(P.x, P.y, n.x, n.y) < 75 * 75) {
       n.prog += dt / 3.5;
-      if (n.prog >= 1) { n.done = true; ev.prog++; ring(n.x, n.y, '#9fe6ff', 90, 0.5); log(`Uzol vraku hacknutý (${ev.prog}/3).`); }
+      if (n.prog >= 1) { n.done = true; ev.prog++; ring(n.x, n.y, '#9fe6ff', 90, 0.5); log(_T`Uzol vraku hacknutý (${ev.prog}/3).`); }
     }
     ev.spawnT -= dt; if (ev.spawnT <= 0) { ev.spawnT = 8; spawnEventPack(ev, 4, ev); }
   }
@@ -146,16 +146,16 @@ function drawEvent() {
 }
 
 /* ---------- named hunters ---------- */
-const HUNTER_TITLES = ['Pirát', 'Barón', 'Žoldnier', 'Kapitán', 'Lovec hláv'];
-const HUNTER_NAMES = ['Vorgath', 'Rhask', 'Kaddor', 'Brann', 'Toller', 'Zarn', 'Malek', 'Orrin'];
-const HUNTER_TRAITS = { regen: 'regenerácia', blink: 'fázové skoky', brood: 'roj dronov', barrage: 'kruhové salvy' };
+const HUNTER_TITLES = [_L('Pirát'), _L('Barón'), _L('Žoldnier'), _L('Kapitán'), _L('Lovec hláv')];
+const HUNTER_NAMES = [_L('Vorgath'), _L('Rhask'), _L('Kaddor'), _L('Brann'), _L('Toller'), _L('Zarn'), _L('Malek'), _L('Orrin')];
+const HUNTER_TRAITS = { regen: _L('regenerácia'), blink: _L('fázové skoky'), brood: _L('roj dronov'), barrage: _L('kruhové salvy') };
 function spawnHunter() {
   const p = spawnPoint(); if (!p) return null;
   const e = spawnEnemy(pick(['fighter', 'gunship', 'charger']), p.x, p.y, zoneLevel() + 2, true);
   e.hp *= 2.5; e.maxHp = e.hp; e.dmgM *= 1.2; e.r *= 1.15;
   e.hunter = { name: `${pick(HUNTER_TITLES)} ${pick(HUNTER_NAMES)}`, trait: pick(Object.keys(HUNTER_TRAITS)), t: 0, flee: 100, tT: 3, split: 2 };
-  banner(`<span style="color:#ff8a5c">${e.hunter.name}</span><small>Pomenovaný lovec · ${HUNTER_TRAITS[e.hunter.trait]} · utečie o ${fmtTime(e.hunter.flee)}</small>`);
-  log(`<span style="color:#ff8a5c">${e.hunter.name}</span>, pomenovaný lovec, vstúpil do sektora.`);
+  banner(_T`<span style="color:#ff8a5c">${e.hunter.name}</span><small>Pomenovaný lovec · ${HUNTER_TRAITS[e.hunter.trait]} · utečie o ${fmtTime(e.hunter.flee)}</small>`);
+  log(_T`<span style="color:#ff8a5c">${e.hunter.name}</span>, pomenovaný lovec, vstúpil do sektora.`);
   return e;
 }
 function updateHunter(e, dt, d) {
@@ -171,18 +171,18 @@ function updateHunter(e, dt, d) {
     H.split--;
     for (let i = 0; i < 4; i++) { const m = spawnEnemy('drone', e.x + rand(-50, 50), e.y + rand(-50, 50), e.lvl - 1, false); m.minion = true; }
   }
-  if (H.t > H.flee) { e.dead = true; ring(e.x, e.y, '#ff8a5c', 90, 0.6); log(`${H.name} utiekol zo sektora.`); }
+  if (H.t > H.flee) { e.dead = true; ring(e.x, e.y, '#ff8a5c', 90, 0.6); log(_T`${H.name} utiekol zo sektora.`); }
 }
 
 /* ---------- station contracts ---------- */
 const CONTRACTS = {
-  kill:   { text: c => `Zostreľ ${c.n} nepriateľov · ${SECTORS[c.sec].name}`, n: [25, 45] },
-  elite:  { text: c => `Znič ${c.n} elity`, n: [2, 4] },
-  mine:   { text: c => `Rozbi ${c.n} asteroidov`, n: [25, 50] },
-  gate:   { text: c => c.n === 1 ? 'Dokonči bránu s bossom' : `Dokonči ${c.n} brány s bossom`, n: [1, 2] },
-  event:  { text: c => c.n === 1 ? 'Dokonči svetovú udalosť' : `Dokonči ${c.n} svetové udalosti`, n: [1, 2] },
-  hunter: { text: () => 'Zlikviduj pomenovaného lovca', n: [1, 1] },
-  nm:     { text: c => `Dokonči nočnú bránu úrovne ${c.lvl}+ v limite`, n: [1, 1] }
+  kill:   { text: c => _T`Zostreľ ${c.n} nepriateľov · ${SECTORS[c.sec].name}`, n: [25, 45] },
+  elite:  { text: c => _T`Znič ${c.n} elity`, n: [2, 4] },
+  mine:   { text: c => _T`Rozbi ${c.n} asteroidov`, n: [25, 50] },
+  gate:   { text: c => c.n === 1 ? _L('Dokonči bránu s bossom') : _T`Dokonči ${c.n} brány s bossom`, n: [1, 2] },
+  event:  { text: c => c.n === 1 ? _L('Dokonči svetovú udalosť') : _T`Dokonči ${c.n} svetové udalosti`, n: [1, 2] },
+  hunter: { text: () => _L('Zlikviduj pomenovaného lovca'), n: [1, 1] },
+  nm:     { text: c => _T`Dokonči nočnú bránu úrovne ${c.lvl}+ v limite`, n: [1, 1] }
 };
 function makeContract() {
   const hostile = Object.keys(SECTORS).filter(id => SECTORS[id].kind === 'hostile' && (P.level >= SECTORS[id].min || G.cheat.unlock));

@@ -31,7 +31,7 @@ function createPlayer(cls) {
   return p;
 }
 function ensureGems(pl) { pl.gems = pl.gems || {}; for (const t in GEMS) if (!pl.gems[t]) pl.gems[t] = [0, 0, 0]; }
-function addShards(n) { P.shards += n; addText(P.x, P.y - 34, `+${n} úlomkov`, '#9a8cff', 11, 0.7); }
+function addShards(n) { P.shards += n; addText(P.x, P.y - 34, _T`+${n} úlomkov`, '#9a8cff', 11, 0.7); }
 function dropGem(x, y, q) {
   const a = rand(0, TAU);
   pickups.push({ kind: 'gem', gem: { t: pick(Object.keys(GEMS)), q }, x, y, vx: Math.cos(a) * 90, vy: Math.sin(a) * 90, amount: 1, t: 0, spin: 0, dead: false });
@@ -51,7 +51,7 @@ function depthAt(x, y) {
   const d = Math.sqrt(d2(x, y, G.station.x, G.station.y));
   return d < 900 ? 0 : clamp(Math.floor((d - 900) / 500) + 1, 1, 3);
 }
-const DEPTH_NAME = ['Okraj majáka', 'Hlbina I', 'Hlbina II', 'Hlbina III'];
+const DEPTH_NAME = [_L('Okraj majáka'), _L('Hlbina I'), _L('Hlbina II'), _L('Hlbina III')];
 function zoneLevel() {
   if (!G || !P) return 1;
   if (G.dungeon) return G.dungeon.lvl;
@@ -79,13 +79,13 @@ function makeAsteroid(x, y, size, kind, weights) {
 }
 
 const ELITE_MODS = {
-  fast:     { name: 'Rýchly',       color: '#7fe3ff' },
-  burning:  { name: 'Ohnivý',       color: '#ff8a3c' },
-  shielded: { name: 'Štítový',      color: '#6fb8ff' },
-  blink:    { name: 'Teleportér',   color: '#c77dff' },
-  regen:    { name: 'Regenerujúci', color: '#5be09a' },
-  frost:    { name: 'Mrazivý',      color: '#bfefff' },
-  volatile: { name: 'Výbušný',      color: '#ff5f6d' }
+  fast:     { name: _L('Rýchly'),       color: '#7fe3ff' },
+  burning:  { name: _L('Ohnivý'),       color: '#ff8a3c' },
+  shielded: { name: _L('Štítový'),      color: '#6fb8ff' },
+  blink:    { name: _L('Teleportér'),   color: '#c77dff' },
+  regen:    { name: _L('Regenerujúci'), color: '#5be09a' },
+  frost:    { name: _L('Mrazivý'),      color: '#bfefff' },
+  volatile: { name: _L('Výbušný'),      color: '#ff5f6d' }
 };
 function rollEliteMods(e) {
   const n = Math.min(3, 1 + (e.lvl >= 20 ? 1 : 0) + (G.tier >= 3 ? 1 : 0));

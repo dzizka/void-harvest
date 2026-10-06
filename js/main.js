@@ -27,5 +27,6 @@ function frame(now) {
   requestAnimationFrame(frame);
 }
 
+translateStatic(); document.querySelectorAll('.lang-pick [data-lang]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === LANG)));
 resize(); loadAccount(); migrateLegacySave(); initBackground(); buildSelect(); renderContinue();
 requestAnimationFrame(frame);

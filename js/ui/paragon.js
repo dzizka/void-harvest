@@ -1,7 +1,7 @@
 'use strict';
 /* ---------- paragon constellations ---------- */
 function nodePos(b, i) { const a = PARA[b].ang * Math.PI / 180 + Math.sin(i * 0.7) * 0.12, r = 8 + i * 3.05; return [Math.cos(a) * r, Math.sin(a) * r]; }
-function nodeText(b, i) { const t = PARA_PATTERN[i]; return t === 's' ? `<b style="color:${PARA[b].color}">Hviezda · ${PARA[b].s.name}</b>${PARA[b].s.text}` : `<b style="color:${PARA[b].color}">${PARA[b].name} · ${t === 'm' ? 'magický uzol' : 'uzol'} ${i + 1}/14</b>${t === 'm' ? PARA[b].m : PARA[b].n}`; }
+function nodeText(b, i) { const t = PARA_PATTERN[i]; return t === 's' ? _T`<b style="color:${PARA[b].color}">Hviezda · ${PARA[b].s.name}</b>${PARA[b].s.text}` : `<b style="color:${PARA[b].color}">${PARA[b].name} · ${t === 'm' ? _L('magický uzol') : 'uzol'} ${i + 1}/14</b>${t === 'm' ? PARA[b].m : PARA[b].n}`; }
 function renderPara() {
   const PA = P.para; PA.alloc = PA.alloc || {};
   $('paraPts').textContent = PA.pts;
@@ -28,19 +28,19 @@ function renderPara() {
   }
   $('paraSvg').innerHTML = svg;
   const full = Object.keys(PARA).every(b => (PA.alloc[b] || 0) >= 14);
-  $('paraSide').innerHTML = `
+  $('paraSide').innerHTML = _T`
     <div id="paraDetail"><b>Paragon ${PA.lvl}</b>Prejdi myšou ponad uzol. Kliknutím na blikajúci uzol ho odomkneš. Ďalší bod o ${fmtN(Math.max(0, paraNeed(PA.lvl) - (P.level >= LEVEL_CAP ? P.xp : 0)))} XP.</div>
     ${Object.entries(PARA).map(([b, B]) => { const c = paraCounts(PA.alloc[b] || 0); return `<div class="pbr" style="--bc:${B.color}"><b>${B.name} · ${PA.alloc[b] || 0}/14</b>
-      <small>${c.N ? B.n.replace(/\d+/g, m => +m * c.N) : 'zatiaľ nič'}${c.M ? ' · ' + B.m.replace(/\d+/g, m => +m * c.M) : ''}${c.S ? ' · ' + B.s.name : ''}</small></div>`; }).join('')}
-    <div class="pbr" style="--bc:#e8e2ff"><b>Nekonečno · ${PA.inf || 0}</b><small>Po zaplnení všetkých konštelácií: každý bod +1 % All Damage a +1 % trup.</small>
+      <small>${c.N ? B.n.replace(/\d+/g, m => +m * c.N) : _L('zatiaľ nič')}${c.M ? ' · ' + B.m.replace(/\d+/g, m => +m * c.M) : ''}${c.S ? ' · ' + B.s.name : ''}</small></div>`; }).join('')}
+    <div class="pbr" style="--bc:#e8e2ff"><b>Nekonečno · ${PA.inf || 0}</b><small>Po zaplnení všetkých konštelácií: každý bod +1 % Všetko poškodenie a +1 % trup.</small>
       <button type="button" class="btn" id="paraInf" ${full && PA.pts > 0 ? '' : 'disabled'}>Vložiť bod</button></div>
     <button type="button" class="btn" id="paraReset">Vrátiť všetky body</button>
     <span class="eyebrow" style="margin-top:6px">Hviezdne runy · bonus od ${RUNE_ON} uzlov konštelácie</span>
     <div class="runes">${Object.entries(PARA).map(([b, B]) => { const r = (PA.runes || {})[b], L = r ? PA.rl[r] : 0, on = (PA.alloc[b] || 0) >= RUNE_ON;
       const used = Object.entries(PA.runes || {}).filter(([k, v]) => k !== b && v).map(([, v]) => v);
       const opts = Object.keys(PA.rl || {}).filter(k => !used.includes(k));
-      return `<div class="rrow" style="--rc:${r ? RUNES[r].color : B.color}"><select data-rune="${b}"><option value="">${B.name} · prázdna pätica</option>${opts.map(k => `<option value="${k}" ${k === r ? 'selected' : ''}>${RUNES[k].name} · úr. ${PA.rl[k]}</option>`).join('')}</select>
-        ${r ? `<small>${RUNES[r].main(L)}</small><small class="${on ? 'on' : ''}">${on ? '✓' : '✗'} ${RUNES[r].bonus}</small>` : `<small>${opts.length ? 'Vyber runu.' : 'Runy padajú z nočných brán a od Architekta.'}</small>`}</div>`; }).join('')}</div>
+      return _T`<div class="rrow" style="--rc:${r ? RUNES[r].color : B.color}"><select data-rune="${b}"><option value="">${B.name} · prázdna pätica</option>${opts.map(k => _T`<option value="${k}" ${k === r ? 'selected' : ''}>${RUNES[k].name} · úr. ${PA.rl[k]}</option>`).join('')}</select>
+        ${r ? `<small>${RUNES[r].main(L)}</small><small class="${on ? 'on' : ''}">${on ? '✓' : '✗'} ${RUNES[r].bonus}</small>` : `<small>${opts.length ? _L('Vyber runu.') : _L('Runy padajú z nočných brán a od Architekta.')}</small>`}</div>`; }).join('')}</div>
     <small style="color:var(--dim);font:500 10.5px/1.45 var(--f-mono)">Dokončenie nočnej brány v limite vylepší každú vloženú runu, ak je úroveň brány aspoň taká ako úroveň runy (max ${RUNE_MAX}).</small>`;
 }
 $('paraSide').addEventListener('change', e => {
@@ -54,7 +54,7 @@ $('paraSvg').addEventListener('click', e => {
   const b = n.dataset.b, i = +n.dataset.i, PA = P.para;
   if (i !== (PA.alloc[b] || 0) || PA.pts <= 0) return;
   PA.alloc[b] = i + 1; PA.pts--; recalcStats(); renderPara();
-  if (PARA_PATTERN[i] === 's') banner(`<span style="color:${PARA[b].color}">${PARA[b].s.name}</span><small>Hviezda konštelácie ${PARA[b].name}</small>`);
+  if (PARA_PATTERN[i] === 's') banner(_T`<span style="color:${PARA[b].color}">${PARA[b].s.name}</span><small>Hviezda konštelácie ${PARA[b].name}</small>`);
 });
 $('paraSvg').addEventListener('mouseover', e => { const n = e.target.closest('[data-b]'); if (n) $('paraDetail').innerHTML = nodeText(n.dataset.b, +n.dataset.i); });
 $('paraSide').addEventListener('click', e => {

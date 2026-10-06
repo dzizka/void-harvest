@@ -55,21 +55,21 @@ function loadSector(id, pos, restore) {
   saveGame();
   setPalette(S.pal, id);
   cam.x = P.x; cam.y = P.y;
-  banner(`${S.name}<small>${S.kind === 'safe' ? 'Bezpečná zóna · žiadne útoky' : levelRange(S) + ' · bojová zóna'}</small>`);
+  banner(`${S.name}<small>${S.kind === 'safe' ? _L('Bezpečná zóna · žiadne útoky') : levelRange(S) + _L(' · bojová zóna')}</small>`);
 }
 
 function canWarp(id) {
   const S = SECTORS[id];
-  if (id === G.sector && !G.dungeon) return 'Tu sa práve nachádzaš.';
-  if (P.level < S.min && !G.cheat.unlock) return `Sektor sa odomkne na úrovni ${S.min}.`;
-  if (G.dungeon) return 'Z brány sa nedá skočiť. Najprv ju dokonči.';
-  if (!isSafe()) return 'Hyperskok je možný len z bezpečnej zóny. Vráť sa k majáku v strede sektora.';
+  if (id === G.sector && !G.dungeon) return _L('Tu sa práve nachádzaš.');
+  if (P.level < S.min && !G.cheat.unlock) return _T`Sektor sa odomkne na úrovni ${S.min}.`;
+  if (G.dungeon) return _L('Z brány sa nedá skočiť. Najprv ju dokonči.');
+  if (!isSafe()) return _L('Hyperskok je možný len z bezpečnej zóny. Vráť sa k majáku v strede sektora.');
   return '';
 }
 function warpTo(id) {
   if (canWarp(id)) return;
   closePanels();
-  transition('Hyperskok · ' + SECTORS[id].name, () => { loadSector(id); log(`Prílet: ${SECTORS[id].name}.`); });
+  transition(_L('Hyperskok · ') + SECTORS[id].name, () => { loadSector(id); log(_T`Prílet: ${SECTORS[id].name}.`); });
 }
 
 function enterDungeon(gate, key) {
@@ -82,7 +82,7 @@ function enterDungeon(gate, key) {
     G.dungeon.nm = { k: key.lvl, mods: key.mods, bonus: key.bonus, sc, t: 0, burnT: 3 };
     G.dungeon.lvl = gate.lvl + sc.lvl;
   }
-  transition((key ? `Nočná brána ${key.lvl} · ` : 'Vstup do brány · ') + BOSSES[gate.boss].lair, loadRoom);
+  transition((key ? _T`Nočná brána ${key.lvl} · ` : _L('Vstup do brány · ')) + BOSSES[gate.boss].lair, loadRoom);
 }
 function loadRoom() {
   const D = G.dungeon, R = DUNGEON.R, def = roomDef(D);
@@ -100,9 +100,9 @@ function loadRoom() {
   setPalette(DUNGEON.pal, 'dungeon');
   cam.x = P.x; cam.y = P.y;
   const B = BOSSES[D.boss];
-  if (D.pinnacle) banner(`<span style="color:${B.color}">${B.name}</span><small>Vrcholný boss · úroveň ${D.lvl}</small>`);
-  else if (def.boss) banner(`<span style="color:${B.color}">${B.name}</span><small>${B.lair} · komnata ${D.room + 1}/${DUNGEON.rooms.length}</small>`);
-  else banner(`${B.lair}<small>Komnata ${D.room + 1}/${DUNGEON.rooms.length} · úroveň ${D.lvl}</small>`);
+  if (D.pinnacle) banner(_T`<span style="color:${B.color}">${B.name}</span><small>Vrcholný boss · úroveň ${D.lvl}</small>`);
+  else if (def.boss) banner(_T`<span style="color:${B.color}">${B.name}</span><small>${B.lair} · komnata ${D.room + 1}/${DUNGEON.rooms.length}</small>`);
+  else banner(_T`${B.lair}<small>Komnata ${D.room + 1}/${DUNGEON.rooms.length} · úroveň ${D.lvl}</small>`);
 }
 function spawnDungeonWave() {
   const D = G.dungeon, def = roomDef(D), A = G.arena;
@@ -140,7 +140,7 @@ function dungeonDirector(dt) {
   if (D.portal) D.portal.t += dt;
   if (D.nm && D.state !== 'done') {
     D.nm.t += dt;
-    if (!D.nm.late && D.nm.t > NM_LIMIT) { D.nm.late = true; log('<span style="color:#ff6b5a">Časový limit nočnej brány vypršal.</span> Kľúč sa už nevylepší.'); }
+    if (!D.nm.late && D.nm.t > NM_LIMIT) { D.nm.late = true; log(_L('<span style="color:#ff6b5a">Časový limit nočnej brány vypršal.</span> Kľúč sa už nevylepší.')); }
     if (nmHas('burning') && (D.state === 'fight' || D.state === 'boss') && (D.nm.burnT -= dt) <= 0) {
       D.nm.burnT = rand(2.2, 3.2);
       const a = rand(0, TAU), d = rand(0, 140);
@@ -153,7 +153,7 @@ function dungeonDirector(dt) {
       D.state = 'clear';
       D.portal = { x: G.arena.x, y: G.arena.y - G.arena.r + 150, kind: 'next', t: 0 };
       ring(D.portal.x, D.portal.y, '#5fd4ff', 140, 0.8);
-      log('Komnata vyčistená. Portál do ďalšej komnaty je otvorený.');
+      log(_L('Komnata vyčistená. Portál do ďalšej komnaty je otvorený.'));
     }
   } else if (D.state === 'boss-intro') { D.waveT -= dt; if (D.waveT <= 0) { spawnBoss(); D.state = 'boss'; } }
 }
@@ -166,7 +166,7 @@ function enterPinnacle() {
   const lvl = Math.max(P.level, LEVEL_CAP) + TIERS[G.tier].lvl + 3;
   G.dungeon = { boss: 'architect', pinnacle: true, lvl, room: 0, wave: 0, state: 'fight', waveT: 1.5, portal: null, sector: G.sector };
   saveGame();
-  transition('Trhlina Architekta', loadRoom);
+  transition(_L('Trhlina Architekta'), loadRoom);
 }
 function archUpdate(e) {
   const A = e.arch, ar = G.arena;
@@ -179,10 +179,10 @@ function archUpdate(e) {
       ring(p.x, p.y, '#e8e2ff', 70, 0.5);
       return p;
     });
-    banner('<span style="color:#e8e2ff">Architekt Prázdnoty</span><small>Fáza 2 · zničte 4 pylóny, kým je chránený</small>'); shake(10);
+    banner(_L('<span style="color:#e8e2ff">Architekt Prázdnoty</span><small>Fáza 2 · zničte 4 pylóny, kým je chránený</small>')); shake(10);
   }
-  if (A.phase === 2 && e.shielded && A.pylons.every(p => p.dead)) { e.shielded = false; ring(e.x, e.y, '#e8e2ff', 300, 0.7); banner('Štít Architekta padol<small>Teraz útoč</small>'); }
-  if (A.phase === 2 && !e.shielded && e.hp < e.maxHp * 0.33) { A.phase = 3; ring(e.x, e.y, '#ff5f6d', 380, 0.9); shake(12); banner('<span style="color:#ff5f6d">Architekt Prázdnoty</span><small>Fáza 3 · zúrivosť</small>'); }
+  if (A.phase === 2 && e.shielded && A.pylons.every(p => p.dead)) { e.shielded = false; ring(e.x, e.y, '#e8e2ff', 300, 0.7); banner(_L('Štít Architekta padol<small>Teraz útoč</small>')); }
+  if (A.phase === 2 && !e.shielded && e.hp < e.maxHp * 0.33) { A.phase = 3; ring(e.x, e.y, '#ff5f6d', 380, 0.9); shake(12); banner(_L('<span style="color:#ff5f6d">Architekt Prázdnoty</span><small>Fáza 3 · zúrivosť</small>')); }
 }
 function onArchitectKilled(e) {
   const D = G.dungeon, L = e.lvl;
@@ -200,12 +200,12 @@ function onArchitectKilled(e) {
   for (const m of enemies) if (m.minion && !m.dead) killEnemy(m);
   ring(e.x, e.y, '#e8e2ff', 520, 1.4); burst(e.x, e.y, '#e8e2ff', 200, 800, 4, 1.4); burst(e.x, e.y, '#c77dff', 80, 500, 3, 1);
   shake(16);
-  if (!first) banner('Architekt Prázdnoty porazený<small>Vrcholná odmena čaká · portál domov sa otvára</small>');
-  log(`<span style="color:#e8e2ff">Architekt Prázdnoty porazený</span> (${G.archKills}×).`);
+  if (!first) banner(_L('Architekt Prázdnoty porazený<small>Vrcholná odmena čaká · portál domov sa otvára</small>'));
+  log(_T`<span style="color:#e8e2ff">Architekt Prázdnoty porazený</span> (${G.archKills}×).`);
   if (G.tier >= 3 && G.maxTier < 4) {
     G.maxTier = 4;
-    log(`<span style="color:#5be09a">Odomknutá svetová úroveň ${TIERS[4].name}</span> (od úrovne ${TIERS[4].req}). Zmeníš ju na stanici.`);
-    setTimeout(() => banner(`Svetová úroveň IV<small>Odomknutá · zmeníš ju na stanici</small>`), 2800);
+    log(_T`<span style="color:#5be09a">Odomknutá svetová úroveň ${TIERS[4].name}</span> (od úrovne ${TIERS[4].req}). Zmeníš ju na stanici.`);
+    setTimeout(() => banner(_T`Svetová úroveň IV<small>Odomknutá · zmeníš ju na stanici</small>`), 2800);
   }
   D.state = 'done';
   D.portal = { x: G.arena.x, y: G.arena.y + 140, kind: 'return', t: -2 };
@@ -234,8 +234,8 @@ function onBossKilled(e) {
     const lid = BL && Math.random() < 0.7 ? pick(BL.legs) : null;
     const it = generateItem(e.lvl, 'legendary', lid ? LEGEND_INDEX[lid].slot : null, null, lid);
     dropPickup('item', e.x, e.y, 1, it);
-    banner(`<span style="color:${RARITY.legendary.color}">${it.name}</span><small>${first ? 'Prvé víťazstvo · garantovaný legendárny predmet' : 'Legendárny predmet padol'}</small>`);
-  } else banner(`${e.B.name} porazený<small>${D ? 'Pozbieraj loot, portál domov sa otvára' : 'Pozbieraj loot'}</small>`);
+    banner(`<span style="color:${RARITY.legendary.color}">${it.name}</span><small>${first ? _L('Prvé víťazstvo · garantovaný legendárny predmet') : _L('Legendárny predmet padol')}</small>`);
+  } else banner(_T`${e.B.name} porazený<small>${D ? _L('Pozbieraj loot, portál domov sa otvára') : _L('Pozbieraj loot')}</small>`);
   dropOre(e.x, e.y, (30 + e.lvl * 8) * P.stats.yieldMult);
   if (Math.random() < 0.6) dropGem(e.x, e.y, NMk >= 15 && Math.random() < 0.3 ? 2 : NMk >= 5 ? 1 : Math.random() < 0.2 ? 1 : 0);
   addShards(NMk ? 2 + Math.floor(NMk / 5) : 1);
@@ -247,13 +247,13 @@ function onBossKilled(e) {
     const ch = G.tier >= 3 || NMk >= 10 ? 1 : G.tier === 2 ? 0.4 : 0;
     if (Math.random() < ch) {
       P.frags[e.bossKey] = (P.frags[e.bossKey] || 0) + 1;
-      log(`<span style="color:#e8e2ff">Úlomok Architekta</span> od bossa ${BOSSES[e.bossKey].name} (${FRAG_BOSSES.filter(k => P.frags[k] > 0).length}/4 druhov).`);
+      log(_T`<span style="color:#e8e2ff">Úlomok Architekta</span> od bossa ${BOSSES[e.bossKey].name} (${FRAG_BOSSES.filter(k => P.frags[k] > 0).length}/4 druhov).`);
     }
   }
   if (G.tier >= G.maxTier && G.maxTier < 3 && e.bossKey === TIER_UNLOCK[G.maxTier + 1]) {
     G.maxTier++;
-    log(`<span style="color:#5be09a">Odomknutá svetová úroveň ${TIERS[G.maxTier].name}</span> (od úrovne ${TIERS[G.maxTier].req}). Zmeníš ju na stanici.`);
-    setTimeout(() => banner(`Svetová úroveň ${TIERS[G.maxTier].roman}<small>Odomknutá · zmeníš ju na stanici</small>`), 2800);
+    log(_T`<span style="color:#5be09a">Odomknutá svetová úroveň ${TIERS[G.maxTier].name}</span> (od úrovne ${TIERS[G.maxTier].req}). Zmeníš ju na stanici.`);
+    setTimeout(() => banner(_T`Svetová úroveň ${TIERS[G.maxTier].roman}<small>Odomknutá · zmeníš ju na stanici</small>`), 2800);
   }
   for (const m of enemies) if (m.minion && !m.dead) killEnemy(m);
   ring(e.x, e.y, e.B.color, 420, 1.2); burst(e.x, e.y, e.B.color, 160, 700, 3.5, 1.2); burst(e.x, e.y, '#ffffff', 50, 400, 2.5, 0.8);
@@ -272,10 +272,10 @@ function onBossKilled(e) {
         if (Math.random() < 0.25 + N.k * 0.01) grantRune();
         if (N.k >= 20 && !D.hurt) ACC.st.flawless = 1;
       }
-      setTimeout(() => banner(`Nočná brána ${N.k} ${inTime ? 'dokončená' : 'dokončená po limite'}<small>Čas ${fmtTime(N.t)} · nový kľúč úroveň ${next}${fast ? ' · rýchly beh +2' : ''}</small>`), 2800);
-      log(`Nočná brána ${N.k}: ${fmtTime(N.t)}. ${inTime ? 'V limite.' : 'Po limite.'} Nový kľúč úr. ${next}.`);
+      setTimeout(() => banner(_T`Nočná brána ${N.k} ${inTime ? _L('dokončená') : _L('dokončená po limite')}<small>Čas ${fmtTime(N.t)} · nový kľúč úroveň ${next}${fast ? _L(' · rýchly beh +2') : ''}</small>`), 2800);
+      log(_T`Nočná brána ${N.k}: ${fmtTime(N.t)}. ${inTime ? _L('V limite.') : _L('Po limite.')} Nový kľúč úr. ${next}.`);
     } else dropKey(e.x, e.y, keyBaseLevel());
   }
-  log(`<span style="color:${e.B.color}">${e.B.name}</span> porazený v sektore ${S.name}.`);
+  log(_T`<span style="color:${e.B.color}">${e.B.name}</span> porazený v sektore ${S.name}.`);
   G.boss = null;
 }

@@ -22,6 +22,7 @@ function segD2(px, py, ax, ay, bx, by) {
   t = clamp(t, 0, 1);
   return d2(px, py, ax + vx * t, ay + vy * t);
 }
-const fmtN = v => v >= 10000 ? (v / 1000).toFixed(1) + 'k' : v >= 100 ? Math.round(v).toString() : (Math.round(v * 10) / 10).toString();
+const fmtN = v => (v >= 10000 ? (v / 1000).toFixed(1) + 'k' : v >= 100 ? Math.round(v).toString() : (Math.round(v * 10) / 10).toString()).replace('.', DEC);
+const fmtD = v => v >= 10000 ? fmtN(v) : String(Math.max(1, Math.round(v)));   // damage numbers: whole numbers
 const fmtTime = t => Math.floor(t / 60) + ':' + String(Math.floor(t % 60)).padStart(2, '0');
 const $ = id => document.getElementById(id);

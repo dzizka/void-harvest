@@ -5,11 +5,11 @@ function buildSelect() {
   Object.entries(CLASSES).forEach(([key, c], i) => {
     const el = document.createElement('button');
     el.type = 'button'; el.className = 'ship frame'; el.style.setProperty('--sc', c.color);
-    el.innerHTML = `<div class="in">
+    el.innerHTML = _T`<div class="in">
       <canvas width="600" height="260" aria-hidden="true"></canvas>
       <div><span class="role">${c.role}</span><h2>${c.name}</h2></div>
       <p>${c.desc}</p>
-      <div class="meters">${Object.entries(c.meters).map(([l, v]) => `<div class="meter"><span>${l}</span><span class="segs">${[1, 2, 3, 4, 5].map(k => `<i class="${k <= v ? 'on' : ''}"></i>`).join('')}</span></div>`).join('')}</div>
+      <div class="meters">${Object.entries(c.meters).map(([l, v]) => `<div class="meter"><span>${_L(l)}</span><span class="segs">${[1, 2, 3, 4, 5].map(k => `<i class="${k <= v ? 'on' : ''}"></i>`).join('')}</span></div>`).join('')}</div>
       <ul class="perks">${c.perks.map(p => `<li>${p}</li>`).join('')}</ul>
       <span class="launch"><span>Štartovať</span><span>${i + 1}</span></span>
     </div>`;

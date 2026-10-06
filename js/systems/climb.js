@@ -20,7 +20,7 @@ function enterClimb(start, weekly) {
   G.dungeon = { climb: true, boss: 'void', lvl: Math.min(P.level, LEVEL_CAP), room: 0, wave: 0, state: 'climb', portal: null, sector: G.sector,
     floor: start, start, prog: 0, t: 0, spawnT: 1.2, guardian: null, weekly: !!weekly, wk: weekly ? weekMods(weekId()) : null };
   saveGame();
-  transition(weekly ? `Týždenná výzva · ${weekMods(weekId()).map(m => NM_MODS[m].name).join(' · ')}` : `Výstup do Prázdnoty · poschodie ${start}`, loadClimbFloor);
+  transition(weekly ? _T`Týždenná výzva · ${weekMods(weekId()).map(m => NM_MODS[m].name).join(' · ')}` : _T`Výstup do Prázdnoty · poschodie ${start}`, loadClimbFloor);
 }
 function loadModeArena(title) {
   const R = DUNGEON.R + 120;
@@ -42,7 +42,7 @@ function loadClimbFloor() {
   P.x = c; P.y = c; P.vx = P.vy = 0;
   setPalette(DUNGEON.pal, 'dungeon');
   cam.x = P.x; cam.y = P.y;
-  banner(`Výstup do Prázdnoty<small>Poschodie ${D.floor} · 5:00 · úroveň ${D.lvl}</small>`);
+  banner(_T`Výstup do Prázdnoty<small>Poschodie ${D.floor} · 5:00 · úroveň ${D.lvl}</small>`);
 }
 function nextClimbFloor() {
   const D = G.dungeon;
@@ -50,7 +50,7 @@ function nextClimbFloor() {
   for (const e of enemies) e.dead = true;
   enemies = []; ebullets = []; hazards = [];
   ring(P.x, P.y, '#9a8cff', 420, 0.8); burst(P.x, P.y, '#c9c2ff', 60, 500, 2.5, 0.7); shake(5);
-  banner(`Poschodie ${D.floor}<small>${D.floor % 5 === 0 ? 'Strážca hlbiny čaká na konci' : `zostáva ${fmtTime(Math.max(0, CLIMB_LIMIT - D.t))}`}</small>`);
+  banner(_T`Poschodie ${D.floor}<small>${D.floor % 5 === 0 ? _L('Strážca hlbiny čaká na konci') : _T`zostáva ${fmtTime(Math.max(0, CLIMB_LIMIT - D.t))}`}</small>`);
 }
 function climbDirector(dt) {
   const D = G.dungeon;
@@ -104,7 +104,7 @@ function endClimb() {
     W.best[P.cls] = Math.max(best, fl);
     W.runs.push({ cls: P.cls, floor: fl, d: Date.now() }); W.runs.sort((a, b) => b.floor - a.floor); W.runs.length = Math.min(W.runs.length, 10);
     ACC.st.weekly = Math.max(ACC.st.weekly || 0, fl);
-    if (fl >= 10 && !W.claimed[P.cls]) { W.claimed[P.cls] = 1; addShards(50); dropSet(P.x, P.y - 80, D.lvl); log('<span style="color:#9fd0ff">Týždenná odmena:</span> 50 úlomkov a kus setu.'); }
+    if (fl >= 10 && !W.claimed[P.cls]) { W.claimed[P.cls] = 1; addShards(50); dropSet(P.x, P.y - 80, D.lvl); log(_L('<span style="color:#9fd0ff">Týždenná odmena:</span> 50 úlomkov a kus setu.')); }
     saveAccount();
   } else rec = recordClimb(fl, false);
   // rewards scale with the floor reached
@@ -119,12 +119,12 @@ function endClimb() {
     const n = fl >= PA.rl[r] + 10 ? 2 : 1, L0 = PA.rl[r];
     PA.rl[r] = Math.min(RUNE_MAX, L0 + n); if (PA.rl[r] > L0) up.push(`${RUNES[r].name} ${PA.rl[r]}`);
   }
-  if (up.length) log(`<span style="color:#e8e2ff">Runy vylepšené:</span> ${up.join(', ')}.`);
+  if (up.length) log(_T`<span style="color:#e8e2ff">Runy vylepšené:</span> ${up.join(', ')}.`);
   if (Math.random() < 0.2 + fl * 0.01) grantRune();
   if (fl >= 15 && Math.random() < 0.5) dropSet(x, y, D.lvl);
   if (fl >= 20 && mythTier() > 0 && Math.random() < 0.004 * (fl - 19) * mythMult()) dropMythic(pick(MYTHIC_LIST.filter(m => m.id !== 'voidecho')).id, x, y, D.lvl + 1);
   D.portal = { x: G.arena.x, y: G.arena.y + 160, kind: 'return', t: -1 };
   recalcStats();
-  setTimeout(() => banner(`Výstup skončil · poschodie ${fl}<small>${rec ? 'Nový rekord! · ' : ''}odmeny ležia pri lodi · portál domov je otvorený</small>`), 300);
-  log(`<span style="color:#9a8cff">Výstup do Prázdnoty:</span> poschodie ${fl}${rec ? ' · nový rekord' : ''}. +${3 * fl} úlomkov.`);
+  setTimeout(() => banner(_T`Výstup skončil · poschodie ${fl}<small>${rec ? _L('Nový rekord! · ') : ''}odmeny ležia pri lodi · portál domov je otvorený</small>`), 300);
+  log(_T`<span style="color:#9a8cff">Výstup do Prázdnoty:</span> poschodie ${fl}${rec ? _L(' · nový rekord') : ''}. +${3 * fl} úlomkov.`);
 }

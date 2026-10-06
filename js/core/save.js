@@ -44,15 +44,15 @@ function restoreSave(d) {
   if (p.talV !== 2) {
     // the old shared tree was replaced by per-ship trees: refund every point
     P.tal = {}; P.points = Math.min(P.level, LEVEL_CAP) - 1;
-    const msg = `<span style="color:#b48cff">Nový strom talentov pre tvoju loď.</span> Body boli vrátené (${P.points}). Stlač K.`, who = P;
+    const msg = _T`<span style="color:#b48cff">Nový strom talentov pre tvoju loď.</span> Body boli vrátené (${P.points}). Stlač K.`, who = P;
     setTimeout(() => { if (P === who) log(msg); }, 600);
   }
   let added = 0;
   for (const sl of SLOT_ORDER) if (!P.equip[sl]) { P.equip[sl] = generateItem(Math.max(1, P.level - 2), 'common', sl, CLASSES[P.cls].start[sl]); added++; }
-  if (added) setTimeout(() => log(`Nové sloty lode (${added}) dostali základnú výbavu.`), 400);
+  if (added) setTimeout(() => log(_T`Nové sloty lode (${added}) dostali základnú výbavu.`), 400);
   KEY_ID = P.keys.reduce((m, k) => Math.max(m, k.id + 1), KEY_ID);
   Object.assign(G, { bossKills: g.bossKills || {}, tier: g.tier || 1, maxTier: g.maxTier || 1, found: g.found || {}, nmBest: g.nmBest || 0, filter: g.filter || 0, asv: g.asv || null, codex: g.codex || {}, archKills: g.archKills || 0,
-    autoFire: g.autoFire !== false, autoMine: g.autoMine !== false, kills: g.kills || 0, mined: g.mined || 0, oreTotal: g.oreTotal || 0, time: g.time || 0 });
+    autoFire: g.autoFire === true, autoMine: g.autoMine === true, kills: g.kills || 0, mined: g.mined || 0, oreTotal: g.oreTotal || 0, time: g.time || 0 });
   ITEM_ID = Math.max(ITEM_ID, d.itemId || 1);
   recalcStats(); P.hull = P.stats.maxHull; P.shield = P.stats.maxShield;
 }
@@ -60,14 +60,14 @@ function restoreSave(d) {
 function startGame(cls, data) {
   G = { mode: 'play', time: 0, kills: 0, mined: 0, oreTotal: 0, shake: 0, panel: null, paused: false, fullMsgT: -9, hudT: 0, mmT: 0,
         sector: 'kepler', dungeon: null, arena: null, station: null, gates: [], bossKills: {}, saved: null, safe: true, bubble: true, interact: null, mapSel: null,
-        autoFire: true, autoMine: true, cheat: { god: false, oneHit: false, speed: 1, unlock: false, debug: false, mythBoost: false }, fps: 60,
+        autoFire: false, autoMine: false, cheat: { god: false, oneHit: false, speed: 1, unlock: false, debug: false, mythBoost: false }, fps: 60,
         tier: 1, maxTier: 1, found: {}, saveT: 15 };
   P = createPlayer(cls);
   if (data) restoreSave(data);
   // shared hangar: one stash, one codex and one mythic archive for every pilot
   Object.assign(ACC.codex, G.codex || {}); Object.assign(ACC.found, G.found || {});
   G.codex = ACC.codex; G.found = ACC.found;
-  if (P.stash && P.stash.length && P.stash !== ACC.stash) { ACC.stash.push(...P.stash); log(`${P.stash.length} predmetov zo skladu presunutých do spoločného hangára.`); }
+  if (P.stash && P.stash.length && P.stash !== ACC.stash) { ACC.stash.push(...P.stash); log(_T`${P.stash.length} predmetov zo skladu presunutých do spoločného hangára.`); }
   P.stash = ACC.stash;
   ACC.st.shipLvl[cls] = Math.max(ACC.st.shipLvl[cls] || 0, P.level);
   saveAccount();
@@ -75,8 +75,8 @@ function startGame(cls, data) {
   ensureContracts();
   $('select').hidden = true; $('dead').hidden = true; $('hud').hidden = false;
   $('log').innerHTML = '';
-  log(data ? `Postup načítaný: ${CLASSES[cls].name}, úroveň ${P.level}, svet ${TIERS[G.tier].name}.` : `${CLASSES[cls].name} pripravený pri majáku Kepler-7. V modrom kruhu ťa nikto nenapadne.`);
-  log('Brány (G na minimape) vedú k bossom. Mapa: M, stanica: E.');
-  log('Auto-boj (F) a auto-ťažba (R) sú zapnuté. Podržaním ľavého tlačidla mieriš ručne.');
+  log(data ? _T`Postup načítaný: ${CLASSES[cls].name}, úroveň ${P.level}, svet ${TIERS[G.tier].name}.` : _T`${CLASSES[cls].name} pripravený pri majáku Kepler-7. V modrom kruhu ťa nikto nenapadne.`);
+  log(_L('Brány (G na minimape) vedú k bossom. Mapa: M, stanica: E.'));
+  log(_L('Ľavým tlačidlom strieľaš a ťažíš, pravým odpaľuješ rakety. Automatický boj a ťažbu zapneš v Menu (≡).'));
   syncPanels(); updateHUD();
 }

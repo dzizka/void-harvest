@@ -8,8 +8,8 @@ function enterVault() {
   G.dungeon = { vault: true, boss: 'devourer', lvl: P.level + TIERS[G.tier].lvl, room: 0, wave: 0, state: 'vault', portal: null, sector: G.sector, t: 0, chests: 0, gobs: 0, gobT: 12, started: false };
   ACC.st.vaults = (ACC.st.vaults || 0) + 1;
   saveGame();
-  transition('Trezor pašerákov', () => {
-    loadModeArena('Trezor pašerákov<small>60 sekúnd · rozbi truhlice, chyť pašerákov</small>');
+  transition(_L('Trezor pašerákov'), () => {
+    loadModeArena(_L('Trezor pašerákov<small>60 sekúnd · rozbi truhlice, chyť pašerákov</small>'));
     const A = G.arena, D = G.dungeon;
     for (let i = 0; i < 26; i++) { const a = rand(0, TAU), r = rand(120, A.r - 80); spawnEnemy('chest', A.x + Math.cos(a) * r, A.y + Math.sin(a) * r, D.lvl, false); }
     for (let i = 0; i < 4; i++) { const a = rand(0, TAU); spawnEnemy('goblin', A.x + Math.cos(a) * 250, A.y + Math.sin(a) * 250, D.lvl, false); }
@@ -26,8 +26,8 @@ function vaultDirector(dt) {
     for (const e of enemies) { e.dead = true; burst(e.x, e.y, '#ffb000', 10, 200, 2, 0.4); }
     enemies = [];
     D.portal = { x: P.x, y: P.y - 140, kind: 'return', t: -1 };
-    banner(`Trezor sa zatvoril<small>Truhlice ${D.chests} · pašeráci ${D.gobs}</small>`);
-    log(`Trezor: ${D.chests} truhlíc, ${D.gobs} pašerákov.`);
+    banner(_T`Trezor sa zatvoril<small>Truhlice ${D.chests} · pašeráci ${D.gobs}</small>`);
+    log(_T`Trezor: ${D.chests} truhlíc, ${D.gobs} pašerákov.`);
   }
 }
 /* ---------- boss rush: all six sector bosses back to back ---------- */
@@ -37,7 +37,7 @@ function enterRush() {
   G.saved = { sector: G.sector, asteroids, pickups, gates: G.gates, x: P.x, y: P.y + 60 };
   G.dungeon = { rush: true, boss: 'leviathan', lvl: Math.min(P.level, LEVEL_CAP) + 10, room: 0, wave: 0, state: 'rush', portal: null, sector: G.sector, t: 0, idx: 0, next: 2.5 };
   saveGame();
-  transition('Aréna veliteľov', () => loadModeArena('Aréna veliteľov<small>6 bossov · čas beží</small>'));
+  transition(_L('Aréna veliteľov'), () => loadModeArena(_L('Aréna veliteľov<small>6 bossov · čas beží</small>')));
 }
 function rushDirector(dt) {
   const D = G.dungeon;
@@ -53,7 +53,7 @@ function rushBossKilled(e) {
   const D = G.dungeon;
   G.boss = null; D.idx++; D.next = 2.5;
   ring(e.x, e.y, e.B.color, 360, 1); burst(e.x, e.y, e.B.color, 100, 600, 3, 1); shake(10);
-  if (D.idx < BOSS_ORDER.length) { banner(`${e.B.name} porazený<small>Boss ${D.idx}/6 · čas ${fmtTime(D.t)}</small>`); return; }
+  if (D.idx < BOSS_ORDER.length) { banner(_T`${e.B.name} porazený<small>Boss ${D.idx}/6 · čas ${fmtTime(D.t)}</small>`); return; }
   D.state = 'over';
   const t = Math.round(D.t * 10) / 10;
   ACC.rush = ACC.rush || {}; ACC.rushRuns = ACC.rushRuns || [];
@@ -68,6 +68,6 @@ function rushBossKilled(e) {
   if (Math.random() < 0.6) dropSet(e.x, e.y, D.lvl);
   if (Math.random() < 0.5) grantRune();
   D.portal = { x: G.arena.x, y: G.arena.y + 160, kind: 'return', t: -1 };
-  setTimeout(() => banner(`Aréna dokončená · ${fmtTime(t)}<small>${rec ? 'Nový rekord! · ' : ''}odmeny pri lodi · portál domov</small>`), 400);
-  log(`<span style="color:#ffd36b">Aréna veliteľov:</span> ${fmtTime(t)}${rec ? ' · nový rekord' : ''}.`);
+  setTimeout(() => banner(_T`Aréna dokončená · ${fmtTime(t)}<small>${rec ? _L('Nový rekord! · ') : ''}odmeny pri lodi · portál domov</small>`), 400);
+  log(_T`<span style="color:#ffd36b">Aréna veliteľov:</span> ${fmtTime(t)}${rec ? _L(' · nový rekord') : ''}.`);
 }
