@@ -43,7 +43,7 @@ function beaconFx(s, p) {
 }
 function activateBeacon(B) {
   ACC.beacons = ACC.beacons || {}; if (ACC.beacons[B.id]) return;
-  ACC.beacons[B.id] = true; ACC.st.beacons = Object.keys(ACC.beacons).length; saveAccount();
+  ACC.beacons[B.id] = true; ACC.st.beacons = Object.keys(ACC.beacons).length; saveAccount(); gameEvent('beacon', { sec: G.sector });
   addShards(10); recalcStats();
   ring(B.x, B.y, '#ffd36b', 420, 1.1); burst(B.x, B.y, '#ffd36b', 80, 520, 2.6, 0.9); shake(6);
   banner(_T`<span style="color:#ffd36b">Maják predkov</span><small>${B.b.txt} pre všetky lode · ${Object.keys(ACC.beacons).length}/${beaconTotal()}</small>`);
@@ -152,7 +152,7 @@ function explorationInteract() {
   return null;
 }
 function openAnomaly(a) {
-  a.done = true; ACC.st.anoms = (ACC.st.anoms || 0) + 1;
+  a.done = true; ACC.st.anoms = (ACC.st.anoms || 0) + 1; gameEvent('anom', { kind: a.kind, sec: G.sector });
   const L = zoneLevel() + 1, sk = SECTOR_MAT[G.sector];
   if (a.kind === 'wreck') {
     dropOre(a.x, a.y, (30 + L * 4) * P.stats.yieldMult); dropItem(a.x, a.y, L, 2); if (Math.random() < 0.5) dropItem(a.x, a.y, L, 1);

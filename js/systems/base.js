@@ -28,7 +28,7 @@ const matStr = c => Object.entries(c).filter(([, v]) => v > 0).map(([k, v]) => k
 const canAfford = c => Object.entries(c).every(([k, v]) => k === 'ore' ? P.ore >= v : (ACC.mats[k] || 0) >= v);
 function payMats(c) { for (const [k, v] of Object.entries(c)) { if (k === 'ore') P.ore -= v; else ACC.mats[k] -= v; } }
 function giveMat(k, n) { baseState(); ACC.mats[k] = (ACC.mats[k] || 0) + n; }
-function dropMat(x, y, k, n) { if (stimOn('greed')) n = Math.round(n * 1.3 + Math.random() * 0.5); if (n > 0) pickups.push({ kind: 'mat', mat: k, x, y, vx: rand(-120, 120), vy: rand(-120, 120), amount: n, t: 0, spin: rand(0, TAU), dead: false }); }
+function dropMat(x, y, k, n) { if (stimOn('greed')) n = Math.round(n * 1.3 + Math.random() * 0.5); if (seasonMod('gold')) n = Math.round(n * 1.5 + Math.random() * 0.5); if (n > 0) pickups.push({ kind: 'mat', mat: k, x, y, vx: rand(-120, 120), vy: rand(-120, 120), amount: n, t: 0, spin: rand(0, TAU), dead: false }); }
 
 /* ---------- drops ---------- */
 function matsOnAsteroid(a) {

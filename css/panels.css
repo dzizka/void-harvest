@@ -69,6 +69,34 @@
 #tip .setb{display:grid;gap:2px;font-size:12px}
 #tip .setb .on{color:#5be09a}
 #tip .setb .off{color:var(--dim)}
+#hStory{font:600 10.5px/1.35 var(--f-mono);color:#ffe6a8;border-top:1px solid var(--line);padding-top:6px;max-width:250px}
+#hStory b{color:#fff}
+.bay.dlg-bay{width:min(660px,calc(100% - 32px))}
+.dlg-text{font-size:15.5px;line-height:1.6;margin:0 0 14px;color:#dbe4f5}
+.dlg-obj{font-size:13px;color:var(--dim);margin:0 0 16px}
+.story-list{display:grid;gap:10px}
+.story-ch{padding:12px 14px;border:1px solid var(--line);background:rgba(8,13,26,.6)}
+.story-ch.cur{border-color:#ffd36b}
+.story-ch.locked{opacity:.45}
+.story-ch .sc-top{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.story-ch p{margin:8px 0 0;font-size:13px;line-height:1.5;color:#b5c1d8}
+.story-ch p.outro{color:#d8e6c8}
+.story-ch p.obj{color:#ffe6a8;font:600 12px/1.4 var(--f-mono)}
+.season-head{display:grid;grid-template-columns:1.4fr 1fr;gap:18px;align-items:end;margin-bottom:12px}
+@media (max-width:760px){.season-head{grid-template-columns:1fr}}
+.season-head h3{margin:4px 0;font-size:20px}
+.season-head p{margin:0;font-size:13px;color:#b5c1d8}
+.season-tier b{font-size:26px;color:#ffd36b}
+.season-tier .bar{height:6px;background:#18233a;margin:6px 0}
+.season-tier .bar i{display:block;height:100%;background:#ffd36b}
+.season-tier small{font-size:11px;color:var(--dim)}
+.stiers{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:6px}
+.stier{display:grid;gap:3px;text-align:left;padding:7px;border:1px solid var(--line);background:rgba(8,13,26,.6);color:var(--dim);font:inherit;cursor:default}
+.stier b{font:700 13px/1 var(--f-mono);color:var(--text)}
+.stier small{font-size:10.5px;line-height:1.3}
+.stier.big{border-color:#6b5a2e}
+.stier.open{border-color:#ffd36b;color:#ffe6a8;cursor:pointer;background:rgba(255,211,107,.1)}
+.stier.got{opacity:.45}
 #hStim{font:600 10.5px/1.35 var(--f-mono);color:#7ee0a8;border-top:1px solid var(--line);padding-top:6px;max-width:250px}
 .bmats{display:flex;flex-wrap:wrap;gap:6px 16px;margin-bottom:6px}
 .bmats .mat{display:inline-flex;align-items:center;gap:6px;font:600 12px/1 var(--f-mono);color:var(--dim)}

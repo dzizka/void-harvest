@@ -112,7 +112,7 @@ $('abPara').addEventListener('click', () => openPanel('para'));
 function setMore(open) { $('morePop').hidden = !open; $('abMore').setAttribute('aria-expanded', String(open)); }
 $('abMore').addEventListener('click', e => { e.stopPropagation(); setMore($('morePop').hidden); });
 document.addEventListener('click', e => { if (!e.target.closest('.ab-more')) setMore(false); });
-$('abAch').addEventListener('click', () => { setMore(false); G.achTab = 'ach'; openPanel('ach'); });
+$('abAch').addEventListener('click', () => { setMore(false); G.achTab = G.achTab && G.achTab !== 'enc' ? G.achTab : 'story'; openPanel('ach'); });
 $('abEnc').addEventListener('click', () => { setMore(false); G.achTab = 'enc'; openPanel('ach'); });
 $('stMap').addEventListener('click', () => { G.mapSel = G.sector; G.panel = 'map'; syncPanels(); });
 document.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', closePanels));
@@ -234,3 +234,5 @@ $('baseBody').addEventListener('click', e => {
   else return;
   renderStation(); updateHUD();
 });
+
+$('dlgOk').addEventListener('click', () => { G.panel = null; syncPanels(); });

@@ -36,7 +36,7 @@ function tickStorm(dt) {
     if (S.t <= 0) {
       if (S.ember > 0) log(_T`Búrka utíchla. ${S.ember} žiary sa rozplynulo.`);
       else log(_L('Búrka Prázdnoty utíchla.'));
-      Object.assign(S, { state: 'idle', t: STORM_EVERY, ember: 0, chests: null });
+      Object.assign(S, { state: 'idle', t: seasonMod('storm') ? 480 : STORM_EVERY, ember: 0, chests: null });
     }
   }
 }
@@ -47,7 +47,7 @@ function makeStormChests() {
 function openStormChest(c) {
   const S = G.storm, cost = c.gift ? STORM_GIFT : STORM_CHEST;
   if (S.ember < cost) { addText(P.x, P.y - 30, _T`Treba ${cost} žiary`, '#c86bff', 12, 0.9); return; }
-  S.ember -= cost; ACC.st.stormChests = (ACC.st.stormChests || 0) + 1;
+  S.ember -= cost; ACC.st.stormChests = (ACC.st.stormChests || 0) + 1; gameEvent('storm');
   const L = zoneLevel() + 2;
   if (c.gift) {
     for (let i = 0; i < 2; i++) dropPickup('item', c.x, c.y, 1, generateItem(L, 'legendary'));
@@ -104,7 +104,7 @@ function tickFort(dt) {
   } else freeFort(F);
 }
 function freeFort(F) {
-  G.forts = G.forts || {}; G.forts[F.id] = true; G.siege = null;
+  G.forts = G.forts || {}; G.forts[F.id] = true; G.siege = null; gameEvent('fort', { sec: F.id });
   ACC.st.forts = Math.max(ACC.st.forts || 0, Object.keys(G.forts).length);
   const L = zoneLevel() + 3;
   dropPickup('item', F.x, F.y, 1, generateItem(L, 'legendary'));
@@ -198,7 +198,7 @@ function hordeBossKilled(e) {
   const D = G.dungeon; G.boss = null;
   ring(e.x, e.y, '#c86bff', 420, 1.1); burst(e.x, e.y, '#c86bff', 120, 650, 3, 1); shake(10);
   D.state = 'chests'; D.aether += 25;
-  ACC.st.hordes = (ACC.st.hordes || 0) + 1; ACC.hordeBest = Math.max(ACC.hordeBest || 0, D.aether); saveAccount();
+  ACC.st.hordes = (ACC.st.hordes || 0) + 1; gameEvent('horde'); ACC.hordeBest = Math.max(ACC.hordeBest || 0, D.aether); saveAccount();
   const A = G.arena;
   const bx = (P.x + A.x) / 2, by = (P.y + A.y) / 2;
   D.chests = HORDE_CHESTS.map((c, i) => ({ ...c, x: bx + (i - 1.5) * 150, y: by - 140, open: 0 }));
@@ -232,7 +232,7 @@ function openHordeChest(c) {
 function endgameOnKill(e) {
   if (e.minion) return;
   if (stormHere()) {
-    const n = e.isBoss ? 25 : e.hunter ? 15 : e.elite ? 4 : Math.random() < 0.2 ? 1 : 0;
+    const sm = seasonMod('storm') ? 1.25 : 1, n = e.isBoss ? Math.round(25 * sm) : e.hunter ? Math.round(15 * sm) : e.elite ? Math.round(4 * sm) : Math.random() < 0.2 * sm ? 1 : 0;
     if (n) { G.storm.ember += n; addText(e.x, e.y - e.r - 18, _T`+${n} žiary`, '#c86bff', 11, 0.7); }
   }
   const D = G.dungeon;

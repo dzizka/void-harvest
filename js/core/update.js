@@ -26,6 +26,7 @@ function update(dt) {
   tickStorm(dt);
   tickBaseAll(dt);
   tickExploration(dt);
+  tickStory(dt);
   if (!G.dungeon) tickFort(dt);
   updateTrails(dt);
   if (asteroids.some(a => a.dead)) asteroids = asteroids.filter(a => !a.dead);

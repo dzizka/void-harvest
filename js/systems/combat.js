@@ -154,7 +154,7 @@ function dropXp(x, y, total) {
   for (let i = 0; i < n; i++) dropPickup('xp', x, y, total / n);
 }
 function dropOre(x, y, total) {
-  total = Math.max(1, Math.round(total * (nmHas('ore') ? 2 : 1) * ((P && P.stats.oreMult) || 1) * (stimOn('greed') ? 1.3 : 1)));
+  total = Math.max(1, Math.round(total * (nmHas('ore') ? 2 : 1) * ((P && P.stats.oreMult) || 1) * (stimOn('greed') ? 1.3 : 1) * (seasonMod('gold') ? 1.5 : 1)));
   const n = clamp(Math.ceil(total / 3), 1, 8);
   let left = total;
   for (let i = 0; i < n; i++) { const amt = i === n - 1 ? left : Math.round(total / n); left -= amt; if (amt > 0) dropPickup('ore', x, y, amt); }
@@ -182,6 +182,7 @@ function killEnemy(e) {
   if (MN && !MN.titan && (MN.army || Math.random() < MN.chance * (P.orderT > 0 && P.orderBuild ? 2 : 1))) spawnMinion(e.x, e.y);
   abilityOnKill();
   endgameOnKill(e);
+  if (!e.minion) gameEvent('kill', { sec: G.dungeon ? G.dungeon.sector : G.sector, elite: e.elite });
   matsOnKill(e);
   if (!e.minion) contractTick('kill', { sec: G.dungeon ? G.dungeon.sector : G.sector });
   if (G.dungeon && G.dungeon.climb && G.dungeon.state === 'climb' && !e.minion && !e.isBoss) G.dungeon.prog += e.elite ? 6 : e.small ? 0.3 : 1;
@@ -235,6 +236,7 @@ function killEnemy(e) {
     if (P.level >= 15 && !(G.dungeon && G.dungeon.vault) && Math.random() < 0.08) { P.vaultFrags = (P.vaultFrags || 0) + 1; addText(e.x, e.y - 30, _L('ÚLOMOK MAPY'), '#ffb000', 12, 1); log(_T`<span style="color:#ffb000">Úlomok mapy trezoru</span> (${P.vaultFrags}/5).`); }
     dropItem(e.x, e.y, e.lvl, 2);
     if (Math.random() < 0.5) dropItem(e.x, e.y, e.lvl, 1);
+    if (seasonMod('elites')) dropItem(e.x, e.y, e.lvl, 1);
     log(`${eliteAdj(e.T)} ${e.T.name} ${e.T.g === 'f' ? _L('zničená') : e.T.g === 'n' ? _L('zničené') : _L('zničený')}.`);
     if (Math.random() < (G.dungeon && G.dungeon.nm ? 0.2 : 0.12)) dropKey(e.x, e.y, G.dungeon && G.dungeon.nm ? G.dungeon.nm.k : keyBaseLevel());
   } else if (Math.random() < e.T.gear * (e.small ? 0.3 : 1) * (nmHas('loot') ? 1.5 : 1) * (1 + (P.stats.tx.sDiv || 0) / 100)) {

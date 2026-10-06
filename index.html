@@ -57,6 +57,7 @@
     <div id="hWb" hidden></div>
     <div id="hStorm" hidden></div>
     <div id="hStim" hidden></div>
+    <div id="hStory" hidden></div>
     <div id="hContracts" hidden></div>
     <dl>
       <dt>Úroveň zóny</dt><dd id="hThreat">1</dd>
@@ -279,7 +280,7 @@
   <div class="in">
     <header>
       <h2>Denník</h2>
-      <div class="tabs" id="achTabs"><button type="button" data-at="ach">Výzvy</button><button type="button" data-at="enc">Encyklopédia</button></div>
+      <div class="tabs" id="achTabs"><button type="button" data-at="story">Príbeh</button><button type="button" data-at="ach">Výzvy</button><button type="button" data-at="season">Sezóna</button><button type="button" data-at="enc">Encyklopédia</button></div>
       <span class="tal-points">Splnené <b id="achN">0</b></span>
       <button class="close" type="button" data-close>ESC</button>
     </header>
@@ -320,6 +321,20 @@
       <span class="hint" id="hordeHint"></span>
     </header>
     <div class="bay-body"><div class="horde-offers" id="hordeOffers"></div><p class="note" id="hordePicks"></p></div>
+  </div>
+</section>
+
+<section id="dlg" class="bay frame station-bay dlg-bay" hidden>
+  <div class="in">
+    <header>
+      <h2 id="dlgTitle">Kapitola</h2>
+      <span class="hint" id="dlgWho"></span>
+    </header>
+    <div class="bay-body">
+      <p class="dlg-text" id="dlgText"></p>
+      <p class="dlg-obj" id="dlgObj"></p>
+      <button type="button" class="btn primary" id="dlgOk">Pokračovať</button>
+    </div>
   </div>
 </section>
 
@@ -378,6 +393,7 @@
 <script src="js/systems/endgame-events.js"></script>
 <script src="js/systems/base.js"></script>
 <script src="js/systems/exploration.js"></script>
+<script src="js/systems/story.js"></script>
 <script src="js/render/background.js"></script>
 <script src="js/render/sprites.js"></script>
 <script src="js/render/render.js"></script>

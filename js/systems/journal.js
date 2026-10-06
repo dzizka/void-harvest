@@ -44,6 +44,10 @@ const SKINS = [
   { n: 12, name: _L('Prázdnota'), c: '#e14bff' },
   { n: 16, name: _L('Biela hviezda'), c: '#ffffff' }
 ];
+const SEASON_SKIN_COLS = ['#ff9a3c', '#7ee0a8', '#c86bff', '#ff5f9e', '#6fe3ff', '#e8f06b'];
+function allSkins() {
+  return SKINS.concat(Object.keys(ACC.cos || {}).map(k => { let h = 0; for (const ch of k) h = (h * 31 + ch.charCodeAt(0)) % 997; return { n: 0, name: _L('Sezónna farba'), c: SEASON_SKIN_COLS[h % SEASON_SKIN_COLS.length] }; }));
+}
 function checkAch() {
   const st = ACC.st;
   st.shipLvl[P.cls] = Math.max(st.shipLvl[P.cls] || 0, P.level);
@@ -108,11 +112,13 @@ function renderAch() {
   G.achTab = G.achTab || 'ach';
   document.querySelectorAll('#achTabs [data-at]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.at === G.achTab)));
   if (G.achTab === 'enc') { $('achBody').innerHTML = renderEnc(); return; }
-  const titles = ACH.filter(A => ACC.ach[A.id]).map(A => A.title);
+  if (G.achTab === 'story') { $('achBody').innerHTML = renderStoryTab(); return; }
+  if (G.achTab === 'season') { $('achBody').innerHTML = renderSeasonTab(); return; }
+  const titles = ACH.filter(A => ACC.ach[A.id]).map(A => A.title).concat(ACC.titles || []);
   const cur = ACC.skin[P.cls] || null;
   $('achBody').innerHTML = _T`<div class="ach-top">
       <label class="field">Titul <select id="achTitle"><option value="">— bez titulu —</option>${titles.map(t => `<option ${ACC.title === t ? 'selected' : ''}>${t}</option>`).join('')}</select></label>
-      <div><span class="eyebrow">Farba lode ${CLASSES[P.cls].name}</span><div class="skins" style="margin-top:6px">${SKINS.map((k, i) => `<button type="button" data-skin="${i}" title="${k.name}${done < k.n ? _T` · odomkne ${k.n} výziev` : ''}" style="--sk:${k.c || CLASSES[P.cls].color}" aria-pressed="${(k.c || null) === cur}" ${done < k.n ? 'disabled' : ''}></button>`).join('')}</div></div>
+      <div><span class="eyebrow">Farba lode ${CLASSES[P.cls].name}</span><div class="skins" style="margin-top:6px">${allSkins().map((k, i) => `<button type="button" data-skin="${i}" title="${k.name}${done < k.n ? _T` · odomkne ${k.n} výziev` : ''}" style="--sk:${k.c || CLASSES[P.cls].color}" aria-pressed="${(k.c || null) === cur}" ${done < k.n ? 'disabled' : ''}></button>`).join('')}</div></div>
     </div>
     <div class="ach-grid">${ACH.map(A => { const v = Math.min(A.n, A.v()), ok = !!ACC.ach[A.id]; return _T`<div class="crow ${ok ? 'done' : ''}"><div class="ct"><b>${A.desc}</b>
       <div class="bar"><i style="width:${(v / A.n * 100).toFixed(0)}%"></i></div>
@@ -122,7 +128,7 @@ $('achTabs').addEventListener('click', e => { const b = e.target.closest('[data-
 $('achBody').addEventListener('change', e => { if (e.target.id === 'achTitle') { ACC.title = e.target.value; saveAccount(); updateHUD(); } });
 $('achBody').addEventListener('click', e => {
   const b = e.target.closest('[data-skin]'); if (!b || b.disabled) return;
-  const k = SKINS[+b.dataset.skin]; if (k.c) ACC.skin[P.cls] = k.c; else delete ACC.skin[P.cls];
+  const k = allSkins()[+b.dataset.skin]; if (k.c) ACC.skin[P.cls] = k.c; else delete ACC.skin[P.cls];
   saveAccount(); renderAch();
 });
 const TUT = [
@@ -183,3 +189,5 @@ function rerollContract(id) {
 }
 
 const nmEnemyDmgScale = () => { const D = G.dungeon; return (1 + 0.09 * (D.lvl - 1)) * TIERS[G.tier].dmg * D.nm.sc.dmg; };
+
+$('achBody').addEventListener('click', e => { const b = e.target.closest('[data-sclaim]'); if (!b || b.disabled) return; claimSeason(+b.dataset.sclaim); renderAch(); });

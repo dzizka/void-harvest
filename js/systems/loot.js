@@ -37,7 +37,8 @@ function gaChance(rarity) {
   const D = G.dungeon;
   let c = [0, 0, 0.01, 0.025, 0.05][G.tier] + nmK() * 0.0005 + (D && D.climb ? Math.min(0.03, D.floor * 0.001) : 0) + (D && D.rush ? 0.01 : 0);
   if (rarity === 'rare') c *= 0.5;
-  return Math.min(0.12, c);
+  if (seasonMod('greater')) c *= 2;
+  return Math.min(0.2, c);
 }
 const gaRerollChance = it => RARITY[it.rarity].rank >= 2 ? Math.max(it.rarity === 'rare' ? 0.01 : 0.02, gaChance(it.rarity)) : 0;
 function generateItem(ilvl, rarity, slot, type, legendId) {

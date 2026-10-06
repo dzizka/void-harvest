@@ -16,7 +16,7 @@ function director(dt) {
   if (G.spawnT <= 0 && enemies.length < target && !G.safe) {
     G.spawnT = rand(0.7, 1.5) * (zone < 3 ? 1.3 : 1) * (stormHere() ? 0.6 : 1);
     const p = spawnPoint();
-    if (p) { const dp = depthAt(p.x, p.y); spawnEnemy(weighted(S.enemies), p.x, p.y, zone + dp + stormLvl() + (Math.random() < 0.3 ? 1 : 0), zone >= 2 && Math.random() < 0.06 + 0.04 * dp + (stormHere() ? 0.04 : 0)); }
+    if (p) { const dp = depthAt(p.x, p.y); spawnEnemy(weighted(S.enemies), p.x, p.y, zone + dp + stormLvl() + (Math.random() < 0.3 ? 1 : 0), zone >= 2 && Math.random() < (0.06 + 0.04 * dp + (stormHere() ? 0.04 : 0)) * (seasonMod('elites') ? 1.5 : 1)); }
   }
   G.waveT -= dt;
   if (G.waveT <= 0 && !G.safe) {
@@ -47,7 +47,7 @@ function updateInteract() {
     if (G.dungeon.horde) { const hx = hordeInteract(); if (hx) it = hx; }
   } else {
     if (G.station && d2(G.station.x, G.station.y, P.x, P.y) < G.station.dock ** 2)
-      it = { txt: _L('Dokovať na stanici'), sub: _L('servis · obchod · mapa'), col: '#5fd4ff', act: () => { P.hull = P.stats.maxHull; P.shield = P.stats.maxShield; openPanel('station'); tutTick('dock'); } };
+      it = { txt: _L('Dokovať na stanici'), sub: _L('servis · obchod · mapa'), col: '#5fd4ff', act: () => { P.hull = P.stats.maxHull; P.shield = P.stats.maxShield; gameEvent('dock', { sec: G.sector }); openPanel('station'); tutTick('dock'); } };
     for (const g of G.gates) {
       if (d2(g.x, g.y, P.x, P.y) < 100 * 100) {
         const B = BOSSES[g.boss];

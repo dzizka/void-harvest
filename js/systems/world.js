@@ -187,6 +187,7 @@ function archUpdate(e) {
   if (A.phase === 2 && !e.shielded && e.hp < e.maxHp * 0.33) { A.phase = 3; ring(e.x, e.y, '#ff5f6d', 380, 0.9); shake(12); banner(_L('<span style="color:#ff5f6d">Architekt Prázdnoty</span><small>Fáza 3 · zúrivosť</small>')); }
 }
 function onArchitectKilled(e) {
+  gameEvent('arch');
   const D = G.dungeon, L = e.lvl;
   G.archKills = (G.archKills || 0) + 1;
   const first = G.archKills === 1;
@@ -227,6 +228,7 @@ function onBossKilled(e) {
     return;
   }
   const D = G.dungeon, sec = D ? D.sector : G.sector, S = SECTORS[sec];
+  gameEvent('gate', { sec });
   G.bossKills[sec] = (G.bossKills[sec] || 0) + 1;
   const first = G.bossKills[sec] === 1;
   const NMk = D && D.nm ? D.nm.k : 0;

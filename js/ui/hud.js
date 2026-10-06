@@ -114,6 +114,9 @@ function updateHUD() {
     $('evObj').textContent = G.siege.cmd ? _L('Zostreľ veliteľa pevnosti') : _T`Vlna ${G.siege.wave}/3 · zostáva ${enemies.filter(e => e.fort && !e.dead).length}`;
     $('evBar').style.width = ((G.siege.wave + (G.siege.cmd ? 1 : 0)) / 4 * 100).toFixed(1) + '%';
   } else $('evBox').style.top = '';
+  const sst = curStep(), SS = storyState();
+  $('hStory').hidden = !sst;
+  if (sst) { const sh = _T`📜 ${CHAPTERS[SS.ch].title}: ${sst.txt} <b>${Math.min(SS.prog, sst.n || 1)}/${sst.n || 1}</b>`; if ($('hStory').innerHTML !== sh) $('hStory').innerHTML = sh; }
   const stims = P.stim ? Object.keys(P.stim).filter(k => P.stim[k] > 0) : [];
   $('hStim').hidden = !stims.length;
   if (stims.length) $('hStim').textContent = stims.map(k => `⚗ ${STIMS[k].name} ${fmtTime(P.stim[k])}`).join(' · ');
@@ -177,7 +180,7 @@ function updateHUD() {
   }
 }
 
-const PANELS = ['inv', 'tal', 'map', 'station', 'cheat', 'gate', 'craft', 'para', 'ach', 'horde'];
+const PANELS = ['inv', 'tal', 'map', 'station', 'cheat', 'gate', 'craft', 'para', 'ach', 'horde', 'dlg'];
 function syncPanels() {
   const open = G ? G.panel : null;
   for (const p of PANELS) $(p).hidden = open !== p;
@@ -189,6 +192,7 @@ function syncPanels() {
   if (open === 'tal') { renderTalents(); setTalTab(G.talTab || 'tree'); renderSkills(); }
   if (open === 'map') renderMap();
   if (open === 'horde') renderHordeOffer();
+  if (open === 'dlg') renderDialog();
   if (open === 'station') renderStation();
   if (open === 'cheat') renderCheat();
   if (open === 'gate') renderGate();
@@ -198,7 +202,7 @@ function syncPanels() {
 }
 function openPanel(name) {
   if (!G || G.mode !== 'play' || transitioning) return;
-  if (G.panel === 'horde') return;
+  if (G.panel === 'horde' || G.panel === 'dlg') return;
   G.panel = G.panel === name ? null : name;
   syncPanels();
 }
