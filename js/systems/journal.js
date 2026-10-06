@@ -2,6 +2,8 @@
 /* ---------- challenge journal (account-wide) ---------- */
 const BOSS6 = ['brood', 'warden', 'dread', 'queen', 'gravit', 'leviathan'];
 const ACH = [
+  { id: 'beacons',  desc: _L('Aktivuj všetkých 14 majákov predkov'), n: 14, v: () => ACC.st.beacons || 0, sh: 30, title: _L('Strážca predkov') },
+  { id: 'anoms25',  desc: _L('Preskúmaj 25 anomálií'), n: 25, v: () => ACC.st.anoms || 0, sh: 15, title: _L('Prieskumník') },
   { id: 'storm10',  desc: _L('Otvor 10 prekliatych truhlíc v Búrke Prázdnoty'), n: 10, v: () => ACC.st.stormChests || 0, sh: 15, title: _L('Lovec búrok') },
   { id: 'forts6',   desc: _L('Osloboď všetkých 6 pevností jednou loďou'), n: 6, v: () => ACC.st.forts || 0, sh: 30, title: _L('Osloboditeľ') },
   { id: 'horde5',   desc: _L('Dokonči Hordu Prázdnoty 5×'), n: 5, v: () => ACC.st.hordes || 0, sh: 25, title: _L('Krotiteľ hordy') },

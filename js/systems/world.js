@@ -55,6 +55,7 @@ function loadSector(id, pos, restore) {
   saveGame();
   setPalette(S.pal, id);
   cam.x = P.x; cam.y = P.y;
+  initExploration();
   banner(`${S.name}<small>${S.kind === 'safe' ? _L('Bezpečná zóna · žiadne útoky') : levelRange(S) + _L(' · bojová zóna')}</small>`);
 }
 

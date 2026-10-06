@@ -25,6 +25,7 @@ function update(dt) {
   tickWorldBoss(dt);
   tickStorm(dt);
   tickBaseAll(dt);
+  tickExploration(dt);
   if (!G.dungeon) tickFort(dt);
   updateTrails(dt);
   if (asteroids.some(a => a.dead)) asteroids = asteroids.filter(a => !a.dead);
@@ -94,7 +95,7 @@ function updatePlayer(dt) {
     P.shield = Math.min(s.maxShield, P.shield + Math.max(s.shieldRegen * 3, s.maxShield * 0.15) * dt);
     P.hull = Math.min(s.maxHull, P.hull + s.maxHull * 0.06 * dt);
   } else {
-    if (G.time - P.lastHit > s.shieldDelay) P.shield = Math.min(s.maxShield, P.shield + s.shieldRegen * dt * (nmHas('noRegen') ? 0.25 : 1));
+    if ((P.radT = (P.radT || 0) - dt) <= 0 && G.time - P.lastHit > s.shieldDelay) P.shield = Math.min(s.maxShield, P.shield + s.shieldRegen * dt * (nmHas('noRegen') ? 0.25 : 1));
     P.hull = Math.min(s.maxHull, P.hull + s.maxHull * 0.004 * dt);
   }
   P.hitFlash -= dt; P.shieldFlash -= dt; P.novaT -= dt; P.contactT -= dt;

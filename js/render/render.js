@@ -23,6 +23,7 @@ function render() {
   }
   if (G.station && vis(G.station.x, G.station.y, Math.max(G.station.r, 200))) drawStation(G.station);
   drawBase();
+  drawExploration();
   for (const g of G.gates) if (vis(g.x, g.y, 120)) { const B = BOSSES[g.boss]; drawPortalRing(g.x, g.y, B.color, 62, G.time + g.t, _T`BRÁNA · ÚR. ${g.lvl}`, B.lair); }
   if (G.dungeon && G.dungeon.portal && G.dungeon.portal.t > -1.5) {
     const p = G.dungeon.portal, ready = p.t > 0;
@@ -174,6 +175,7 @@ function render() {
   }
   ctx.globalAlpha = 1;
   drawStormOverlay(W, H, dpr);
+  drawHazardOverlay(W, H, dpr);
   if (G.freezeT > 0) { ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.fillStyle = 'rgba(150,200,255,.09)'; ctx.fillRect(0, 0, W, H); }
   if (G.intro) {
     const I = G.intro, k = clamp(Math.min(I.t, I.t0 - I.t) / 0.35, 0, 1), bh = H * 0.11 * k, col = I.e.B.color;
@@ -211,6 +213,7 @@ function drawMinimap() {
   for (const a of asteroids) mctx.fillRect(a.x * k - 0.7, a.y * k - 0.7, a.size > 1 ? 2 : 1.3, a.size > 1 ? 2 : 1.3);
   for (const p of pickups) if (p.kind === 'item') { mctx.fillStyle = RARITY[p.item.rarity].color; mctx.fillRect(p.x * k - 1.5, p.y * k - 1.5, 3, 3); }
   drawMinimapEndgame(k);
+  drawMinimapExplore(k);
   mctx.font = '700 9px "JetBrains Mono", monospace'; mctx.textAlign = 'center';
   for (const g of G.gates) {
     const col = BOSSES[g.boss].color;

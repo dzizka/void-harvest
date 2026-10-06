@@ -207,6 +207,11 @@ function closePanels() { if (G) { G.panel = null; G.fromStation = false; syncPan
 // Space / Q / Shift slots with cooldown bars
 function updateSkillBar() {
   if (!P.skCd) resetAbilities();
+  const scd = G.ex && !G.dungeon ? Math.max(0, G.ex.scanCd) : 0;
+  $('abScan').hidden = !!G.dungeon;
+  $('abScanS').textContent = scd > 0 ? scd.toFixed(1) + ' s' : '✓';
+  $('abScanCd').style.width = (scd / SCAN_CD * 100).toFixed(1) + '%';
+  $('abScan').classList.toggle('ready', scd <= 0);
   const D = dodgeDef(), mx = dodgeCharges(), ph = D === PHASE_DODGE;
   const cd = ph ? Math.max(0, P.dashCd) : P.dodgeCh > 0 ? 0 : P.dodgeCd;
   $('abDodgeN').textContent = D.name; $('abDodge').title = D.desc;

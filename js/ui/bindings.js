@@ -198,6 +198,7 @@ addEventListener('keydown', e => {
   }
   if ((e.code === 'ShiftLeft' || e.code === 'ShiftRight') && !e.repeat && !G.panel) input.skill[1] = true;
   if (e.code === 'KeyQ' && !e.repeat && !G.panel) input.skill[0] = true;
+  if (e.code === 'KeyC' && !e.repeat && !G.panel) input.scan = true;
   if (e.code === 'Space' && !e.repeat && !G.panel && !G.paused) input.dodge = true;
   input.keys[e.code] = true;
 });

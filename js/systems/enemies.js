@@ -55,7 +55,7 @@ function updateInteract() {
           act: () => { if (P.keys.length) { G.gateSel = g; openPanel('gate'); } else enterDungeon(g); } };
       }
     }
-    const ex = endgameInteract() || baseInteract(); if (ex) it = ex;
+    const ex = endgameInteract() || baseInteract() || explorationInteract(); if (ex) it = ex;
   }
   G.interact = it;
 }

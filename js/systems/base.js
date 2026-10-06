@@ -109,6 +109,7 @@ const RESEARCH = {
   optics: { name: _L('Kryštálová optika'),     txt: r => _T`+${r} % kritická šanca`, fx: (s, p, r) => { p.crit += r; } },
   cool:   { name: _L('Rýchle chladenie'),      txt: r => _T`+${3 * r} % skrátenie cooldownov`, fx: (s, p, r) => { p.skCdr += 3 * r; } },
   magnet: { name: _L('Silnejší magnet'),       txt: r => _T`+${15 * r} % dosah magnetu`, fx: (s, p, r) => { s.magnet *= 1 + 0.15 * r; } },
+  scan:   { name: _L('Hĺbkový skener'),      txt: r => _T`+${25 * r} % dosah skenera`, fx: (s, p, r) => { s.scanMul = 1 + 0.25 * r; } },
   learn:  { name: _L('Analytické jadro'),      txt: r => _T`+${5 * r} % XP`, fx: (s, p, r) => { s.xpMult += 0.05 * r; } }
 };
 const resRank = id => (ACC && ACC.base && ACC.base.res && ACC.base.res[id]) || 0;

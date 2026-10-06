@@ -25,6 +25,7 @@ function renderMap() {
       ${S.kind === 'hostile' ? _T`<dt>Brána</dt><dd style="color:${col}">${BOSSES[S.boss].lair}</dd><dt>Boss</dt><dd>${BOSSES[S.boss].name}${kills ? _T` · porazený ${kills}×` : ''}</dd>` : _L('<dt>Služby</dt><dd>servis, kontajnery</dd>')}
     </dl>
     ${S.kind === 'hostile' && bossLoot(S.boss) ? (() => { const L = bossLoot(S.boss); return _T`<p class="loot-hint"><b>Lov na veliteľa:</b> ${L.legs.map(id => `<span style="color:${LEGEND_INDEX[id].build ? L.branch.color : RARITY.legendary.color}">${LEGEND_INDEX[id].name}</span>`).join(', ')} · set <span style="color:${RARITY.set.color}">${setName(L.set)}</span></p>`; })() : ''}
+    ${(() => { const bl = beaconList(id), on = bl.filter(B => beaconOn(B.id)).length, hz = (SECTOR_HAZ[id] || []).map(k => HAZ_NAMES[k]); return _T`<p class="loot-hint">Majáky predkov ${on}/${bl.length}${hz.length ? _T` · hrozby: ${hz.join(', ')}` : ''}${S.kind === 'hostile' ? _T` · pevnosť ${fortFree(id) ? _L('oslobodená') : _L('obsadená')}` : ''}</p>`; })()}
     ${why ? `<span class="why">${why}</span>` : ''}
     <button type="button" class="btn primary" id="warpBtn" ${why ? 'disabled' : ''}>Hyperskok</button>`;
   $('warpBtn').addEventListener('click', () => warpTo(id));
