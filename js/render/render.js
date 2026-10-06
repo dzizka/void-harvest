@@ -22,6 +22,7 @@ function render() {
     ctx.fillRect(-2000, 0, 2000, WORLD.h); ctx.fillRect(WORLD.w, 0, 2000, WORLD.h);
   }
   if (G.station && vis(G.station.x, G.station.y, Math.max(G.station.r, 200))) drawStation(G.station);
+  drawBase();
   for (const g of G.gates) if (vis(g.x, g.y, 120)) { const B = BOSSES[g.boss]; drawPortalRing(g.x, g.y, B.color, 62, G.time + g.t, _T`BRÁNA · ÚR. ${g.lvl}`, B.lair); }
   if (G.dungeon && G.dungeon.portal && G.dungeon.portal.t > -1.5) {
     const p = G.dungeon.portal, ready = p.t > 0;

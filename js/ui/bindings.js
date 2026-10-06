@@ -218,3 +218,18 @@ function resize() {
   canvas.width = Math.round(view.w * view.dpr); canvas.height = Math.round(view.h * view.dpr);
 }
 addEventListener('resize', resize);
+
+$('baseBody').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b || b.disabled) return;
+  const d = b.dataset;
+  if (d.bup) upgradeModule(d.bup);
+  else if (d.bcol != null) collectRefinery();
+  else if (d.bref != null) refineOre();
+  else if (d.bres) startResearch(d.bres);
+  else if (d.bexp) startExpedition(d.bexp);
+  else if (d.bclaim != null) claimExpedition(+d.bclaim);
+  else if (d.bstim) brewStim(d.bstim);
+  else if (d.bsmelt != null) smelt(+d.bsmelt);
+  else return;
+  renderStation(); updateHUD();
+});

@@ -3,8 +3,10 @@
 function renderStation() {
   const S = curSector();
   G.stTab = G.stTab || 'port';
+  if (G.stTab === 'base') renderBase();
   document.querySelectorAll('#station [data-st-card]').forEach(c => { c.hidden = c.dataset.stCard !== G.stTab; });
-  const dots = { port: (P.contracts || []).some(c => c.done), chal: FRAG_BOSSES.every(k => (P.frags[k] || 0) > 0) || (P.vaultFrags || 0) >= VAULT_FRAGS };
+  const BS = baseState();
+  const dots = { base: BS.exp.some(E => Date.now() >= E.end) || Object.values(BS.store).some(v => v >= 20), port: (P.contracts || []).some(c => c.done), chal: FRAG_BOSSES.every(k => (P.frags[k] || 0) > 0) || (P.vaultFrags || 0) >= VAULT_FRAGS };
   document.querySelectorAll('#stTabs [data-st]').forEach(b => { b.setAttribute('aria-pressed', String(b.dataset.st === G.stTab)); b.classList.toggle('dot', !!dots[b.dataset.st]); });
   $('stMats').innerHTML = _T`ruda <b style="color:var(--ore)">${fmtN(P.ore)}</b> · úlomky <b style="color:#9a8cff">${P.shards}</b> · kľúče <b style="color:#ff6b5a">${P.keys.length}</b>`;
   const owned = [...SLOT_ORDER.map(sl => P.equip[sl]), ...P.inv, ...P.stash].filter(it => it && it.set && it.setCls === P.cls);

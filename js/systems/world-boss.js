@@ -52,7 +52,7 @@ function worldBossKilled(e) {
 }
 function exitDungeon() {
   // gear left lying in the arena goes straight to the hold so nothing is lost
-  for (const p of pickups) if ((p.kind === 'item' && P.inv.length < 30 || p.kind === 'key' || p.kind === 'gem') && !p.dead) { collect(p); p.dead = true; }
+  for (const p of pickups) if ((p.kind === 'item' && P.inv.length < 30 || p.kind === 'key' || p.kind === 'gem' || p.kind === 'mat') && !p.dead) { collect(p); p.dead = true; }
   const sv = G.saved; G.saved = null;
   transition(_L('Návrat · ') + SECTORS[sv.sector].name, () => { loadSector(sv.sector, { x: sv.x, y: sv.y }, sv); });
 }

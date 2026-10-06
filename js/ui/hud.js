@@ -114,6 +114,9 @@ function updateHUD() {
     $('evObj').textContent = G.siege.cmd ? _L('Zostreľ veliteľa pevnosti') : _T`Vlna ${G.siege.wave}/3 · zostáva ${enemies.filter(e => e.fort && !e.dead).length}`;
     $('evBar').style.width = ((G.siege.wave + (G.siege.cmd ? 1 : 0)) / 4 * 100).toFixed(1) + '%';
   } else $('evBox').style.top = '';
+  const stims = P.stim ? Object.keys(P.stim).filter(k => P.stim[k] > 0) : [];
+  $('hStim').hidden = !stims.length;
+  if (stims.length) $('hStim').textContent = stims.map(k => `⚗ ${STIMS[k].name} ${fmtTime(P.stim[k])}`).join(' · ');
   const Sm = G.storm, smOn = Sm && Sm.state === 'active';
   $('hStorm').hidden = !smOn;
   if (smOn) $('hStorm').textContent = _T`⚡ Búrka Prázdnoty · ${SECTORS[Sm.sec].name} · ${fmtTime(Math.max(0, Sm.t))} · žiara ${Sm.ember}`;

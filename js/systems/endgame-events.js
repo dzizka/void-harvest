@@ -53,7 +53,7 @@ function openStormChest(c) {
     for (let i = 0; i < 2; i++) dropPickup('item', c.x, c.y, 1, generateItem(L, 'legendary'));
     if (G.tier >= 2 && Math.random() < 0.4) dropSet(c.x, c.y, L);
     if (mythTier() > 0 && Math.random() < 0.03 * mythTier() * mythMult()) dropMythic(pick(MYTHIC_LIST).id, c.x, c.y, L + 1);
-    dropGem(c.x, c.y, 1); addShards(10);
+    dropGem(c.x, c.y, 1); addShards(10); dropMat(c.x, c.y, 'exotic', 3);
     banner(_L('<span style="color:#c86bff">Mučivý dar</span><small>Odmena Búrky Prázdnoty</small>'));
   } else {
     dropPickup('item', c.x, c.y, 1, generateItem(L, Math.random() < 0.35 ? 'legendary' : 'rare', c.slot));
@@ -209,7 +209,7 @@ function hordeBossKilled(e) {
 const HORDE_CHESTS = [
   { k: 'gear', cost: 40,  name: _L('Zbrojnica'),          sub: _L('3 predmety, 1 legendárny') },
   { k: 'gems', cost: 30,  name: _L('Klenotnica'),         sub: _L('2 drahokamy a úlomky') },
-  { k: 'mats', cost: 25,  name: _L('Sklad'),              sub: _L('ruda a úlomky') },
+  { k: 'mats', cost: 25,  name: _L('Sklad'),              sub: _L('ruda, úlomky, plazma a temná hmota') },
   { k: 'leg',  cost: 120, name: _L('Poklad pána hordy'),  sub: _L('2 legendárky, šanca na set a mýtus') }
 ];
 function openHordeChest(c) {
@@ -218,9 +218,10 @@ function openHordeChest(c) {
   D.aether -= c.cost; c.open++;
   if (c.k === 'gear') { dropPickup('item', c.x, c.y, 1, generateItem(L, 'legendary')); dropItem(c.x, c.y, L, 2); dropItem(c.x, c.y, L, 2); }
   else if (c.k === 'gems') { dropGem(c.x, c.y, 1); dropGem(c.x, c.y, 1); addShards(8); }
-  else if (c.k === 'mats') { dropOre(c.x, c.y, (200 + L * 12) * P.stats.yieldMult); addShards(12); }
+  else if (c.k === 'mats') { dropOre(c.x, c.y, (200 + L * 12) * P.stats.yieldMult); addShards(12); dropMat(c.x, c.y, 'plasma', 6); dropMat(c.x, c.y, 'dark', 4); }
   else {
     for (let i = 0; i < 2; i++) dropPickup('item', c.x, c.y, 1, generateItem(L, 'legendary'));
+    dropMat(c.x, c.y, 'exotic', 4);
     if (G.tier >= 2 && Math.random() < 0.5) dropSet(c.x, c.y, L);
     if (mythTier() > 0 && Math.random() < 0.06 * mythTier() * mythMult()) dropMythic(pick(MYTHIC_LIST).id, c.x, c.y, L + 1);
   }

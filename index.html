@@ -55,6 +55,7 @@
     <div id="hTut" hidden></div>
     <div id="hWb" hidden></div>
     <div id="hStorm" hidden></div>
+    <div id="hStim" hidden></div>
     <div id="hContracts" hidden></div>
     <dl>
       <dt>Úroveň zóny</dt><dd id="hThreat">1</dd>
@@ -182,7 +183,7 @@
   <div class="in">
     <header>
       <h2 id="stTitle">Stanica</h2>
-      <div class="tabs" id="stTabs"><button type="button" data-st="port">Prístav</button><button type="button" data-st="chal">Výzvy</button><button type="button" data-st="shop">Obchod</button><button type="button" data-st="craft">Dielňa</button><button type="button" data-st="arch">Archív</button></div>
+      <div class="tabs" id="stTabs"><button type="button" data-st="port">Prístav</button><button type="button" data-st="chal">Výzvy</button><button type="button" data-st="shop">Obchod</button><button type="button" data-st="craft">Dielňa</button><button type="button" data-st="base">Základňa</button><button type="button" data-st="arch">Archív</button></div>
       <button type="button" class="btn" id="stMap">Mapa</button>
       <button class="close" type="button" data-close>ESC</button>
     </header>
@@ -243,6 +244,7 @@
           <span class="eyebrow">Burza rudy<span class="info" title="Premena nadbytočnej rudy. Ceny rastú s úrovňou a svetom.">ⓘ</span></span>
           <div class="cheat-row" id="exchange"></div>
         </div>
+        <div class="st-card full" data-st-card="base"><div id="baseBody"></div></div>
         <div class="st-card full" data-st-card="arch">
           <span class="eyebrow">Mýtický archív · nájdené <b id="mythCount" style="color:var(--r-mythic)">0/6</b></span>
           <div class="archive" id="archive"></div>
@@ -372,6 +374,7 @@
 <script src="js/systems/projectiles.js"></script>
 <script src="js/systems/abilities.js"></script>
 <script src="js/systems/endgame-events.js"></script>
+<script src="js/systems/base.js"></script>
 <script src="js/render/background.js"></script>
 <script src="js/render/sprites.js"></script>
 <script src="js/render/render.js"></script>

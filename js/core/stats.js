@@ -74,6 +74,7 @@ function computeStats(clsKey, equip, tal, level, para) {
     p.allDmg += PA.inf || 0; p.hull += PA.inf || 0;
     for (const b in PA.runes || {}) { const r = PA.runes[b], L = (PA.rl || {})[r]; if (r && L && RUNES[r]) RUNES[r].fx(L, ((PA.alloc || {})[b] || 0) >= RUNE_ON, p, s, acc); }
   }
+  researchFx(s, p);
   s.miningPower = (1 + p.yield / 100 * 0.6 + X('sDrill') / 100) * sx.mp;
   s.convDmg = X('sConv') / 100 * (s.miningPower - 1) * 100;
   p.allDmg += s.convDmg;

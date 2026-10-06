@@ -273,6 +273,12 @@ function drawPickup(p) {
     ctx.beginPath(); for (let i = 0; i < 6; i++) { const a = i / 6 * TAU; i ? ctx.lineTo(Math.cos(a) * 10, Math.sin(a) * 10) : ctx.moveTo(10, 0); } ctx.closePath(); ctx.fill(); ctx.stroke();
     ctx.restore();
     worldLabel(_T`KĽÚČ ${p.key.lvl}`, p.x, p.y + 28, '#ff6b5a', 10);
+  } else if (p.kind === 'mat') {
+    const col = MATS[p.mat].color;
+    ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.spin * 0.6);
+    ctx.fillStyle = '#0b1424'; ctx.strokeStyle = col; ctx.lineWidth = 1.6;
+    ctx.beginPath(); for (let i = 0; i < 6; i++) { const a = i / 6 * TAU; i ? ctx.lineTo(Math.cos(a) * 6, Math.sin(a) * 6) : ctx.moveTo(6, 0); } ctx.closePath(); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = col; ctx.fillRect(-1.5, -1.5, 3, 3); ctx.restore();
   } else if (p.kind === 'ore') {
     ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.spin * 0.5);
     ctx.fillStyle = '#5a4430'; ctx.strokeStyle = '#e0bb8f'; ctx.lineWidth = 1.2;

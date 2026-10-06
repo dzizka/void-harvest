@@ -47,7 +47,7 @@ function renderCheat() {
     <div class="st-card full">
       <span class="eyebrow">Testovacie buildy · ${CLASSES[P.cls].name}</span>
       <div class="cheat-row">${btn('top', _L('Top výbava (mýtické + drahokamy)'), 'data-v=""')}${TREES[P.cls].map(B => btn('top', _L('Build: ') + B.name, `data-v="${B.id}"`)).join('')}${btn('talreset', _L('Reset talentov zadarmo'))}</div>
-      <div class="cheat-row">${TREES[P.cls].map(B => btn('set', _L('Set: ') + B.name, `data-v="${B.id}"`)).join('')}${btn('runes', _L('Všetky runy úr. 20'))}${btn('achall', _L('Splniť výzvy (test)'))}${btn('primal', _L('+Prvotný predmet'))}${btn('stars', _L('+Legendárka ✦✦✦'))}${btn('vfrags', _L('+5 úlomkov mapy'))}${btn('mythdup', _L('+Duplikát mýtu zbrane'))}</div>
+      <div class="cheat-row">${TREES[P.cls].map(B => btn('set', _L('Set: ') + B.name, `data-v="${B.id}"`)).join('')}${btn('runes', _L('Všetky runy úr. 20'))}${btn('achall', _L('Splniť výzvy (test)'))}${btn('primal', _L('+Prvotný predmet'))}${btn('stars', _L('+Legendárka ✦✦✦')) + btn('mats', _L('+50 materiálov'))}${btn('vfrags', _L('+5 úlomkov mapy'))}${btn('mythdup', _L('+Duplikát mýtu zbrane'))}</div>
       <div class="cheat-row">${btn('wbnow', _L('Svetový boss sem (5 s)'), S.kind === 'safe' || inDungeon ? 'disabled' : '')}${btn('climb', _L('Výstup od poschodia 1'), inDungeon ? 'disabled' : '')}${btn('climbfloor', _L('Výstup: zdolať poschodie'), inDungeon && G.dungeon.climb ? '' : 'disabled')}${btn('climbend', _L('Výstup: ukončiť časom'), inDungeon && G.dungeon.climb ? '' : 'disabled')}</div>
       <span class="cheat-note">Top výbava: 5 mýtických + 2 legendárne, iLvl 60+, pradávne, +10, najlepšie afixy a dokonalé rubíny (zbraň má topás). Build navyše nastaví úroveň 50, legendárku buildu, ranky talentov na výbave a rozdelí body: celá vetva + kľúčový talent, zvyšok do ďalších vetiev.</span>
     </div>
@@ -130,6 +130,7 @@ function cheatAction(el) {
     case 'climbfloor': { const D = G.dungeon; if (D.guardian) killEnemy(D.guardian); else D.prog = CLIMB_NEED; closePanels(); return; }
     case 'climbend': G.dungeon.t = CLIMB_LIMIT; closePanels(); return;
     case 'vfrags': P.vaultFrags = (P.vaultFrags || 0) + 5; break;
+    case 'mats': for (const k of MAT_KEYS) giveMat(k, 50); saveAccount(); log(_L('DEV: +50 každého materiálu')); break;
     case 'stars': { if (P.inv.length >= 30) break; G.forceGA = 3; const it = generateItem(Math.max(60, zoneLevel() + 2), 'legendary'); G.forceGA = 0; P.inv.push(it); log(`DEV: <span style="color:#ffd36b">✦✦✦ ${it.name}</span>`); break; }
     case 'primal': { if (P.inv.length >= 30) break; G.forcePrimal = true; const it = generateItem(Math.max(60, zoneLevel() + 2), 'legendary'); G.forcePrimal = false; P.inv.push(it); log(`DEV: <span style="color:#ff5a5a">${it.name}</span>`); break; }
     case 'mythdup': { const w = P.equip.weapon; if (w.rarity === 'mythic' && P.inv.length < 30) P.inv.push(generateItem(w.ilvl, 'mythic', null, null, w.legend)); break; }

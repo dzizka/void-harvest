@@ -154,7 +154,7 @@ function dropXp(x, y, total) {
   for (let i = 0; i < n; i++) dropPickup('xp', x, y, total / n);
 }
 function dropOre(x, y, total) {
-  total = Math.max(1, Math.round(total * (nmHas('ore') ? 2 : 1) * ((P && P.stats.oreMult) || 1)));
+  total = Math.max(1, Math.round(total * (nmHas('ore') ? 2 : 1) * ((P && P.stats.oreMult) || 1) * (stimOn('greed') ? 1.3 : 1)));
   const n = clamp(Math.ceil(total / 3), 1, 8);
   let left = total;
   for (let i = 0; i < n; i++) { const amt = i === n - 1 ? left : Math.round(total / n); left -= amt; if (amt > 0) dropPickup('ore', x, y, amt); }
@@ -182,6 +182,7 @@ function killEnemy(e) {
   if (MN && !MN.titan && (MN.army || Math.random() < MN.chance * (P.orderT > 0 && P.orderBuild ? 2 : 1))) spawnMinion(e.x, e.y);
   abilityOnKill();
   endgameOnKill(e);
+  matsOnKill(e);
   if (!e.minion) contractTick('kill', { sec: G.dungeon ? G.dungeon.sector : G.sector });
   if (G.dungeon && G.dungeon.climb && G.dungeon.state === 'climb' && !e.minion && !e.isBoss) G.dungeon.prog += e.elite ? 6 : e.small ? 0.3 : 1;
   if (e.elite) contractTick('elite');
@@ -250,6 +251,7 @@ function breakAsteroid(a) {
   dropOre(a.x, a.y, S.ore * K.ore * s.yieldMult * (a.oreMul || 1) * (1 + 0.06 * (zoneLevel() - 1)) * (1 + 0.25 * (G.tier - 1)) * rand(0.8, 1.2));
   dropXp(a.x, a.y, S.xp * K.xp * (1 + 0.1 * (zoneLevel() - 1)));
   G.mined++;
+  matsOnAsteroid(a);
   if (s.tx.sCrush) { P.rockStacks = Math.min(5, P.rockStacks + 1); P.rockT = 6; }
   if (s.tx.sBoom && !G.safe) splash(a.x, a.y, 90 + a.r, s.laserHit * s.tx.sBoom / 100 * dmgBuff(), null, '#c8a27c');
   if (s.legend.tessarEye && P.crystal < 3 + Math.floor((s.mres.tessarEye || 0) / 2)) P.crystal++;
@@ -347,7 +349,7 @@ function triggerNova() {
 }
 
 function gainXp(amt) {
-  P.xp += amt * P.stats.xpMult * TIERS[G.tier].xp * (nmHas('xp') ? 1.75 : 1) * (nmK() ? 1 + nmK() * 0.03 : 1);
+  P.xp += amt * P.stats.xpMult * TIERS[G.tier].xp * (nmHas('xp') ? 1.75 : 1) * (nmK() ? 1 + nmK() * 0.03 : 1) * (stimOn('mind') ? 1.25 : 1);
   for (;;) {
     if (P.level >= LEVEL_CAP) {
       const need = paraNeed(P.para.lvl);
@@ -381,6 +383,9 @@ function collect(p) {
     P.keys.push(p.key);
     log(_T`<span style="color:#ff6b5a">Kľúč od nočnej brány · úroveň ${p.key.lvl}</span>`);
     saveGame();
+  }
+  else if (p.kind === 'mat') {
+    giveMat(p.mat, p.amount); addText(P.x, P.y - 26, _T`+${p.amount} ${MATS[p.mat].name}`, MATS[p.mat].color, 11, 0.7);
   }
   else if (p.kind === 'ore') {
     const amt = p.amount + (s.legend.magnetar ? 1 : 0);
