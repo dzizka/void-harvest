@@ -1,0 +1,98 @@
+/* =====================================================================
+   TOUCH MODE (body.touch) — phones and tablets only; desktop untouched
+   ===================================================================== */
+#touchUi{position:absolute;inset:0;pointer-events:none;z-index:1}
+#touchUi.off .tb-pad,#touchUi.off .stick{visibility:hidden}
+#touchUi[hidden],#rotateNote{display:none}
+body.touch{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;overscroll-behavior:none}
+body.touch .touch-note{display:block}
+
+/* --- floating sticks --- */
+.stick{position:absolute;width:112px;height:112px;margin:-56px 0 0 -56px;border-radius:50%;border:1.5px solid rgba(95,212,255,.35);background:radial-gradient(circle,rgba(95,212,255,.08),rgba(95,212,255,.02) 70%);opacity:0;transition:opacity .15s}
+.stick i{position:absolute;left:50%;top:50%;width:48px;height:48px;margin:-24px 0 0 -24px;border-radius:50%;background:rgba(95,212,255,.32);border:1.5px solid rgba(95,212,255,.7);transform:translate(var(--kx,0),var(--ky,0))}
+.stick.on{opacity:1}
+#stickR{border-color:rgba(255,107,90,.4);background:radial-gradient(circle,rgba(255,107,90,.08),transparent 70%)}
+#stickR i{background:rgba(255,107,90,.3);border-color:rgba(255,107,90,.75)}
+/* resting hint for the move stick */
+#stickL:not(.on){opacity:.35;left:calc(92px + env(safe-area-inset-left,0px));top:calc(100% - 92px - env(safe-area-inset-bottom,0px))}
+
+/* --- action pad, bottom-right arc --- */
+.tb-pad{position:absolute;right:calc(10px + env(safe-area-inset-right,0px));bottom:calc(10px + env(safe-area-inset-bottom,0px));width:214px;height:176px;pointer-events:none}
+.tb{--s:58px;--p:0;position:absolute;width:var(--s);height:var(--s);border-radius:50%;padding:0;display:grid;place-items:center;pointer-events:auto;touch-action:none;
+  background:rgba(8,14,28,.72);border:1.5px solid var(--line-hi);color:var(--text);overflow:hidden;-webkit-tap-highlight-color:transparent}
+.tb::after{content:"";position:absolute;inset:0;border-radius:50%;background:conic-gradient(rgba(2,4,10,.72) calc(var(--p)*360deg),transparent 0)}
+.tb.ready{border-color:var(--accent);box-shadow:0 0 0 2px rgba(95,212,255,.12),inset 0 0 14px rgba(95,212,255,.18)}
+.tb.down{transform:scale(.92);background:rgba(95,212,255,.22)}
+.tb.locked{opacity:.4}
+.tb[hidden]{display:none}
+.tbn{position:relative;z-index:1;max-width:calc(var(--s) - 10px);font:600 9px/1.1 var(--f-mono);letter-spacing:.02em;text-align:center;text-transform:uppercase;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;word-break:break-word}
+.tb.big{--s:74px;right:4px;bottom:4px}
+.tb.big .tbn{font-size:10px}
+.tb.long .tbn{font-size:7.5px;letter-spacing:0}
+#tbSk0{right:94px;bottom:2px}
+#tbSk1{right:12px;bottom:94px}
+#tbMis{--s:54px;right:84px;bottom:76px;border-color:rgba(255,107,90,.5)}
+#tbMis.ready{border-color:var(--hull);box-shadow:inset 0 0 14px rgba(255,107,90,.2)}
+#tbScan{--s:46px;right:162px;bottom:10px}
+#tbScan.ready{border-color:#ffd36b;box-shadow:inset 0 0 12px rgba(255,211,107,.18)}
+
+/* --- context button (dock, gate, chest, beacon…) replaces the E prompt --- */
+#tbAct{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(66px + env(safe-area-inset-bottom,0px));pointer-events:auto;max-width:min(360px,44%);min-height:46px;padding:8px 18px;
+  background:rgba(6,10,20,.9);border:1.5px solid var(--pc,var(--accent));color:var(--text);font:600 14px/1.2 var(--f-display);text-align:center;animation:tbPulse 1.4s ease-in-out infinite}
+#tbAct[hidden]{display:none}
+#tbAct small{display:none}
+@keyframes tbPulse{50%{box-shadow:0 0 0 4px color-mix(in srgb,var(--pc,var(--accent)) 25%,transparent)}}
+body.touch #prompt{display:none}
+
+/* --- compact HUD --- */
+body.touch .hud-tl{top:calc(8px + env(safe-area-inset-top,0px));left:calc(8px + env(safe-area-inset-left,0px));min-width:0;max-width:min(240px,30vw);padding:6px 9px;gap:4px;pointer-events:auto}
+body.touch .hud-tl .sector{font-size:13px}
+body.touch .hud-tl>#hTitle,body.touch .hud-tl>#hMods,body.touch .hud-tl>#hContracts,body.touch .hud-tl>dl{display:none}
+body.touch .hud-tl.open>#hTitle:not(:empty),body.touch .hud-tl.open>#hContracts:not([hidden]),body.touch .hud-tl.open>dl{display:grid}
+body.touch .hud-tl.open>#hMods:not([hidden]){display:block}
+body.touch .hud-tl::after{content:"▾";position:absolute;right:6px;top:5px;font-size:10px;color:var(--dim)}
+body.touch .hud-tl.open::after{content:"▴"}
+body.touch #hTut,body.touch #hStory,body.touch #hStorm,body.touch #hWb,body.touch #hStim{max-width:none;font-size:10px}
+body.touch #hTut small{display:none}
+body.touch .hud-tl.open #hTut small{display:block}
+body.touch #minimap{top:calc(8px + env(safe-area-inset-top,0px));right:calc(8px + env(safe-area-inset-right,0px));width:96px;height:96px}
+body.touch #debug{top:calc(112px + env(safe-area-inset-top,0px))}
+
+/* vitals: slim strip bottom-centre between the thumbs */
+body.touch .hud-bottom{transform:none;left:0;right:0;margin:0 auto;width:min(400px,40vw);bottom:calc(8px + env(safe-area-inset-bottom,0px));gap:0}
+body.touch .vitals{grid-template-columns:40px 1fr;gap:6px}
+body.touch .lvl b{font-size:17px}
+body.touch .lvl span{font-size:7px}
+body.touch .bar{height:11px}
+body.touch .bar>span{font-size:8.5px}
+body.touch .bar.xp{height:5px}
+
+/* menu buttons: icon row top-right, left of the minimap */
+body.touch .abilities{z-index:6;position:fixed;top:calc(8px + env(safe-area-inset-top,0px));right:calc(112px + env(safe-area-inset-right,0px));flex-wrap:nowrap;gap:6px}
+body.touch .kb-only,body.touch #abMin{display:none}
+body.touch .abilities button.ab{width:44px;height:44px;padding:0;justify-content:center;font-size:0;gap:0;border-color:var(--line-hi)}
+body.touch .abilities button.ab::before{content:attr(data-ico);font-size:20px;line-height:1;color:var(--text)}
+body.touch .abilities button.ab kbd{display:none}
+body.touch .abilities button.ab em{position:absolute;right:2px;bottom:2px;font-size:8px;line-height:1}
+body.touch .abilities button.ab em:empty{display:none}
+body.touch .more-pop{bottom:auto;top:calc(100% + 6px);max-height:calc(100vh - 70px);overflow:auto}
+body.touch .more-pop button{padding:9px 10px;font-size:13.5px}
+
+/* log: two short lines under the top bar */
+body.touch #log{left:50%;transform:translateX(-50%);right:auto;top:calc(8px + env(safe-area-inset-top,0px));bottom:auto;width:min(340px,34vw);max-width:none;font-size:10.5px;gap:2px;pointer-events:none}
+body.touch #log div{padding:3px 6px}
+body.touch #log div:nth-last-child(n+3){display:none}
+body.touch #banner{top:38%;font-size:18px}
+body.touch #banner small{font-size:10px}
+body.touch #bossBar,body.touch #evBox{top:calc(56px + env(safe-area-inset-top,0px));width:min(340px,38vw);min-width:0}
+body.touch #bossBar b{font-size:13px}
+body.touch #pauseTag{top:auto;bottom:calc(64px + env(safe-area-inset-bottom,0px))}
+
+/* --- portrait: ask to rotate, game is paused --- */
+@media (orientation:portrait){
+  body.touch #rotateNote{position:fixed;inset:0;z-index:30;display:grid;place-content:center;justify-items:center;gap:10px;background:rgba(3,5,10,.94);pointer-events:auto;text-align:center;padding:24px}
+  #rotateNote b{font-size:56px;color:var(--accent);animation:rot 2.2s ease-in-out infinite}
+  #rotateNote span{font:700 20px/1.2 var(--f-display);text-transform:uppercase;letter-spacing:.06em}
+  #rotateNote small{color:var(--dim);font-size:13px}
+}
+@keyframes rot{0%,30%{transform:rotate(0)}60%,100%{transform:rotate(90deg)}}

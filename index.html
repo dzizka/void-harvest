@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="css/hud.css">
 <link rel="stylesheet" href="css/panels.css">
 <link rel="stylesheet" href="css/features.css">
+<link rel="stylesheet" href="css/touch.css">
 </head>
 <body>
 
@@ -24,7 +25,7 @@
       <span class="eyebrow">Hangár · Hviezdokopa Kepler</span>
       <h1>Void <span>Harvest</span></h1>
       <p>Ťaž asteroidy v bezpečných lomoch, preleť do bojových sektorov a vstúp do brán, kde na konci čaká boss so vzácnou výbavou. Vyber si loď.</p>
-      <p class="touch-note">Hra vyžaduje klávesnicu a myš.</p>
+      <p class="touch-note">Dotykové ovládanie: ľavým palcom letíš, pravým mieriš a strieľaš, schopnosti sú vpravo dole. Hraj s telefónom na šírku.</p>
     </div>
     <div class="frame cont" id="cont" hidden><div class="in"><div class="saves" id="saves"></div></div></div>
     <div class="ships" id="ships"></div>
@@ -73,6 +74,19 @@
   <div id="bossBar" hidden><span class="eyebrow" id="bossLvl"></span><b id="bossName"></b><div class="bar boss"><i id="bBoss"></i><i class="ph" id="bBossPh"></i></div></div>
   <div id="evBox" hidden><b id="evName"></b><span id="evObj"></span><div class="bar"><i id="evBar"></i></div></div>
   <div id="banner"></div>
+  <div id="touchUi" hidden>
+    <div class="stick" id="stickL"><i></i></div>
+    <div class="stick" id="stickR"><i></i></div>
+    <button type="button" id="tbAct" hidden><span id="tbActTxt"></span></button>
+    <div class="tb-pad">
+      <button type="button" class="tb big" id="tbDodge" data-tb="dodge"><span class="tbn"></span></button>
+      <button type="button" class="tb" id="tbSk0" data-tb="sk0"><span class="tbn"></span></button>
+      <button type="button" class="tb" id="tbSk1" data-tb="sk1"><span class="tbn"></span></button>
+      <button type="button" class="tb" id="tbMis" data-tb="mis"><span class="tbn">Rakety</span></button>
+      <button type="button" class="tb sm" id="tbScan" data-tb="scan"><span class="tbn">Skener</span></button>
+    </div>
+  </div>
+  <div id="rotateNote"><b>⟳</b><span>Otoč telefón na šírku</span><small>Hra je pozastavená.</small></div>
   <div id="prompt" hidden><kbd>E</kbd><span id="promptTxt"></span></div>
   <div id="log"></div>
   <div class="hud-bottom">
@@ -85,20 +99,20 @@
       </div>
     </div>
     <div class="abilities">
-      <div class="ab"><kbd>LMB</kbd> Laser <em id="abDps"></em></div>
-      <div class="ab"><kbd>RMB</kbd> Rakety <em id="abMis"></em><i class="cd" id="misCd"></i></div>
-      <div class="ab sk" id="abDodge"><kbd>Space</kbd> <span id="abDodgeN"></span> <em id="abDodgeS"></em><i class="cd" id="abDodgeCd"></i></div>
-      <div class="ab sk" id="abSk0"><kbd>Q</kbd> <span id="abSk0N"></span> <em id="abSk0S"></em><i class="cd" id="abSk0Cd"></i></div>
-      <div class="ab sk" id="abSk1"><kbd>Shift</kbd> <span id="abSk1N"></span> <em id="abSk1S"></em><i class="cd" id="abSk1Cd"></i></div>
-      <div class="ab sk" id="abScan" title="Odhalí anomálie a majáky predkov v okolí"><kbd>C</kbd> <span>Skener</span> <em id="abScanS"></em><i class="cd" id="abScanCd"></i></div>
+      <div class="ab kb-only"><kbd>LMB</kbd> Laser <em id="abDps"></em></div>
+      <div class="ab kb-only"><kbd>RMB</kbd> Rakety <em id="abMis"></em><i class="cd" id="misCd"></i></div>
+      <div class="ab sk kb-only" id="abDodge"><kbd>Space</kbd> <span id="abDodgeN"></span> <em id="abDodgeS"></em><i class="cd" id="abDodgeCd"></i></div>
+      <div class="ab sk kb-only" id="abSk0"><kbd>Q</kbd> <span id="abSk0N"></span> <em id="abSk0S"></em><i class="cd" id="abSk0Cd"></i></div>
+      <div class="ab sk kb-only" id="abSk1"><kbd>Shift</kbd> <span id="abSk1N"></span> <em id="abSk1S"></em><i class="cd" id="abSk1Cd"></i></div>
+      <div class="ab sk kb-only" id="abScan" title="Odhalí anomálie a majáky predkov v okolí"><kbd>C</kbd> <span>Skener</span> <em id="abScanS"></em><i class="cd" id="abScanCd"></i></div>
       <div class="ab" id="abMin" hidden><kbd>◆</kbd> Minióni <em id="abMinS"></em></div>
-      <button class="ab" id="abInv" type="button"><kbd>I</kbd> Inventár <em id="abInvN"></em></button>
-      <button class="ab" id="abTal" type="button"><kbd>K</kbd> Talenty <em id="abTalN"></em></button>
-      <button class="ab" id="abPara" type="button" hidden><kbd>P</kbd> Paragon <em id="abParaN"></em></button>
-      <button class="ab" id="abMap" type="button"><kbd>M</kbd> Mapa</button>
+      <button class="ab" id="abInv" type="button" data-ico="▦"><kbd>I</kbd> Inventár <em id="abInvN"></em></button>
+      <button class="ab" id="abTal" type="button" data-ico="✦"><kbd>K</kbd> Talenty <em id="abTalN"></em></button>
+      <button class="ab" id="abPara" type="button" data-ico="◈" hidden><kbd>P</kbd> Paragon <em id="abParaN"></em></button>
+      <button class="ab" id="abMap" type="button" data-ico="⌖"><kbd>M</kbd> Mapa</button>
 
       <div class="ab-more">
-        <button class="ab" id="abMore" type="button" aria-expanded="false" aria-haspopup="true"><kbd>≡</kbd> Menu</button>
+        <button class="ab" id="abMore" type="button" data-ico="≡" aria-expanded="false" aria-haspopup="true"><kbd>≡</kbd> Menu</button>
         <div class="more-pop" id="morePop" hidden>
           <button type="button" id="abAch"><kbd>J</kbd><span>Denník výziev</span><em id="abAchN"></em></button>
           <button type="button" id="abEnc"><kbd>?</kbd><span>Encyklopédia</span><em></em></button>
@@ -106,6 +120,7 @@
           <button type="button" id="abMine" title="Loď sama ťaží najbližší asteroid, keď nie je s kým bojovať"><kbd>R</kbd><span>Auto-ťažba</span><em id="abMineS"></em></button>
           <button type="button" id="abAutoSk" title="Loď sama použije schopnosti Q a Shift, keď sú nabité a nepriateľ je blízko"><kbd>⟳</kbd><span>Auto-schopnosti</span><em id="abAutoSkS"></em></button>
           <button type="button" id="abLang" title="Jazyk hry · Game language"><kbd>文</kbd><span>Jazyk · Language</span><em id="abLangS"></em></button>
+          <button type="button" id="abTouch" title="Joysticky a tlačidlá na obrazovke pre telefón a tablet"><kbd>☝</kbd><span>Dotykové ovládanie</span><em id="abTouchS"></em></button>
           <button type="button" id="abGfx" title="Žiara, scenéria, častice"><kbd>⚙</kbd><span>Grafika</span><em id="abGfxS"></em></button>
           <button type="button" id="abHangar" title="Uloží postup a vráti ťa do hangára k výberu lode"><kbd>H</kbd><span>Hangár · iná loď</span><em></em></button>
         </div>
@@ -408,6 +423,7 @@
 <script src="js/ui/cheat.js"></script>
 <script src="js/ui/select.js"></script>
 <script src="js/ui/bindings.js"></script>
+<script src="js/ui/touch.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>

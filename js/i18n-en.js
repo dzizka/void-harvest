@@ -1,6 +1,15 @@
 'use strict';
 // English dictionary: Slovak source text → English. Keys with {0}, {1}… are templates (see js/i18n.js).
 Object.assign(EN, {
+  "Dotykové ovládanie: {0}.": "Touch controls: {0}.",
+  "automaticky (zapnuté)": "automatic (on)",
+  "automaticky (vypnuté)": "automatic (off)",
+  "Ľavým palcom letíš, pravým mieriš a strieľaš. Auto-boj a auto-ťažba sú zapnuté, vypneš ich v Menu (≡).": "Left thumb flies, right thumb aims and fires. Auto-combat and auto-mining are on; turn them off in the Menu (≡).",
+  "Dotykové ovládanie: ľavým palcom letíš, pravým mieriš a strieľaš, schopnosti sú vpravo dole. Hraj s telefónom na šírku.": "Touch controls: left thumb flies, right thumb aims and fires, abilities are bottom right. Hold your phone in landscape.",
+  "Joysticky a tlačidlá na obrazovke pre telefón a tablet": "On-screen sticks and buttons for phones and tablets",
+  "Dotykové ovládanie": "Touch controls",
+  "Otoč telefón na šírku": "Rotate your phone to landscape",
+  "Hra je pozastavená.": "The game is paused.",
   "Príbeh": "Story",
   "Sezóna": "Season",
   "Pokračovať": "Continue",

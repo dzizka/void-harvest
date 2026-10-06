@@ -49,8 +49,9 @@ function updatePlayer(dt) {
   const s = P.stats, k = input.keys;
   let ix = (k.KeyD || k.ArrowRight ? 1 : 0) - (k.KeyA || k.ArrowLeft ? 1 : 0);
   let iy = (k.KeyS || k.ArrowDown ? 1 : 0) - (k.KeyW || k.ArrowUp ? 1 : 0);
+  if (TOUCH.on) { if (!ix && !iy) { ix = input.mv.x; iy = input.mv.y; } touchAim(); }
   P.thrust = 0;
-  if (ix || iy) { const l = Math.hypot(ix, iy); ix /= l; iy /= l; P.vx += ix * s.accel * dt; P.vy += iy * s.accel * dt; P.thrust = 1; }
+  if (ix || iy) { const l = Math.max(1, Math.hypot(ix, iy)); ix /= l; iy /= l; P.vx += ix * s.accel * dt; P.vy += iy * s.accel * dt; P.thrust = 1; }
   if (P.dashT > 0) { P.vx = Math.cos(P.dashA) * 1150; P.vy = Math.sin(P.dashA) * 1150; }
   const drag = P.dashT > 0 || P.ramT > 0 ? 1 : Math.pow(P.thrust ? 0.6 : 0.3, dt);
   P.vx *= drag; P.vy *= drag;

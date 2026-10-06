@@ -81,11 +81,12 @@ let abil = { clone: null, clone2: null, shells: [], wells: [], mines: [], waves:
 function moveDir() {
   const k = input.keys;
   const ix = (k.KeyD || k.ArrowRight ? 1 : 0) - (k.KeyA || k.ArrowLeft ? 1 : 0), iy = (k.KeyS || k.ArrowDown ? 1 : 0) - (k.KeyW || k.ArrowUp ? 1 : 0);
-  return ix || iy ? Math.atan2(iy, ix) : P.a;
+  if (ix || iy) return Math.atan2(iy, ix);
+  return TOUCH.on && (input.mv.x || input.mv.y) ? Math.atan2(input.mv.y, input.mv.x) : P.a;
 }
 // target point: the cursor, or the auto-target when skills are cast automatically
 function aimPoint() {
-  if (G.autoCasting) { const t = P.autoT && P.autoT.T && !P.autoT.dead ? P.autoT : nearMouseEnemy(600, P); if (t) return { x: t.x, y: t.y }; }
+  if (G.autoCasting || (TOUCH.on && !input.aim.on)) { const t = P.autoT && P.autoT.T && !P.autoT.dead ? P.autoT : nearMouseEnemy(600, P); if (t) return { x: t.x, y: t.y }; }
   return mouseWorld();
 }
 function blinkTo(a, dist) {

@@ -204,18 +204,20 @@ addEventListener('keydown', e => {
 });
 addEventListener('keyup', e => { input.keys[e.code] = false; });
 addEventListener('blur', () => { input.keys = {}; input.fire = false; input.missile = false; });
-canvas.addEventListener('mousemove', e => { input.mx = e.clientX; input.my = e.clientY; });
+const synthMouse = () => TOUCH.on && performance.now() - TOUCH.last < 900;
+canvas.addEventListener('mousemove', e => { if (synthMouse()) return; input.mx = e.clientX; input.my = e.clientY; });
 canvas.addEventListener('mousedown', e => {
-  if (!G || G.paused) return;
+  if (!G || G.paused || synthMouse()) return;
   if (e.button === 0) input.fire = true;
   if (e.button === 2) input.missile = true;
 });
-addEventListener('mouseup', e => { if (e.button === 0) input.fire = false; if (e.button === 2) input.missile = false; });
+addEventListener('mouseup', e => { if (synthMouse()) return; if (e.button === 0) input.fire = false; if (e.button === 2) input.missile = false; });
 canvas.addEventListener('contextmenu', e => e.preventDefault());
 
 function resize() {
-  view.w = innerWidth; view.h = innerHeight; view.dpr = Math.min(2, devicePixelRatio || 1);
-  view.zoom = clamp(Math.min(view.w, view.h) / 860, 0.6, 1);
+  view.w = innerWidth; view.h = innerHeight; TOUCH.portrait = TOUCH.on && view.h > view.w; view.dpr = Math.min(2, devicePixelRatio || 1);
+  // phones see a comparable slice of space to a monitor (touch mode zooms out further)
+  view.zoom = TOUCH.on ? clamp(Math.min(view.w, view.h) / 760, 0.5, 1) : clamp(Math.min(view.w, view.h) / 860, 0.6, 1);
   canvas.width = Math.round(view.w * view.dpr); canvas.height = Math.round(view.h * view.dpr);
 }
 addEventListener('resize', resize);

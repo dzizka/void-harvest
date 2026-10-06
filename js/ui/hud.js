@@ -155,6 +155,7 @@ function updateHUD() {
   $('abAutoS').textContent = G.autoFire ? _L('ZAP') : _L('VYP'); $('abAuto').classList.toggle('on', G.autoFire);
   $('abLangS').textContent = LANG === 'sk' ? 'SK' : 'EN';
   $('abMineS').textContent = G.autoMine ? _L('ZAP') : _L('VYP'); $('abMine').classList.toggle('on', G.autoMine);
+  $('abTouchS').textContent = TOUCH.pref === 'auto' ? 'AUTO' : TOUCH.pref === 'on' ? _L('ZAP') : _L('VYP'); $('abTouch').classList.toggle('on', TOUCH.on);
   $('abGfxS').textContent = GFX.q === 'high' ? _L('vysoká') : GFX.q === 'mid' ? _L('stredná') : _L('nízka');
   const C = G.cheat;
   $('devTag').hidden = !(C.god || C.oneHit || C.unlock || C.mythBoost || C.speed !== 1);
@@ -231,6 +232,7 @@ function updateSkillBar() {
     $('abSk' + i + 'Cd').style.width = (open && c > 0 ? Math.min(1, c / skillCd(id)) * 100 : 0).toFixed(1) + '%';
     el.classList.toggle('locked', !open); el.classList.toggle('ready', open && c <= 0);
   }
+  if (TOUCH.on) touchHud();
 }
 
 // Void Horde offer panel
