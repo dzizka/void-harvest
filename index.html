@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="sk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Void Harvest</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/hud.css">
+<link rel="stylesheet" href="css/panels.css">
+<link rel="stylesheet" href="css/features.css">
+</head>
+<body>
+
+<canvas id="game"></canvas>
+
+<!-- ============ SELECT SCREEN ============ -->
+<section id="select">
+  <div class="sel-wrap">
+    <div class="sel-head">
+      <span class="eyebrow">Hangár · Hviezdokopa Kepler</span>
+      <h1>Void <span>Harvest</span></h1>
+      <p>Ťaž asteroidy v bezpečných lomoch, preleť do bojových sektorov a vstúp do brán, kde na konci čaká boss so vzácnou výbavou. Vyber si loď.</p>
+      <p class="touch-note">Hra vyžaduje klávesnicu a myš.</p>
+    </div>
+    <div class="frame cont" id="cont" hidden><div class="in"><div class="saves" id="saves"></div></div></div>
+    <div class="ships" id="ships"></div>
+    <div class="sel-foot">
+      <span><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> pohyb</span>
+      <span>Myš – mierenie</span>
+      <span><kbd>LMB</kbd> laser a ťažba</span>
+      <span><kbd>RMB</kbd>/<kbd>Space</kbd> rakety</span>
+      <span><kbd>F</kbd> auto-boj</span>
+      <span><kbd>R</kbd> auto-ťažba</span>
+      <span><kbd>E</kbd> stanica, brána, portál</span>
+      <span><kbd>M</kbd> hviezdna mapa</span>
+      <span><kbd>I</kbd> inventár</span>
+      <span><kbd>K</kbd> talenty</span>
+      <span><kbd>H</kbd> hangár (iná loď)</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ HUD ============ -->
+<div id="hud" hidden>
+  <div class="hud-tl" id="hudTl">
+    <span id="devTag" hidden>DEV</span>
+    <span class="zone" id="hZone">Bezpečná zóna</span>
+    <div class="sector" id="hSector">Kepler-7 Pás</div>
+    <div id="hTitle"></div>
+    <div id="hMods" hidden></div>
+    <div id="hTut" hidden></div>
+    <div id="hWb" hidden></div>
+    <div id="hContracts" hidden></div>
+    <dl>
+      <dt>Úroveň zóny</dt><dd id="hThreat">1</dd>
+      <dt>Ruda</dt><dd id="hOre">0</dd>
+      <dt>Zostrely</dt><dd id="hKills">0</dd>
+      <dt>Svet</dt><dd id="hTier">I</dd>
+      <dt>Čas</dt><dd id="hTime">0:00</dd>
+    </dl>
+  </div>
+  <canvas id="minimap" width="170" height="170"></canvas>
+  <div id="pauseTag" hidden>PAUZA</div>
+  <div id="debug" hidden></div>
+  <div id="bossBar" hidden><span class="eyebrow" id="bossLvl"></span><b id="bossName"></b><div class="bar boss"><i id="bBoss"></i><i class="ph" id="bBossPh"></i></div></div>
+  <div id="evBox" hidden><b id="evName"></b><span id="evObj"></span><div class="bar"><i id="evBar"></i></div></div>
+  <div id="banner"></div>
+  <div id="prompt" hidden><kbd>E</kbd><span id="promptTxt"></span></div>
+  <div id="log"></div>
+  <div class="hud-bottom">
+    <div class="vitals">
+      <div class="lvl"><b id="hLevel">1</b><span id="hLvlTag">LVL</span></div>
+      <div class="bars">
+        <div class="bar shield"><i id="bShield"></i><span><em>ŠTÍT</em><em id="tShield"></em></span></div>
+        <div class="bar hull"><i id="bHull"></i><span><em>TRUP</em><em id="tHull"></em></span></div>
+        <div class="bar xp"><i id="bXp"></i></div>
+      </div>
+    </div>
+    <div class="abilities">
+      <div class="ab"><kbd>LMB</kbd> Laser <em id="abDps"></em></div>
+      <div class="ab"><kbd>RMB</kbd> Rakety <em id="abMis"></em><i class="cd" id="misCd"></i></div>
+      <div class="ab" id="abDash" hidden><kbd>Shift</kbd> Fázový rez <em id="abDashS"></em></div>
+      <div class="ab" id="abMin" hidden><kbd>◆</kbd> Minióni <em id="abMinS"></em></div>
+      <button class="ab toggle" id="abAuto" type="button" title="Automaticky mieri a strieľa na najbližšieho nepriateľa"><kbd>F</kbd> Auto-boj <em id="abAutoS"></em></button>
+      <button class="ab toggle" id="abMine" type="button" title="Automaticky ťaží najbližší asteroid, keď nie je s kým bojovať"><kbd>R</kbd> Auto-ťažba <em id="abMineS"></em></button>
+      <button class="ab" id="abInv" type="button"><kbd>I</kbd> Inventár <em id="abInvN"></em></button>
+      <button class="ab" id="abTal" type="button"><kbd>K</kbd> Talenty <em id="abTalN"></em></button>
+      <button class="ab" id="abPara" type="button" hidden><kbd>P</kbd> Paragon <em id="abParaN"></em></button>
+      <button class="ab" id="abMap" type="button"><kbd>M</kbd> Mapa</button>
+
+      <div class="ab-more">
+        <button class="ab" id="abMore" type="button" aria-expanded="false" aria-haspopup="true"><kbd>≡</kbd> Menu</button>
+        <div class="more-pop" id="morePop" hidden>
+          <button type="button" id="abAch"><kbd>J</kbd><span>Denník výziev</span><em id="abAchN"></em></button>
+          <button type="button" id="abEnc"><kbd>?</kbd><span>Encyklopédia</span><em></em></button>
+          <button type="button" id="abGfx" title="Žiara, scenéria, častice"><kbd>⚙</kbd><span>Grafika</span><em id="abGfxS"></em></button>
+          <button type="button" id="abHangar" title="Uloží postup a vráti ťa do hangára k výberu lode"><kbd>H</kbd><span>Hangár · iná loď</span><em></em></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ INVENTORY ============ -->
+<section id="inv" class="bay frame" hidden>
+  <div class="in">
+    <header>
+      <h2>Inventár</h2>
+      <span class="hint">Klik = nasadiť · pravý klik = rozobrať · klik na nasadený slot = vylepšiť</span>
+      <button class="close" type="button" data-close>ESC</button>
+    </header>
+    <div class="bay-body">
+      <div class="inv-body">
+        <div class="loadout">
+          <span class="eyebrow">Výbava lode</span>
+          <div class="eslots" id="eslots"></div>
+          <div class="sheet"><span class="eyebrow">Štatistiky lode</span><dl id="sheet"></dl></div>
+        </div>
+        <div class="stash">
+          <div class="stash-head">
+            <span>Náklad <b id="invCap">0/30</b></span>
+            <span class="ore">Ruda <b id="invOre">0</b></span>
+            <span>Kľúče <b id="invKeys">0</b></span>
+            <span>Úlomky <b id="invShards" style="color:#9a8cff">0</b></span>
+          </div>
+          <div class="salv-bar" id="salvBar"></div>
+          <div id="grid"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TALENTS ============ -->
+<section id="tal" class="bay frame" hidden>
+  <div class="in">
+    <header>
+      <h2>Strom talentov</h2>
+      <span class="hint">Každá loď má vlastný strom. 1 bod za úroveň (max 49) — celý strom sa naplniť nedá, vyber si build.</span>
+      <span class="tal-points">Voľné body <b id="talPts">0</b></span>
+      <button class="close" type="button" data-close>ESC</button>
+    </header>
+    <div class="bay-body">
+      <div class="tal-budget" id="talBudget"></div>
+      <div class="tal-cols" id="talCols"></div>
+      <div class="tal-foot">
+        <span>Ranky z výbavy (+talent na predmete, legendárky buildu) platia pre talenty s aspoň 1 bodom, najviac +3 nad maximum. Reset je do úrovne 10 zadarmo.</span>
+        <button type="button" class="btn" id="respec">Reset talentov</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STAR MAP ============ -->
+<section id="map" class="bay frame" hidden>
+  <div class="in">
+    <header>
+      <h2>Hviezdna mapa</h2>
+      <span class="hint">Hyperskok je možný len z bezpečnej zóny. Sektory sa odomykajú s úrovňou lode.</span>
+      <button class="close" type="button" data-close>ESC</button>
+    </header>
+    <div class="bay-body map-body">
+      <div class="starmap" id="starmap"><svg id="mapLinks" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"></svg><div id="mapNodes"></div></div>
+      <div class="map-detail" id="mapDetail"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STATION ============ -->
+<section id="station" class="bay frame station-bay" hidden>
+  <div class="in">
+    <header>
+      <h2 id="stTitle">Stanica</h2>
+      <div class="tabs" id="stTabs"><button type="button" data-st="port">Prístav</button><button type="button" data-st="chal">Výzvy</button><button type="button" data-st="shop">Obchod</button><button type="button" data-st="craft">Dielňa</button><button type="button" data-st="arch">Archív</button></div>
+      <button type="button" class="btn" id="stMap">Mapa</button>
+      <button class="close" type="button" data-close>ESC</button>
+    </header>
+    <div class="bay-body">
+      <div class="st-head-mats" id="stMats" style="margin-bottom:12px"></div>
+      <div class="st-grid">
+        <div class="st-card full" data-st-card="port">
+          <span class="eyebrow">Zostavy výbavy<span class="info" title="Uloží nasadenú výbavu, talenty, paragon a runy. Pri nasadení sa predmety vezmú z nákladu alebo spoločného skladu, súčasné idú do nákladu (pri plnom do skladu). Body sa prerozdelia zadarmo.">ⓘ</span></span>
+          <div class="loadouts" id="loadouts"></div>
+        </div>
+        <div class="st-card full" data-st-card="port">
+          <span class="eyebrow">Kontrakty<span class="info" title="Tri zákazky naraz. Postup sa počíta automaticky, odmenu vyzdvihneš tu. Nevýhodnú zákazku vymeníš za rudu.">ⓘ</span></span>
+          <div class="contracts" id="contracts"></div>
+          <p>Loď sa pri dokovaní automaticky opraví.</p>
+        </div>
+        <div class="st-card full" data-st-card="chal">
+          <span class="eyebrow">Svetová úroveň<span class="info" title="Vyššia úroveň prinesie silnejších nepriateľov, viac XP a lepší loot.">ⓘ</span></span>
+          <div class="tiers" id="tiers"></div>
+          <p id="nmInfo"></p>
+        </div>
+        <div class="st-card full" data-st-card="chal">
+          <span class="eyebrow">Trhlina Architekta · porazený <b id="archKills">0</b>×<span class="info" title="Vrcholný boss. Otvoríš ju úlomkami od štyroch bossov (svet II: 40 %, svet III a IV a nočné brány 10+: vždy). Odmena: mýtická Koruna, runa, kus setu, svet IV.">ⓘ</span></span>
+          <div class="frags" id="frags"></div>
+          <button type="button" class="btn primary" id="archBtn">Otvoriť trhlinu</button>
+        </div>
+        <div class="st-card full" data-st-card="chal">
+          <span class="eyebrow">Výstup do Prázdnoty · rekord <b id="climbBest">0</b>. poschodie<span class="info" title="5:00 na čo najvyššie poschodie. 40 bodov na poschodie (elita 6), každé 5. stráži Strážca hlbiny. Nepriatelia +17 % životov a +6 % poškodenia na poschodie, svetová úroveň neplatí. Odmeny: úlomky, drahokamy, legendárky, vylepšenie rún, od 15. set, od 20. mýtické. Od úrovne 50.">ⓘ</span></span>
+          <div class="cheat-row" id="climbStart"></div>
+          <div class="climb-board" id="climbBoard"></div>
+        </div>
+        <div class="st-card" data-st-card="chal">
+          <span class="eyebrow">Trezor pašerákov<span class="info" title="Úlomky mapy padajú z elít (8 %, od úrovne 15). 5 úlomkov otvorí trezor: 60 s, 26 truhlíc a pašeráci, ktorí utekajú. Pašerák nesie legendárku, drahokam, úlomky a od sveta II šancu na set.">ⓘ</span></span>
+          <p>Úlomky mapy <b id="vaultFrags" style="color:#ffb000">0</b>/5</p>
+          <button type="button" class="btn primary" id="vaultBtn">Otvoriť trezor</button>
+        </div>
+        <div class="st-card" data-st-card="chal">
+          <span class="eyebrow">Aréna veliteľov<span class="info" title="Všetkých 6 bossov sektorov za sebou na čas, vždy s pevnou obťažnosťou sveta IV a 5× životmi. Odmena: 30 úlomkov, 2 legendárky z tabuliek bossov, 60 % set, 50 % runa. Od úrovne 50.">ⓘ</span></span>
+          <p id="rushInfo"></p>
+          <button type="button" class="btn primary" id="rushBtn">Vstúpiť do arény</button>
+          <div class="climb-board" id="rushBoard"></div>
+        </div>
+        <div class="st-card" data-st-card="chal">
+          <span class="eyebrow">Týždenná výzva<span class="info" title="Výstup do Prázdnoty od 1. poschodia s dvomi modifikátormi, ktoré sa menia každý pondelok. Prvé dosiahnutie 10. poschodia za týždeň (každá loď zvlášť): 50 úlomkov a kus setu.">ⓘ</span></span>
+          <p id="weekInfo"></p>
+          <button type="button" class="btn primary" id="weekBtn">Spustiť</button>
+          <div class="climb-board" id="weekBoard"></div>
+        </div>
+        <div class="st-card full" data-st-card="shop">
+          <span class="eyebrow">Záhadné kontajnery<span class="info" title="Rarita sa ukáže až po otvorení. Úroveň predmetu zodpovedá tvojej úrovni a svetu.">ⓘ</span></span>
+          <div class="gamble" id="gamble"></div>
+        </div>
+        <div class="st-card full" data-st-card="shop">
+          <span class="eyebrow">Burza rudy<span class="info" title="Premena nadbytočnej rudy. Ceny rastú s úrovňou a svetom.">ⓘ</span></span>
+          <div class="cheat-row" id="exchange"></div>
+        </div>
+        <div class="st-card full" data-st-card="arch">
+          <span class="eyebrow">Mýtický archív · nájdené <b id="mythCount" style="color:var(--r-mythic)">0/6</b></span>
+          <div class="archive" id="archive"></div>
+        </div>
+        <div class="st-card full" data-st-card="arch">
+          <span class="eyebrow">Sety lode<span class="info" title="Zelené kusy máš (nasadené, v náklade alebo v spoločnom sklade). Sety padajú bossom od sveta II, v nočných bránach, od Architekta, Hviezdožrúta a z Výstupu 15+.">ⓘ</span></span>
+          <div class="set-arch" id="setArch"></div>
+          <p id="codexInfo"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PARAGON ============ -->
+<section id="para" class="bay frame" hidden>
+  <div class="in">
+    <header>
+      <h2>Hviezdne konštelácie</h2>
+      <span class="hint">Po úrovni 50 sa skúsenosti menia na paragon body. Uzly sa odomykajú od stredu von, na konci každej konštelácie je hviezda.</span>
+      <span class="tal-points">Body <b id="paraPts">0</b></span>
+      <button class="close" type="button" data-close>ESC</button>
+    </header>
+    <div class="bay-body"><div class="para-body"><svg id="paraSvg" viewBox="-54 -54 108 108" aria-label="Mapa konštelácií"></svg><div class="para-side" id="paraSide"></div></div></div>
+  </div>
+</section>
+
+<!-- ============ CHALLENGES ============ -->
+<section id="ach" class="bay frame" hidden>
+  <div class="in">
+    <header>
+      <h2>Denník</h2>
+      <div class="tabs" id="achTabs"><button type="button" data-at="ach">Výzvy</button><button type="button" data-at="enc">Encyklopédia</button></div>
+      <span class="tal-points">Splnené <b id="achN">0</b></span>
+      <button class="close" type="button" data-close>ESC</button>
+    </header>
+    <div class="bay-body" id="achBody"></div>
+  </div>
+</section>
+
+<!-- ============ WORKSHOP ============ -->
+<section id="craft" class="bay frame" hidden>
+  <div class="in">
+    <header>
+      <h2>Dielňa</h2>
+      <button type="button" class="btn" id="craftBack" hidden>← Stanica</button>
+      <div class="tabs" id="craftTabs"><button type="button" data-tab="forge">Kováčňa</button><button type="button" data-tab="gems">Drahokamy</button><button type="button" data-tab="stash">Sklad</button></div>
+      <span class="hint" id="craftMats"></span>
+      <button class="close" type="button" data-close>ESC</button>
+    </header>
+    <div class="bay-body" id="craftBody"></div>
+  </div>
+</section>
+
+<!-- ============ GATE / NIGHTMARE KEYS ============ -->
+<section id="gate" class="bay frame station-bay" hidden>
+  <div class="in">
+    <header>
+      <h2 id="gateTitle">Brána</h2>
+      <span class="hint" id="gateHint"></span>
+      <button class="close" type="button" data-close>ESC</button>
+    </header>
+    <div class="bay-body"><div class="st-grid" id="gateBody"></div></div>
+  </div>
+</section>
+
+<!-- ============ DEV MENU (secret: Backquote key) ============ -->
+<section id="cheat" class="bay frame cheat-bay" hidden>
+  <div class="in">
+    <header>
+      <h2>Vývojárske menu</h2>
+      <span class="hint">Testovacie nástroje. Otvára sa klávesom vľavo od 1 (` / ;).</span>
+      <button class="close" type="button" data-close>ESC</button>
+    </header>
+    <div class="bay-body"><div class="st-grid cheat-grid" id="cheatBody"></div></div>
+  </div>
+</section>
+
+<div id="tip" hidden></div>
+<div id="fade"><span id="fadeTxt">Hyperskok</span></div>
+
+<!-- ============ DEATH ============ -->
+<div id="dead" hidden>
+  <div class="frame"><div class="in">
+    <span class="eyebrow">Spojenie stratené</span>
+    <h2>Loď zničená</h2>
+    <dl id="deadStats"></dl>
+    <div class="acts">
+      <button type="button" class="btn primary" id="respawn">Opraviť na stanici Haven</button>
+      <button type="button" class="btn" id="restart">Do hangára (iná loď)</button>
+    </div>
+  </div></div>
+</div>
+
+<!-- Skripty sa načítavajú v tomto poradí a zdieľajú globálny scope (žiadne moduly, funguje aj z file://). -->
+<script src="js/core/util.js"></script>
+<script src="js/data/game-data.js"></script>
+<script src="js/data/talents.js"></script>
+<script src="js/data/sets.js"></script>
+<script src="js/systems/loot.js"></script>
+<script src="js/core/stats.js"></script>
+<script src="js/core/state.js"></script>
+<script src="js/systems/world.js"></script>
+<script src="js/systems/climb.js"></script>
+<script src="js/systems/vault-rush.js"></script>
+<script src="js/systems/world-boss.js"></script>
+<script src="js/systems/combat.js"></script>
+<script src="js/systems/companions.js"></script>
+<script src="js/systems/events.js"></script>
+<script src="js/systems/journal.js"></script>
+<script src="js/systems/boss-loot.js"></script>
+<script src="js/core/save.js"></script>
+<script src="js/core/update.js"></script>
+<script src="js/systems/enemies.js"></script>
+<script src="js/systems/projectiles.js"></script>
+<script src="js/render/background.js"></script>
+<script src="js/render/sprites.js"></script>
+<script src="js/render/render.js"></script>
+<script src="js/ui/hud.js"></script>
+<script src="js/ui/inventory.js"></script>
+<script src="js/ui/talents.js"></script>
+<script src="js/ui/star-map.js"></script>
+<script src="js/ui/station.js"></script>
+<script src="js/ui/paragon.js"></script>
+<script src="js/ui/workshop.js"></script>
+<script src="js/ui/gates.js"></script>
+<script src="js/ui/cheat.js"></script>
+<script src="js/ui/select.js"></script>
+<script src="js/ui/bindings.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

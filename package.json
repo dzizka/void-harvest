@@ -1,0 +1,13 @@
+{
+  "name": "void-harvest",
+  "version": "1.0.0",
+  "private": true,
+  "description": "2D vesmírna strieľačka s ARPG progresiou (HTML5 Canvas + čistý JavaScript)",
+  "scripts": {
+    "build": "node tools/build.js",
+    "test": "node tools/build.js && node tools/smoke.js"
+  },
+  "devDependencies": {
+    "playwright": "^1.47.0"
+  }
+}

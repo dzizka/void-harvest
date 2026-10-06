@@ -1,0 +1,68 @@
+/* Layout: full-bleed canvas cockpit; instruments pinned to corners; inventory, talents, star map and station open as chamfered bays over a paused sector */
+:root{
+  color-scheme: dark;
+  --void:#05080f;
+  --panel:rgba(9,14,27,.94);
+  --panel-solid:#0a1020;
+  --line:#22304b;
+  --line-hi:#3a5076;
+  --text:#d9e3f3;
+  --dim:#7f8ca8;
+  --accent:#5fd4ff;
+  --hull:#ff6b5a;
+  --xp:#b48cff;
+  --ore:#c8a27c;
+  --good:#5be09a;
+  --bad:#ff5f6d;
+  --r-common:#e6e9ef;
+  --r-magic:#6f9bff;
+  --r-rare:#ffe14d;
+  --r-legendary:#ff8a1f;
+  --r-mythic:#e14bff;
+  --f-display:"Chakra Petch","Segoe UI",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  --dev:#5ef2d0;
+  --chamfer:14px;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{height:100%;margin:0;overflow:hidden;background:var(--void);color:var(--text);font-family:var(--f-display);font-size:14px}
+button{font:inherit;color:inherit}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+kbd{font:600 10px/1 var(--f-mono);padding:3px 5px;border:1px solid var(--line-hi);border-bottom-width:2px;color:var(--text);background:#0d1528;border-radius:2px}
+.eyebrow{font:600 10px/1.2 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+#game{position:fixed;inset:0;width:100%;height:100%;display:block;cursor:crosshair;touch-action:none}
+
+/* ---------- chamfered frames ---------- */
+.frame{clip-path:polygon(0 0,calc(100% - var(--chamfer)) 0,100% var(--chamfer),100% 100%,var(--chamfer) 100%,0 calc(100% - var(--chamfer)));background:var(--line);padding:1px}
+.frame>.in{clip-path:inherit;background:var(--panel-solid);height:100%}
+
+/* ---------- select screen ---------- */
+#select{position:fixed;inset:0;overflow-y:auto;padding-block:clamp(24px,6vh,64px);padding-inline:max(16px,4vw);background:radial-gradient(ellipse at 70% 20%,rgba(40,70,140,.18),transparent 60%),linear-gradient(180deg,rgba(5,8,15,.35),rgba(5,8,15,.85))}
+.sel-wrap{max-width:1120px;margin:0 auto;display:grid;gap:28px}
+.sel-head{display:grid;gap:10px;max-width:640px}
+.sel-head h1{margin:0;font-size:clamp(40px,7vw,76px);line-height:.9;font-weight:700;letter-spacing:-.01em;text-transform:uppercase;text-wrap:balance}
+.sel-head h1 span{color:var(--accent)}
+.sel-head p{margin:0;color:var(--dim);font-size:16px;line-height:1.5;max-width:58ch}
+.ships{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+@media (max-width:1180px){.ships{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:700px){.ships{grid-template-columns:1fr}}
+.ship{cursor:pointer;transition:background .15s,transform .15s;border:0;text-align:left;display:block;width:100%}
+.ship:hover,.ship:focus-visible{background:var(--sc);transform:translateY(-2px);outline:none}
+.ship .in{display:grid;gap:14px;padding:18px 18px 20px}
+.ship canvas{width:100%;height:130px;display:block;background:radial-gradient(circle at 50% 55%,color-mix(in srgb,var(--sc) 14%,transparent),transparent 70%)}
+.ship h2{margin:0;font-size:24px;font-weight:700;text-transform:uppercase;letter-spacing:.02em;color:var(--sc)}
+.ship .role{font:600 10px/1 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+.ship p{margin:0;color:#b5c1d8;line-height:1.5;font-size:13.5px}
+.meters{display:grid;gap:7px}
+.meter{display:grid;grid-template-columns:78px 1fr;align-items:center;gap:10px;font:500 11px/1 var(--f-mono);color:var(--dim);text-transform:uppercase;letter-spacing:.06em}
+.meter .segs{display:grid;grid-template-columns:repeat(5,1fr);gap:3px}
+.meter .segs i{height:6px;background:#141e33}
+.meter .segs i.on{background:var(--sc)}
+.perks{margin:0;padding:0;list-style:none;display:grid;gap:5px;font-size:13px}
+.perks li::before{content:"▸ ";color:var(--sc)}
+.launch{font:700 12px/1 var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--sc);display:flex;justify-content:space-between;border-top:1px solid var(--line);padding-top:12px}
+.sel-foot{display:flex;flex-wrap:wrap;gap:10px 22px;color:var(--dim);font-size:13px;border-top:1px solid var(--line);padding-top:16px}
+.sel-foot span{display:inline-flex;gap:6px;align-items:center}
+.touch-note{color:var(--hull);font-size:13px;display:none}
+@media (hover:none){.touch-note{display:block}}
