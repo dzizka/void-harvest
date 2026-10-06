@@ -153,7 +153,17 @@ const LEGEND_POOL = [
   { id: 'kamikaze',  slot: 'drones',    name: _L('Samovražedná letka'),     power: _L('Každých 6 s sa dron vrhne na najbližšieho nepriateľa a vybuchne za 300 % poškodenia lasera.') },
   { id: 'thorns',    slot: 'armor',     name: _L('Ostnatý pancier'),        power: _L('Pri zásahu loď vystrelí 6 šrapnelov za 100 % poškodenia lasera (najviac raz za sekundu).') },
   { id: 'bulwark',   slot: 'armor',     name: _L('Bašta'),                  power: _L('Kým letíš pomaly alebo stojíš, máš +20 % redukciu poškodenia.') },
-  { id: 'blinkcore', slot: 'engine',    cls: 'interceptor', name: _L('Kvantový krok'), power: _L('Po úhybe sú tvoje ďalšie 3 výstrely garantovane kritické.') }
+  { id: 'blinkcore', slot: 'engine',    cls: 'interceptor', name: _L('Kvantový krok'), power: _L('Po úhybe sú tvoje ďalšie 3 výstrely garantovane kritické.') },
+  // skill legendaries: change how an active skill works
+  { id: 'lChrono',   slot: 'reactor',   name: _L('Chronojadro'),             power: _L('Každé zostrelenie skráti cooldown schopností Q a Shift o 0,3 s.') },
+  { id: 'lRail',     slot: 'weapon',    cls: 'interceptor', skill: 'railgun', name: _L('Lomený lúč'),        power: _L('Railgun sa od posledného zasiahnutého nepriateľa 2× odrazí k ďalšiemu cieľu za 70 % poškodenia.') },
+  { id: 'lClone',    slot: 'engine',    cls: 'interceptor', skill: 'clone',   name: _L('Zrkadlová sieň'),    power: _L('Fantómový klon vytvorí dva klony naraz.') },
+  { id: 'lErupt',    slot: 'shield',    cls: 'juggernaut',  skill: 'eruption', name: _L('Srdce sopky'),      power: _L('Erupcia aury sa o 1 s a 2 s zopakuje za 50 % sily.') },
+  { id: 'lWell',     slot: 'reactor',   cls: 'juggernaut',  skill: 'gravwell', name: _L('Čierne jadro'),     power: _L('Gravitačná studňa trvá o 2 s dlhšie a každú sekundu pulzuje za 100 % poškodenia lasera.') },
+  { id: 'lHurl',     slot: 'drones',    cls: 'scavenger',   skill: 'hurl',    name: _L('Gravitačné chápadlá'), power: _L('Traktorový vrh chytí a hodí až 3 asteroidy naraz.') },
+  { id: 'lMines',    slot: 'secondary', cls: 'scavenger',   skill: 'mines',   name: _L('Kazetové míny'),     power: _L('Každá mína sa po výbuchu rozpadne na 3 menšie míny za 40 % poškodenia.') },
+  { id: 'lOrder',    slot: 'drones',    cls: 'carrier',     skill: 'order',   name: _L('Veliteľský kanál'),  power: _L('Počas Rozkazu: Útok strieľajú mínióni dvojnásobne rýchlo.') },
+  { id: 'lDeton',    slot: 'reactor',   cls: 'carrier',     skill: 'detonate', name: _L('Fénixova linka'),   power: _L('Po Detonácii sa o 3 s znovu postaví toľko miniónov, koľko vybuchlo.') }
 ];
 // mythic items: one fixed drop source each, tiny chance
 const MYTHIC_LIST = [

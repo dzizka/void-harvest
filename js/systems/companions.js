@@ -154,7 +154,7 @@ function updateMinions(dt) {
               if (tx.cCrush) for (const e of enemies) if (!e.dead && d2(e.x, e.y, t.x, t.y) < (120 + e.r) ** 2) applySlow(e, tx.cCrush, 1.5);
             }
           } else if (d < 560) {
-            m.fireT = 1 / M.rate;
+            m.fireT = 1 / M.rate / (P.orderT > 0 && s.legend.lOrder ? 2 : 1);
             bullets.push({ x: m.x, y: m.y, px: m.x, py: m.y, vx: dx / d * 900, vy: dy / d * 900, dmg, crit: false, life: 0.7, w: 1.6, color: '#ff9d6e', bubble: false,
               blast: (tx.cSplash || 0) / 100, blastR: 60, slow: tx.cCrush || 0, quietHit: true });
           }

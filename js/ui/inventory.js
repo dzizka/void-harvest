@@ -88,7 +88,8 @@ function buildWish() {
   const T = TREES[P.cls];
   const key = T.find(B => P.tal[B.key.id]);
   const top = key || T.slice().sort((a, b) => branchSpent(b) - branchSpent(a))[0];
-  return top && branchSpent(top) > 0 ? top.wish : ['allDmg', 'crit', 'atkSpd', 'area', 'laser', 'missile'];
+  const base = top && branchSpent(top) > 0 ? top.wish : ['allDmg', 'crit', 'atkSpd', 'area', 'laser', 'missile'];
+  return base.concat(['skDmg', 'skCdr']);   // active skills are part of every build
 }
 function maxIlvlNow() {
   let t = 1; for (let k = G.maxTier; k >= 1; k--) if (P.level >= TIERS[k].req) { t = k; break; }
@@ -138,7 +139,7 @@ function itemStatsHTML(it) {
       <span class="${n >= 2 ? 'on' : 'off'}">(2) +15 % Všetko poškodenie a +1 ku talentom vetvy ${B.name}</span>
       <span class="${n >= 4 ? 'on' : 'off'}">(4) ${SET4[it.set].t}</span></div>`;
   }
-  if (it.legend) { const L = LEGEND_INDEX[it.legend]; h += `<div class="sec leg ${it.rarity === 'mythic' ? 'myth' : ''}">${it.res ? _T`<b style="color:var(--r-mythic)">Rezonancia ${it.res}/${RES_MAX} · sila +${it.res * 10} %</b><br>` : ''}${L.power}${L.cls ? _T`<span class="cls">Triedny predmet: ${CLASSES[L.cls].name}</span>` : ''}</div>`; }
+  if (it.legend) { const L = LEGEND_INDEX[it.legend]; h += `<div class="sec leg ${it.rarity === 'mythic' ? 'myth' : ''}">${it.res ? _T`<b style="color:var(--r-mythic)">Rezonancia ${it.res}/${RES_MAX} · sila +${it.res * 10} %</b><br>` : ''}${L.power}${L.skill && SKILLS[L.skill] ? _T`<span class="cls">Mení schopnosť: ${SKILLS[L.skill].name}${P && skState().sel.includes(L.skill) ? '' : _L(' · nemáš ju nasadenú')}</span>` : ''}${L.cls ? _T`<span class="cls">Triedny predmet: ${CLASSES[L.cls].name}</span>` : ''}</div>`; }
   return h;
 }
 function statRows(cur, next) {
