@@ -141,9 +141,9 @@ function touchHud() {
   if (it) { $('tbActTxt').innerHTML = it.txt; $('tbAct').style.setProperty('--pc', it.col); }
   const s = P.stats, set = (id, p, ready, name) => {
     const el = $(id); el.style.setProperty('--p', clamp(p, 0, 1).toFixed(3)); el.classList.toggle('ready', ready);
-    if (name != null) { el.querySelector('.tbn').textContent = name; el.classList.toggle('long', name.length > 9); }
+    if (name != null) { const w = Math.max(...name.split(/\s+/).map(x => x.length)); el.querySelector('.tbn').textContent = name; el.classList.toggle('long', w > 7 && w <= 10); el.classList.toggle('xlong', w > 10); }
   };
-  set('tbMis', P.missileT > 0 ? P.missileT / s.missileCd : 0, P.missileT <= 0);
+  set('tbMis', P.missileT > 0 ? P.missileT / s.missileCd : 0, P.missileT <= 0, _L('Rakety'));
   const D = dodgeDef(), ph = D === PHASE_DODGE, cd = ph ? Math.max(0, P.dashCd) : P.dodgeCh > 0 ? 0 : P.dodgeCd;
   set('tbDodge', cd > 0 ? cd / (ph ? D.cd : dodgeCd()) : 0, cd <= 0, D.name);
   for (let i = 0; i < 2; i++) {
@@ -155,8 +155,62 @@ function touchHud() {
   }
   $('tbScan').hidden = !!G.dungeon;
   const scd = G.ex && !G.dungeon ? Math.max(0, G.ex.scanCd) : 0;
-  set('tbScan', scd / SCAN_CD, scd <= 0);
+  set('tbScan', scd / SCAN_CD, scd <= 0, _L('Skener'));
 }
+
+/* ---------- item detail sheet: tap replaces hover tooltip + right click ---------- */
+function itemSheet(it, mode, acts) {
+  TOUCH.acts = acts;
+  tip.innerHTML = tooltipFor(it, mode) + `<div class="sheet-acts">${acts.map((a, i) => `<button type="button" class="btn ${a.cls || ''}" data-sa="${i}" ${a.dis ? 'disabled' : ''}>${a.txt}</button>`).join('')}<button type="button" class="btn" data-sa="x">${_L('Zavrieť')}</button></div>`;
+  tip.style.setProperty('--rc', RARITY[it.rarity].color);
+  tip.classList.add('sheet'); tip.hidden = false; tip.scrollTop = 0;
+}
+function invSheet(idx) {
+  const it = P.inv[idx]; if (!it) return;
+  itemSheet(it, 'inv', [
+    { txt: _L('Nasadiť'), cls: 'primary', fn: () => equipFromInv(idx) },
+    { txt: _T`Rozobrať · +${salvageValue(it)} rudy`, cls: 'bad', fn: () => salvage(idx) }]);
+}
+function slotSheet(slot) {
+  const it = P.equip[slot]; if (!it) return;
+  const max = it.upg >= MAX_UPG, c = max ? 0 : upgradeCost(it);
+  itemSheet(it, 'eq', [{ txt: max ? _L('Vylepšené na maximum') : _T`Vylepšiť · ${c} rudy`, cls: 'primary', dis: max || P.ore < c, keep: true, fn: () => { upgradeSlot(slot); slotSheet(slot); } }]);
+}
+function moveSheet(mv) {
+  const [k, i] = mv.split(':'), it = k === 'i' ? P.inv[+i] : P.stash[+i]; if (!it) return;
+  const full = k === 'i' ? P.stash.length >= STASH_MAX : P.inv.length >= 30;
+  itemSheet(it, 'craft', [{ txt: k === 'i' ? _L('Presunúť do skladu') : _L('Presunúť do nákladu'), cls: 'primary', dis: full, fn: () => {
+    if (k === 'i') P.stash.push(P.inv.splice(+i, 1)[0]); else P.inv.push(P.stash.splice(+i, 1)[0]);
+    renderCraft();
+  } }]);
+}
+tip.addEventListener('click', e => {
+  const b = e.target.closest('[data-sa]'); if (!b || b.disabled) return;
+  const A = b.dataset.sa === 'x' ? null : TOUCH.acts[+b.dataset.sa];
+  if (!A || !A.keep) hideTip();
+  if (A) { A.fn(); saveGame(); }
+});
+// tap outside the sheet closes it
+document.addEventListener('pointerdown', e => { if (TOUCH.on && tip.classList.contains('sheet') && !tip.contains(e.target)) { hideTip(); TOUCH.swallow = performance.now(); } }, true);
+document.addEventListener('click', e => { if (TOUCH.on && performance.now() - (TOUCH.swallow || 0) < 600) { TOUCH.swallow = 0; e.stopPropagation(); e.preventDefault(); } }, true);
+// capture phase: runs before the desktop click handlers and stops them
+const tapItem = (id, sel, fn) => $(id).addEventListener('click', e => {
+  if (!TOUCH.on) return;
+  const el = e.target.closest(sel); if (!el) return;
+  e.stopPropagation(); fn(el);
+}, true);
+// ⓘ hints are hover titles on desktop; on touch a tap shows them in the sheet
+document.addEventListener('click', e => {
+  if (!TOUCH.on) return;
+  const el = e.target.closest('.info[title]'); if (!el) return;
+  e.stopPropagation(); e.preventDefault();
+  TOUCH.acts = [];
+  tip.innerHTML = `<p style="margin:0;line-height:1.5">${el.title}</p><div class="sheet-acts"><button type="button" class="btn" data-sa="x">${_L('Zavrieť')}</button></div>`;
+  tip.style.setProperty('--rc', 'var(--accent)'); tip.classList.add('sheet'); tip.hidden = false;
+}, true);
+tapItem('grid', '[data-idx]', el => invSheet(+el.dataset.idx));
+tapItem('eslots', '[data-slot]', el => slotSheet(el.dataset.slot));
+tapItem('craftBody', '[data-mv]', el => moveSheet(el.dataset.mv));
 
 $('abTouch').addEventListener('click', () => { setMore(false); setTouchPref(TOUCH.pref === 'auto' ? (TOUCH.on ? 'off' : 'on') : TOUCH.pref === 'on' ? 'off' : 'auto'); });
 matchMedia('(pointer: coarse)').addEventListener('change', () => { if (TOUCH.pref === 'auto') applyTouch(); });

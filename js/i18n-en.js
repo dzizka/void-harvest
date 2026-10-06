@@ -1,6 +1,13 @@
 'use strict';
 // English dictionary: Slovak source text → English. Keys with {0}, {1}… are templates (see js/i18n.js).
 Object.assign(EN, {
+  "Zavrieť": "Close",
+  "Nasadiť": "Equip",
+  "Rozobrať · +{0} rudy": "Salvage · +{0} ore",
+  "Vylepšené na maximum": "Fully upgraded",
+  "Vylepšiť · {0} rudy": "Upgrade · {0} ore",
+  "Presunúť do skladu": "Move to stash",
+  "Presunúť do nákladu": "Move to cargo",
   "Dotykové ovládanie: {0}.": "Touch controls: {0}.",
   "automaticky (zapnuté)": "automatic (on)",
   "automaticky (vypnuté)": "automatic (off)",

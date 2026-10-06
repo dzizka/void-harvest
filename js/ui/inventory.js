@@ -201,7 +201,7 @@ function placeTip(x, y) {
   if (ty < 8) ty = 8;
   tip.style.left = tx + 'px'; tip.style.top = ty + 'px';
 }
-function hideTip() { tip.hidden = true; tipTarget = null; }
+function hideTip() { tip.hidden = true; tip.classList.remove('sheet'); tipTarget = null; }
 function tipFromEl(el, x, y) {
   if (!el) { hideTip(); return; }
   let it, mode;

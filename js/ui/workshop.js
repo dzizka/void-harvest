@@ -218,7 +218,8 @@ $('craftBody').addEventListener('click', e => {
   }
 });
 $('craftBody').addEventListener('mousemove', e => {
+  if (TOUCH.on) return;
   const el = e.target.closest('[data-cref],[data-mv]');
   if (el !== tipTarget) tipFromEl(el, e.clientX, e.clientY); else if (el) placeTip(e.clientX, e.clientY);
 });
-$('craftBody').addEventListener('mouseleave', hideTip);
+$('craftBody').addEventListener('mouseleave', () => { if (!TOUCH.on) hideTip(); });

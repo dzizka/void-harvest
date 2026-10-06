@@ -25,10 +25,14 @@ body.touch .touch-note{display:block}
 .tb.down{transform:scale(.92);background:rgba(95,212,255,.22)}
 .tb.locked{opacity:.4}
 .tb[hidden]{display:none}
-.tbn{position:relative;z-index:1;max-width:calc(var(--s) - 10px);font:600 9px/1.1 var(--f-mono);letter-spacing:.02em;text-align:center;text-transform:uppercase;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;word-break:break-word}
+.tbn{position:relative;z-index:1;max-width:calc(var(--s) - 10px);font:600 9px/1.1 var(--f-mono);letter-spacing:.02em;text-align:center;text-transform:uppercase;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;word-break:normal;overflow-wrap:normal}
 .tb.big{--s:74px;right:4px;bottom:4px}
 .tb.big .tbn{font-size:10px}
+.tb.sm .tbn{font-size:7.5px;letter-spacing:0}
 .tb.long .tbn{font-size:7.5px;letter-spacing:0}
+.tb.xlong .tbn{font-size:6.5px;letter-spacing:0}
+.tb.big.long .tbn{font-size:8.5px}
+.tb.big.xlong .tbn{font-size:7.5px}
 #tbSk0{right:94px;bottom:2px}
 #tbSk1{right:12px;bottom:94px}
 #tbMis{--s:54px;right:84px;bottom:76px;border-color:rgba(255,107,90,.5)}
@@ -96,3 +100,52 @@ body.touch #pauseTag{top:auto;bottom:calc(64px + env(safe-area-inset-bottom,0px)
   #rotateNote small{color:var(--dim);font-size:13px}
 }
 @keyframes rot{0%,30%{transform:rotate(0)}60%,100%{transform:rotate(90deg)}}
+
+/* =====================================================================
+   PANELS on touch: full screen, one scroll area, finger-sized controls
+   ===================================================================== */
+body.touch .bay{left:0;top:0;transform:none;width:100%;height:100%;max-height:none;--chamfer:0px}
+body.touch .bay>.in{height:100%}
+body.touch .bay header{flex-wrap:nowrap;align-items:center;gap:10px;padding:calc(6px + env(safe-area-inset-top,0px)) calc(10px + env(safe-area-inset-right,0px)) 6px calc(12px + env(safe-area-inset-left,0px));overflow-x:auto;scrollbar-width:none}
+body.touch .bay header::-webkit-scrollbar{display:none}
+body.touch .bay h2{font-size:15px;white-space:nowrap}
+body.touch .bay header .hint{display:none}
+body.touch .bay header .tabs{flex:0 0 auto}
+body.touch .bay header>*{flex-shrink:0}
+body.touch .close{order:99;margin-left:auto;min-width:46px;min-height:40px;font-size:0;position:sticky;right:0;background:var(--panel-solid)}
+body.touch .close::before{content:"✕";font-size:18px;line-height:1}
+body.touch .bay-body{padding:10px calc(12px + env(safe-area-inset-right,0px)) calc(16px + env(safe-area-inset-bottom,0px)) calc(12px + env(safe-area-inset-left,0px));overscroll-behavior:contain;-webkit-overflow-scrolling:touch;flex:1}
+body.touch .tabs{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+body.touch .tabs button{min-height:38px;padding:6px 10px;white-space:nowrap}
+body.touch .btn{min-height:40px}
+body.touch .salv-bar .chip,body.touch .salv-bar .sb{min-height:36px}
+body.touch .bay.dlg-bay{left:50%;top:50%;transform:translate(-50%,-50%);width:min(680px,calc(100% - 24px));height:auto;max-height:calc(100% - 16px)}
+body.touch .dlg-bay>.in{height:auto}
+body.touch .dlg-bay header{flex-wrap:wrap;overflow:visible}
+body.touch .dlg-bay header .hint{display:inline;flex:1 1 auto;min-width:0}
+body.touch .dlg-text{font-size:15px}
+
+/* hangar + death screen */
+body.touch #select{padding-block:calc(12px + env(safe-area-inset-top,0px)) 16px}
+body.touch .sel-head h1{font-size:clamp(30px,7vh,56px)}
+body.touch .sel-wrap{gap:14px}
+body.touch .sel-head{gap:6px;max-width:none;padding-right:180px}
+body.touch .sel-head p{font-size:13px;line-height:1.4}
+body.touch .lang-pick{top:calc(10px + env(safe-area-inset-top,0px))}
+body.touch .lang-pick button{padding:11px 12px}
+body.touch .sel-foot{display:none}
+body.touch .ships{grid-template-columns:repeat(4,minmax(170px,1fr));gap:10px}
+body.touch .ship .in{gap:8px;padding:10px 12px 12px}
+body.touch .ship canvas{height:64px}
+body.touch .ship h2{font-size:18px}
+body.touch .ship p,body.touch .ship .perks{display:none}
+body.touch .meters{gap:4px}
+body.touch #dead .in{padding:16px;max-height:100vh;overflow:auto}
+
+/* item detail sheet (replaces hover tooltips + right click) */
+body.touch #tip:not(.sheet){display:none}
+body.touch #tip.sheet{position:fixed;left:50%!important;top:50%!important;transform:translate(-50%,-50%);width:min(440px,calc(100% - 24px));max-width:none;max-height:calc(100% - 16px);overflow-y:auto;pointer-events:auto;z-index:40;box-shadow:0 0 0 100vmax rgba(2,4,10,.6),0 10px 30px rgba(0,0,0,.6)}
+#tip .sheet-acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;position:sticky;bottom:-12px;background:#080d1a;padding:8px 0 4px}
+#tip .sheet-acts .btn{flex:1 1 auto;justify-self:auto}
+#tip .sheet-acts .btn.bad{border-color:var(--bad);color:var(--bad)}
+body.touch #tip.sheet .foot{display:none}

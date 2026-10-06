@@ -1,14 +1,15 @@
 'use strict';
 /* ---------- events ---------- */
 $('grid').addEventListener('click', e => { const el = e.target.closest('[data-idx]'); if (el) { equipFromInv(+el.dataset.idx); tipFromEl(document.querySelector(`[data-idx="${el.dataset.idx}"]`), e.clientX, e.clientY); } });
-$('grid').addEventListener('contextmenu', e => { e.preventDefault(); const el = e.target.closest('[data-idx]'); if (el) { salvage(+el.dataset.idx); hideTip(); } });
+$('grid').addEventListener('contextmenu', e => { e.preventDefault(); if (TOUCH.on) return; const el = e.target.closest('[data-idx]'); if (el) { salvage(+el.dataset.idx); hideTip(); } });
 $('eslots').addEventListener('click', e => { const el = e.target.closest('[data-slot]'); if (el) { upgradeSlot(el.dataset.slot); tipFromEl(document.querySelector(`[data-slot="${el.dataset.slot}"]`), e.clientX, e.clientY); } });
 for (const id of ['grid', 'eslots']) {
   $(id).addEventListener('mousemove', e => {
+    if (TOUCH.on) return;
     const el = e.target.closest('[data-idx],[data-slot]');
     if (el !== tipTarget) tipFromEl(el, e.clientX, e.clientY); else if (el) placeTip(e.clientX, e.clientY);
   });
-  $(id).addEventListener('mouseleave', hideTip);
+  $(id).addEventListener('mouseleave', () => { if (!TOUCH.on) hideTip(); });
 }
 /* ---------- salvage: auto filter on pickup + bulk salvage of the hold ---------- */
 const SALV_RAR = ['common', 'magic', 'rare', 'legendary', 'set', 'mythic'];
