@@ -1,7 +1,7 @@
 'use strict';
 /* ---------- companion drones (drone bay slot) ---------- */
 function updateDrones(dt) {
-  const s = P.stats, D = s.drones, want = D ? D.count : 0;
+  const s = P.stats, D = s.drones, want = D ? D.count + (P.stormT > 0 ? 2 : 0) : 0;
   while (P.drones.length < want) P.drones.push({ x: P.x, y: P.y, a: 0, fireT: rand(0, 0.5) });
   if (P.drones.length > want) P.drones.length = want;
   if (!want) return;
@@ -29,7 +29,7 @@ function updateDrones(dt) {
     if (t) {
       d.a = Math.atan2(t.y - d.y, t.x - d.x);
       if (d.fireT <= 0) {
-        d.fireT = (D.kind === 'mining' ? 0.35 : 0.5) / s.droneRate;
+        d.fireT = (D.kind === 'mining' ? 0.35 : 0.5) / s.droneRate / (P.stormT > 0 ? 2 : 1);
         const crit = Math.random() * 100 < (hive ? s.crit : 0) + (s.tx.sDCrit || 0);
         bullets.push({ x: d.x, y: d.y, px: d.x, py: d.y, vx: Math.cos(d.a) * 900, vy: Math.sin(d.a) * 900, dmg: s.laserHit * (D.dmg || 25) / 100 * buff * (crit ? s.critMult : 1), crit, life: 0.6, w: 1.5,
           color: D.kind === 'mining' ? '#c8a27c' : CLASSES[P.cls].color, bubble: G.bubble, onlyAst: !t.T, pierce: hive ? 1 : 0, keep: 0.85,
@@ -146,7 +146,7 @@ function updateMinions(dt) {
         const want = m.titan ? t.r + 40 : 180, rad = clamp((d - want) / 80, -1, 1), orb = i % 2 ? 0.6 : -0.6;
         vx = (dx / d * rad - dy / d * orb) * sp; vy = (dy / d * rad + dx / d * orb) * sp;
         if (m.fireT <= 0) {
-          const dmg = s.laserHit * M.dmg * buff;
+          const dmg = s.laserHit * M.dmg * buff * (P.orderT > 0 ? 1.5 : 1);
           if (m.titan) {
             if (d < t.r + 150) {
               m.fireT = 1 / M.rate;

@@ -99,7 +99,7 @@ function updatePickups(dt) {
     if (p.cool) p.cool = Math.max(0, p.cool - dt);
     const fr = Math.pow(0.15, dt); p.vx *= fr; p.vy *= fr;
     const dx = P.x - p.x, dy = P.y - p.y, d = Math.hypot(dx, dy) || 1;
-    const range = p.kind === 'item' ? s.magnet * 0.5 + 40 : p.kind === 'xp' && p.t > 0.5 ? 1e6 : s.magnet;
+    const range = p.kind === 'item' ? s.magnet * 0.5 + 40 : p.kind === 'xp' && p.t > 0.5 ? 1e6 : s.magnet * (P.magT > 0 ? 6 : 1);
     if (d < range && !p.cool && p.t > 0.35) {
       const acc = p.kind === 'xp' && range > 1e5 ? 2600 + 1400 * (p.t - 0.5) : (1 - d / range) * 2200 + 500;
       p.vx += dx / d * acc * dt; p.vy += dy / d * acc * dt;
@@ -121,7 +121,7 @@ function updateTrails(dt) {
 function updateFx(dt) {
   for (const p of particles) {
     p.life -= dt;
-    if (!p.ring && !p.bolt) { const f = Math.exp(-p.drag * dt); p.vx *= f; p.vy *= f; p.x += p.vx * dt; p.y += p.vy * dt; if (p.shard) p.a += p.va * dt; }
+    if (!p.ring && !p.bolt && !p.beam) { const f = Math.exp(-p.drag * dt); p.vx *= f; p.vy *= f; p.x += p.vx * dt; p.y += p.vy * dt; if (p.shard) p.a += p.va * dt; }
   }
   particles = particles.filter(p => p.life > 0);
   for (const t of texts) { t.life -= dt; t.y -= 38 * dt; }

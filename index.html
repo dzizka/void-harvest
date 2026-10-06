@@ -32,7 +32,9 @@
       <span><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> pohyb</span>
       <span>Myš – mierenie</span>
       <span><kbd>LMB</kbd> laser a ťažba</span>
-      <span><kbd>RMB</kbd>/<kbd>Space</kbd> rakety</span>
+      <span><kbd>RMB</kbd> rakety</span>
+      <span><kbd>Space</kbd> úhyb</span>
+      <span><kbd>Q</kbd>/<kbd>Shift</kbd> schopnosti</span>
       <span><kbd>E</kbd> stanica, brána, portál</span>
       <span><kbd>M</kbd> hviezdna mapa</span>
       <span><kbd>I</kbd> inventár</span>
@@ -81,7 +83,9 @@
     <div class="abilities">
       <div class="ab"><kbd>LMB</kbd> Laser <em id="abDps"></em></div>
       <div class="ab"><kbd>RMB</kbd> Rakety <em id="abMis"></em><i class="cd" id="misCd"></i></div>
-      <div class="ab" id="abDash" hidden><kbd>Shift</kbd> Fázový rez <em id="abDashS"></em></div>
+      <div class="ab sk" id="abDodge"><kbd>Space</kbd> <span id="abDodgeN"></span> <em id="abDodgeS"></em><i class="cd" id="abDodgeCd"></i></div>
+      <div class="ab sk" id="abSk0"><kbd>Q</kbd> <span id="abSk0N"></span> <em id="abSk0S"></em><i class="cd" id="abSk0Cd"></i></div>
+      <div class="ab sk" id="abSk1"><kbd>Shift</kbd> <span id="abSk1N"></span> <em id="abSk1S"></em><i class="cd" id="abSk1Cd"></i></div>
       <div class="ab" id="abMin" hidden><kbd>◆</kbd> Minióni <em id="abMinS"></em></div>
       <button class="ab" id="abInv" type="button"><kbd>I</kbd> Inventár <em id="abInvN"></em></button>
       <button class="ab" id="abTal" type="button"><kbd>K</kbd> Talenty <em id="abTalN"></em></button>
@@ -347,6 +351,7 @@
 <script src="js/core/update.js"></script>
 <script src="js/systems/enemies.js"></script>
 <script src="js/systems/projectiles.js"></script>
+<script src="js/systems/abilities.js"></script>
 <script src="js/render/background.js"></script>
 <script src="js/render/sprites.js"></script>
 <script src="js/render/render.js"></script>

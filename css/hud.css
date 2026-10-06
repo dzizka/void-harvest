@@ -33,6 +33,10 @@ button.ab{cursor:pointer}
 .more-pop em{font:600 11px/1 var(--f-mono);font-style:normal;color:var(--dim)}
 button.ab:hover{border-color:var(--line-hi)}
 .ab .cd{position:absolute;left:0;bottom:0;height:2px;background:var(--hull)}
+.ab.sk .cd{background:var(--accent)}
+.ab.sk.ready{border-color:color-mix(in srgb,var(--accent) 45%,var(--line))}
+.ab.sk.ready em{color:var(--accent)}
+.ab.sk.locked{opacity:.45}
 .ab em{font-style:normal;font:600 11px/1 var(--f-mono);color:var(--dim)}
 .ab.alert{border-color:var(--xp);animation:pulse 1.2s ease-in-out infinite}
 .ab.alert em{color:var(--xp)}

@@ -162,7 +162,7 @@ const MYTHIC_LIST = [
     power: _L('Každý výbuch rakety vyliahne 2 spojenecké drony (najviac 6), ktoré 9 s strieľajú na nepriateľov.'),
     source: _L('Matka roja · 0,5 % · svet III+') },
   { id: 'phaseCut',    slot: 'engine',    name: _L('Fázový rez'),         chance: 0.01,
-    power: _L('Shift: fázový skok. Počas skoku si nezraniteľný a každému nepriateľovi v ceste spôsobíš 300 % poškodenia lasera (CD 2,2 s).'),
+    power: _L('Úhyb (Space) sa zmení na fázový skok: počas skoku si nezraniteľný a každému nepriateľovi v ceste spôsobíš 300 % poškodenia lasera (CD 2,2 s).'),
     source: _L('Dreadnought Vex · 1 % · svet III+') },
   { id: 'tessarEye',   slot: 'shield',    name: _L('Oko Tessaru'),        chance: 0.03,
     power: _L('Každý rozbitý asteroid vytvorí kryštálový pancier (najviac 3). Pancier úplne pohltí jeden zásah.'),

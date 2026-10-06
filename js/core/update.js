@@ -10,6 +10,7 @@ function update(dt) {
     G.wasSafe = G.safe;
   }
   updatePlayer(dt);
+  updateAbilities(dt);
   if (G.dungeon) dungeonDirector(dt); else { director(dt); updateEvent(dt); }
   updateAsteroids(dt);
   updateEnemies(dt);
@@ -45,20 +46,12 @@ function updatePlayer(dt) {
   let iy = (k.KeyS || k.ArrowDown ? 1 : 0) - (k.KeyW || k.ArrowUp ? 1 : 0);
   P.thrust = 0;
   if (ix || iy) { const l = Math.hypot(ix, iy); ix /= l; iy /= l; P.vx += ix * s.accel * dt; P.vy += iy * s.accel * dt; P.thrust = 1; }
-  if (input.dash) {
-    input.dash = false;
-    if (s.legend.phaseCut && P.dashCd <= 0) {
-      P.dashA = (ix || iy) ? Math.atan2(iy, ix) : P.a;
-      P.dashT = 0.24; P.dashCd = 2.2; P.dashHit = new Set();
-      ring(P.x, P.y, '#e14bff', 60, 0.3);
-    }
-  }
   if (P.dashT > 0) { P.vx = Math.cos(P.dashA) * 1150; P.vy = Math.sin(P.dashA) * 1150; }
-  const drag = P.dashT > 0 ? 1 : Math.pow(P.thrust ? 0.6 : 0.3, dt);
+  const drag = P.dashT > 0 || P.ramT > 0 ? 1 : Math.pow(P.thrust ? 0.6 : 0.3, dt);
   P.vx *= drag; P.vy *= drag;
   const sp = Math.hypot(P.vx, P.vy);
   P.chillT = (P.chillT || 0) - dt;
-  const cap = P.dashT > 0 ? 1150 : s.speed * (s.legend.afterburner && G.time - P.lastHit > 3 ? 1.25 : 1) * (P.chillT > 0 ? 0.65 : 1);
+  const cap = P.dashT > 0 ? 1150 : P.ramT > 0 ? 1050 : P.magT > 1.8 ? 820 : s.speed * (s.legend.afterburner && G.time - P.lastHit > 3 ? 1.25 : 1) * (P.chillT > 0 ? 0.65 : 1);
   if (sp > cap) { P.vx *= cap / sp; P.vy *= cap / sp; }
   P.x += P.vx * dt; P.y += P.vy * dt;
   P.rib = P.rib || [];

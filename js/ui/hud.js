@@ -135,9 +135,7 @@ function updateHUD() {
   $('hTier').textContent = TIERS[G.tier].roman;
   $('hTitle').textContent = ACC.title || '';
   $('abAchN').textContent = `${Object.keys(ACC.ach).length}/${ACH.length}`;
-  const hasDash = !!s.legend.phaseCut;
-  $('abDash').hidden = !hasDash;
-  if (hasDash) $('abDashS').textContent = P.dashCd > 0 ? P.dashCd.toFixed(1) + ' s' : '✓';
+  updateSkillBar();
   $('abMin').hidden = !s.minion;
   if (s.minion) $('abMinS').textContent = s.minion.titan ? (minions.length ? _L('Kolos') : _T`Kolos o ${Math.max(0, P.titanT).toFixed(1)} s`) : `${minions.length}/${s.minion.max}`;
   $('debug').hidden = !C.debug;
@@ -180,3 +178,23 @@ function openPanel(name) {
   syncPanels();
 }
 function closePanels() { if (G) { G.panel = null; G.fromStation = false; syncPanels(); saveGame(); } }
+
+// Space / Q / Shift slots with cooldown bars
+function updateSkillBar() {
+  if (!P.skCd) resetAbilities();
+  const D = dodgeDef(), mx = D.charges || 1, ph = D === PHASE_DODGE;
+  const cd = ph ? Math.max(0, P.dashCd) : P.dodgeCh > 0 ? 0 : P.dodgeCd;
+  $('abDodgeN').textContent = D.name; $('abDodge').title = D.desc;
+  $('abDodgeS').textContent = cd > 0 ? cd.toFixed(1) + ' s' : mx > 1 ? '×' + P.dodgeCh : '✓';
+  $('abDodgeCd').style.width = (cd > 0 ? cd / D.cd * 100 : 0).toFixed(1) + '%';
+  $('abDodge').classList.toggle('ready', cd <= 0);
+  for (let i = 0; i < 2; i++) {
+    const id = (CLS_SKILLS[P.cls] || [])[i], S = SKILLS[id], el = $('abSk' + i);
+    el.hidden = !S; if (!S) continue;
+    const open = P.level >= S.lvl, c = Math.max(0, P.skCd[id] || 0);
+    $('abSk' + i + 'N').textContent = S.name; el.title = S.desc;
+    $('abSk' + i + 'S').textContent = !open ? _T`úr. ${S.lvl}` : c > 0 ? c.toFixed(1) + ' s' : '✓';
+    $('abSk' + i + 'Cd').style.width = (open && c > 0 ? c / S.cd * 100 : 0).toFixed(1) + '%';
+    el.classList.toggle('locked', !open); el.classList.toggle('ready', open && c <= 0);
+  }
+}

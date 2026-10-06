@@ -24,7 +24,7 @@ const root = path.join(__dirname, '..');
         loadSector('vex');
         const st = G.station; P.x = st && st.x < WORLD.w / 2 ? WORLD.w - 600 : 600; P.y = st && st.y < WORLD.h / 2 ? WORLD.h - 600 : 600;
         for (let i = 0; i < 12; i++) { const ang = i / 12 * Math.PI * 2; spawnEnemy(weighted(SECTORS.vex.enemies), P.x + Math.cos(ang) * 300, P.y + Math.sin(ang) * 300, zoneLevel(), i < 2); }
-        for (let i = 0; i < 60 * 20; i++) { update(1 / 60); updateFx(1 / 60); }
+        for (let i = 0; i < 60 * 20; i++) { if (i % 240 === 60) { input.dodge = true; input.skill = [true, true]; } update(1 / 60); updateFx(1 / 60); }
         render();
         for (const p of ['inv', 'tal', 'map', 'station', 'craft', 'para', 'ach', 'cheat']) { try { openPanel(p); closePanels(); } catch (e) { out.push(cls + ' panel ' + p + ': ' + e.message); } }
         out.push(`${cls}: lvl ${P.level}, zostrely ${G.kills}`);

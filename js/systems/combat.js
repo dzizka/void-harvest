@@ -273,13 +273,14 @@ function breakAsteroid(a) {
 function hurtPlayer(amt) {
   if (G.safe || transitioning || G.mode !== 'play') return;
   if (G.cheat.god) { P.shieldFlash = 0.1; return; }
-  if (P.dashT > 0) return;
+  if (P.dashT > 0 || P.invulnT > 0) return;
   const s = P.stats;
   if (P.crystal > 0) { P.crystal--; addText(P.x, P.y - 24, _L('KRYŠTÁL'), '#e14bff', 12, 0.6); burst(P.x, P.y, '#e14bff', 14, 220, 2, 0.4); return; }
   if (Math.random() * 100 < s.dodge) { addText(P.x, P.y - 24, _L('ÚHYB'), '#9fe6ff', 12, 0.6); if (s.legend.blinkcore) P.forceCrit = 3; onDodge(); return; }
   if (P.stasisT > 0) return;
   const tx = s.tx;
   let red = s.dr || 0;
+  if (P.drT > 0) red += 50;
   if (s.legend.bulwark && Math.hypot(P.vx, P.vy) < 70) red += 20;
   if (tx.jLast && P.hull < s.maxHull * 0.4) red += tx.jLast;
   amt *= 1 - Math.min(60, red) / 100;

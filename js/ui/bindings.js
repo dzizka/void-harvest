@@ -194,11 +194,12 @@ addEventListener('keydown', e => {
     if (G.panel === 'station') { closePanels(); return; }
     if (!G.panel && G.interact && G.mode === 'play' && !transitioning) { G.interact.act(); return; }
   }
-  if ((e.code === 'ShiftLeft' || e.code === 'ShiftRight') && !e.repeat && !G.panel) input.dash = true;
+  if ((e.code === 'ShiftLeft' || e.code === 'ShiftRight') && !e.repeat && !G.panel) input.skill[1] = true;
+  if (e.code === 'KeyQ' && !e.repeat && !G.panel) input.skill[0] = true;
+  if (e.code === 'Space' && !e.repeat && !G.panel && !G.paused) input.dodge = true;
   input.keys[e.code] = true;
-  if (e.code === 'Space' && !G.paused) input.missile = true;
 });
-addEventListener('keyup', e => { input.keys[e.code] = false; if (e.code === 'Space') input.missile = false; });
+addEventListener('keyup', e => { input.keys[e.code] = false; });
 addEventListener('blur', () => { input.keys = {}; input.fire = false; input.missile = false; });
 canvas.addEventListener('mousemove', e => { input.mx = e.clientX; input.my = e.clientY; });
 canvas.addEventListener('mousedown', e => {

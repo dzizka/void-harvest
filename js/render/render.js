@@ -133,7 +133,12 @@ function render() {
   ctx.globalCompositeOperation = 'lighter';
   for (const p of particles) {
     const t = clamp(p.life / p.max, 0, 1);
-    if (p.bolt) {
+    if (p.beam) {
+      ctx.globalAlpha = t; ctx.strokeStyle = p.color; ctx.lineWidth = p.w * t + 1; ctx.lineCap = 'round';
+      ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p.x2, p.y2); ctx.stroke();
+      ctx.strokeStyle = '#ffffff'; ctx.lineWidth = Math.max(1, p.w * 0.35 * t);
+      ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p.x2, p.y2); ctx.stroke(); ctx.lineCap = 'butt';
+    } else if (p.bolt) {
       ctx.strokeStyle = p.color; ctx.globalAlpha = t; ctx.lineWidth = 2;
       const mx2 = (p.x + p.x2) / 2 + rand(-12, 12), my2 = (p.y + p.y2) / 2 + rand(-12, 12);
       ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(mx2, my2); ctx.lineTo(p.x2, p.y2); ctx.stroke();

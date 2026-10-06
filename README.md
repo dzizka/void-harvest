@@ -9,7 +9,7 @@
 **Hrať lokálne:** stiahni repozitár a otvor `index.html` v prehliadači (stačí dvojklik, server netreba).
 
 ## Ovládanie
-`WASD` pohyb · myš mierenie · `LMB` laser a ťažba · `RMB` rakety · `Shift` schopnosť · `F` / `R` auto-boj / auto-ťažba (aj v Menu) · `I` inventár · `K` talenty · `P` paragon · `M` mapa · `E` interakcia · `Esc` zavrieť
+`WASD` pohyb · myš mierenie · `LMB` laser a ťažba · `RMB` rakety · `Space` úhyb · `Q` / `Shift` schopnosti · `F` / `R` auto-boj / auto-ťažba (aj v Menu) · `I` inventár · `K` talenty · `P` paragon · `M` mapa · `E` interakcia · `Esc` zavrieť
 
 ## Štruktúra
 ```
@@ -23,7 +23,7 @@ js/
   i18n.js, i18n-en.js  preklady (_L / _T, anglický slovník)
   core/                 util, stats (computeStats), state, save (ukladanie/načítanie), update (hlavná aktualizácia, hráč)
   data/                 game-data (lode, rarity, sloty, afixy, legendárky, svety…), talents, sets
-  systems/              loot, world (sektory, brány), climb, vault-rush, world-boss, combat,
+  systems/              loot, world (sektory, brány), climb, vault-rush, world-boss, combat, abilities (úhyb a schopnosti),
                         companions (drony, mínióni), events, journal, boss-loot, enemies, projectiles
   render/               background, sprites (lode, nepriatelia, korisť), render (snímka, minimapa)
   ui/                   hud, inventory, talents, star-map, station, paragon, workshop, gates,

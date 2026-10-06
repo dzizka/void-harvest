@@ -6,7 +6,7 @@ const canvas = $('game'), ctx = canvas.getContext('2d');
 const mini = $('minimap'), mctx = mini.getContext('2d');
 const view = { w: innerWidth, h: innerHeight, dpr: 1, zoom: 1 };
 const cam = { x: WORLD.w / 2, y: WORLD.h / 2 };
-const input = { keys: {}, mx: innerWidth / 2, my: innerHeight / 2, fire: false, missile: false };
+const input = { keys: {}, mx: innerWidth / 2, my: innerHeight / 2, fire: false, missile: false, dodge: false, skill: [false, false] };
 
 let G = null;   // game state
 let P = null;   // player
