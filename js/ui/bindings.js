@@ -80,7 +80,8 @@ $('salvBar').addEventListener('click', e => {
 });
 $('talCols').addEventListener('click', e => { const el = e.target.closest('[data-tal]'); if (el) addTalent(el.dataset.tal); });
 $('respec').addEventListener('click', respec);
-$('mapNodes').addEventListener('click', e => { const el = e.target.closest('[data-sec]'); if (el) { G.mapSel = el.dataset.sec; renderMap(); } });
+// touch: a second tap on the selected sector jumps (same as the Hyperjump button)
+$('mapNodes').addEventListener('click', e => { const el = e.target.closest('[data-sec]'); if (!el) return; if (TOUCH.on && G.mapSel === el.dataset.sec && el.dataset.sec !== G.sector && !canWarp(el.dataset.sec)) { warpTo(el.dataset.sec); return; } G.mapSel = el.dataset.sec; renderMap(); });
 $('loadouts').addEventListener('click', e => {
   const sv = e.target.closest('[data-lds]'), ap = e.target.closest('[data-lda]');
   if (sv) { saveLoadout(+sv.dataset.lds); saveGame(); renderStation(); }

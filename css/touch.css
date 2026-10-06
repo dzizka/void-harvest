@@ -149,3 +149,11 @@ body.touch #tip.sheet{position:fixed;left:50%!important;top:50%!important;transf
 #tip .sheet-acts .btn{flex:1 1 auto;justify-self:auto}
 #tip .sheet-acts .btn.bad{border-color:var(--bad);color:var(--bad)}
 body.touch #tip.sheet .foot{display:none}
+
+/* star map: map fills the height, details scroll, Hyperjump always visible */
+body.touch .map-body{grid-template-columns:minmax(0,1fr) minmax(240px,32%);grid-template-rows:minmax(0,1fr);gap:12px;overflow:hidden;padding-bottom:calc(8px + env(safe-area-inset-bottom,0px))}
+body.touch .starmap{aspect-ratio:auto;height:100%;min-height:0}
+body.touch .map-detail{overflow-y:auto;min-height:0;gap:8px;padding-right:2px}
+body.touch .map-detail h3{font-size:17px}
+body.touch .map-detail p{font-size:12px}
+body.touch #warpBtn{position:sticky;bottom:0;width:100%;min-height:48px;font-size:13px;box-shadow:0 -10px 14px var(--panel-solid)}
