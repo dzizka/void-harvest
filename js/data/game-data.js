@@ -117,15 +117,17 @@ const BASE_LABEL = {
 const ALL = ['weapon', 'secondary', 'shield', 'engine', 'reactor', 'drones', 'armor'];
 const AFFIXES = {
   atkSpd:  { label: v => _T`+${v}% Rýchlosť streľby`, range: [4, 10], slots: ['weapon', 'secondary', 'engine', 'reactor'], suffix: _L('rýchlosti') },
-  allDmg:  { label: v => _T`+${v}% Všetko poškodenie`,              range: [4, 10], slots: ALL, suffix: 'skazy' },
+  allDmg:  { label: v => _T`+${v}% Všetko poškodenie`,              range: [4, 10], slots: ALL, suffix: _L('skazy') },
   laser:   { label: v => _T`+${v}% Poškodenie lasera`,            range: [6, 16], slots: ['weapon', 'shield', 'engine', 'drones'], suffix: _L('žiary') },
   missile: { label: v => _T`+${v}% Poškodenie rakiet`,          range: [6, 16], slots: ['secondary', 'shield', 'engine', 'reactor'], suffix: _L('ohňa') },
   yield:   { label: v => _T`+${v}% Výnos ťažby`,            range: [8, 20], slots: ALL, suffix: _L('baníka'), slow: true },
-  crit:    { label: v => _T`+${v}% Kritická šanca`,         range: [2, 5],  slots: ['weapon', 'secondary', 'engine', 'reactor', 'drones'], suffix: 'presnosti' },
+  crit:    { label: v => _T`+${v}% Kritická šanca`,         range: [2, 5],  slots: ['weapon', 'secondary', 'engine', 'reactor', 'drones'], suffix: _L('presnosti') },
   shield:  { label: v => _T`+${v}% Kapacita štítu`,         range: [6, 16], slots: ['secondary', 'shield', 'engine', 'reactor', 'armor'], suffix: _L('bašty') },
-  hull:    { label: v => _T`+${v}% Pevnosť trupu`,          range: [6, 16], slots: ['shield', 'engine', 'armor'], suffix: 'pancierov' },
-  speed:   { label: v => _T`+${v}% Rýchlosť pohybu`,          range: [4, 10], slots: ['shield', 'engine', 'armor'], suffix: 'vetra' },
-  area:    { label: v => _T`+${v}% Plošné poškodenie`,             range: [5, 12], slots: ALL, suffix: 'ozveny', slow: true }
+  hull:    { label: v => _T`+${v}% Pevnosť trupu`,          range: [6, 16], slots: ['shield', 'engine', 'armor'], suffix: _L('pancierov') },
+  speed:   { label: v => _T`+${v}% Rýchlosť pohybu`,          range: [4, 10], slots: ['shield', 'engine', 'armor'], suffix: _L('vetra') },
+  area:    { label: v => _T`+${v}% Plošné poškodenie`,             range: [5, 12], slots: ALL, suffix: _L('ozveny'), slow: true },
+  skCdr:   { label: v => _T`+${v}% Skrátenie cooldownov`, range: [3, 7],  slots: ['shield', 'engine', 'reactor'], suffix: _L('pohotovosti'), slow: true },
+  skDmg:   { label: v => _T`+${v}% Poškodenie schopností`, range: [8, 20], slots: ['weapon', 'secondary', 'drones', 'armor'], suffix: _L('majstra') }
 };
 const AFFIX_ORDER = Object.keys(AFFIXES);
 

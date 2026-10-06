@@ -30,8 +30,8 @@ function updateDrones(dt) {
       d.a = Math.atan2(t.y - d.y, t.x - d.x);
       if (d.fireT <= 0) {
         d.fireT = (D.kind === 'mining' ? 0.35 : 0.5) / s.droneRate / (P.stormT > 0 ? 2 : 1);
-        const crit = Math.random() * 100 < (hive ? s.crit : 0) + (s.tx.sDCrit || 0);
-        bullets.push({ x: d.x, y: d.y, px: d.x, py: d.y, vx: Math.cos(d.a) * 900, vy: Math.sin(d.a) * 900, dmg: s.laserHit * (D.dmg || 25) / 100 * buff * (crit ? s.critMult : 1), crit, life: 0.6, w: 1.5,
+        const storm = P.stormT > 0 && P.stormCrit, crit = Math.random() * 100 < (hive || storm ? s.crit : 0) + (s.tx.sDCrit || 0);
+        bullets.push({ x: d.x, y: d.y, px: d.x, py: d.y, vx: Math.cos(d.a) * 900, vy: Math.sin(d.a) * 900, dmg: s.laserHit * (D.dmg || 25) / 100 * buff * (crit ? s.critMult * (storm ? 2 : 1) : 1), crit, life: 0.6, w: 1.5,
           color: D.kind === 'mining' ? '#c8a27c' : CLASSES[P.cls].color, bubble: G.bubble, onlyAst: !t.T, pierce: hive ? 1 : 0, keep: 0.85,
           blast: (s.tx.sDBlast || 0) / 100, blastR: 55, quietHit: true });
       }
@@ -110,7 +110,7 @@ function updateMinions(dt) {
   if (fires.length) fires = fires.filter(f => f.t > 0);
   if (!M) { if (minions.length) minions = []; return; }
   let alive = 0;
-  for (const m of minions) if (!m.dead) { if (m.titan !== M.titan || alive >= M.max) m.dead = true; else alive++; }
+  for (const m of minions) if (!m.dead) { if (m.temp) { if (M.titan) m.dead = true; continue; } if (m.titan !== M.titan || alive >= M.max) m.dead = true; else alive++; }
   if (M.titan && !alive && !G.safe && (P.titanT -= dt) <= 0) spawnMinion(P.x - Math.cos(P.a) * 50, P.y - Math.sin(P.a) * 50);
   if (tx.cDet && alive && !G.safe && (P.detT -= dt) <= 0) {
     P.detT = 8;
@@ -125,8 +125,8 @@ function updateMinions(dt) {
     m.life -= dt; m.fireT -= dt;
     if (tx.cSelfRep) m.hp = Math.min(m.maxHp, m.hp + m.maxHp * tx.cSelfRep / 100 * dt);
     if (m.hp <= 0 || (!m.titan && m.life <= 0)) { minionDie(m); continue; }
-    let t = m.tgt;
-    if (!t || t.dead || t.shielded || d2(t.x, t.y, P.x, P.y) > 720 * 720) {
+    let t = P.ringT > 0 ? null : m.tgt;
+    if (P.ringT <= 0 && (!t || t.dead || t.shielded || d2(t.x, t.y, P.x, P.y) > 720 * 720)) {
       t = null;
       if (!G.safe) {
         let b = 540 * 540;
@@ -146,7 +146,7 @@ function updateMinions(dt) {
         const want = m.titan ? t.r + 40 : 180, rad = clamp((d - want) / 80, -1, 1), orb = i % 2 ? 0.6 : -0.6;
         vx = (dx / d * rad - dy / d * orb) * sp; vy = (dy / d * rad + dx / d * orb) * sp;
         if (m.fireT <= 0) {
-          const dmg = s.laserHit * M.dmg * buff * (P.orderT > 0 ? 1.5 : 1);
+          const dmg = s.laserHit * M.dmg * buff * (P.orderT > 0 ? 1.5 : 1) * (m.dmgM || 1);
           if (m.titan) {
             if (d < t.r + 150) {
               m.fireT = 1 / M.rate;
@@ -161,7 +161,7 @@ function updateMinions(dt) {
         }
       }
     } else {
-      const ang = G.time * 0.9 + i * TAU / n, rr = m.titan ? 60 : 64 + (i % 3) * 14;
+      const ang = G.time * (P.ringT > 0 ? 3 : 0.9) + i * TAU / n, rr = P.ringT > 0 ? 50 : m.titan ? 60 : 64 + (i % 3) * 14;
       vx = (P.x + Math.cos(ang) * rr - m.x) * 3.5; vy = (P.y + Math.sin(ang) * rr - m.y) * 3.5;
       if (Math.abs(vx) + Math.abs(vy) > 30) m.a = Math.atan2(vy, vx);
     }

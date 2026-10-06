@@ -99,6 +99,7 @@
           <button type="button" id="abEnc"><kbd>?</kbd><span>Encyklopédia</span><em></em></button>
           <button type="button" id="abAuto" title="Loď sama mieri a strieľa na najbližšieho nepriateľa"><kbd>F</kbd><span>Auto-boj</span><em id="abAutoS"></em></button>
           <button type="button" id="abMine" title="Loď sama ťaží najbližší asteroid, keď nie je s kým bojovať"><kbd>R</kbd><span>Auto-ťažba</span><em id="abMineS"></em></button>
+          <button type="button" id="abAutoSk" title="Loď sama použije schopnosti Q a Shift, keď sú nabité a nepriateľ je blízko"><kbd>⟳</kbd><span>Auto-schopnosti</span><em id="abAutoSkS"></em></button>
           <button type="button" id="abLang" title="Jazyk hry · Game language"><kbd>文</kbd><span>Jazyk · Language</span><em id="abLangS"></em></button>
           <button type="button" id="abGfx" title="Žiara, scenéria, častice"><kbd>⚙</kbd><span>Grafika</span><em id="abGfxS"></em></button>
           <button type="button" id="abHangar" title="Uloží postup a vráti ťa do hangára k výberu lode"><kbd>H</kbd><span>Hangár · iná loď</span><em></em></button>
@@ -143,11 +144,13 @@
   <div class="in">
     <header>
       <h2>Strom talentov</h2>
+      <div class="tabs" id="talTabs"><button type="button" data-tt="tree" aria-pressed="true">Talenty</button><button type="button" data-tt="skills" aria-pressed="false">Schopnosti <em id="talSkN"></em></button></div>
       <span class="hint">Každá loď má vlastný strom. 1 bod za úroveň (max 49) — celý strom sa naplniť nedá, vyber si build.</span>
       <span class="tal-points">Voľné body <b id="talPts">0</b></span>
       <button class="close" type="button" data-close>ESC</button>
     </header>
-    <div class="bay-body">
+    <div class="bay-body" id="skillPane" hidden></div>
+    <div class="bay-body" id="talTree">
       <div class="tal-budget" id="talBudget"></div>
       <div class="tal-cols" id="talCols"></div>
       <div class="tal-foot">

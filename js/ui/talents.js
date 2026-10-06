@@ -60,3 +60,63 @@ function respec() {
   log(_T`Talenty resetované${c ? _T` za ${c} rudy` : ''}.`);
   recalcStats(); renderTalents();
 }
+
+/* ---------- skills tab ---------- */
+function setTalTab(t) {
+  G.talTab = t;
+  document.querySelectorAll('#talTabs [data-tt]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.tt === t)));
+  $('talTree').hidden = t !== 'tree'; $('skillPane').hidden = t !== 'skills';
+  document.querySelector('#tal header .hint').hidden = t !== 'tree';
+  if (t === 'skills') renderSkills();
+}
+function skillCardHTML(id, def, isDodge) {
+  const rk = skRank(id), free = skPtsFree(), S = skState();
+  const locked = !isDodge && P.level < def.lvl;
+  const slot = isDodge ? 'Space' : S.sel[0] === id ? 'Q' : S.sel[1] === id ? 'Shift' : '';
+  const cd = isDodge ? dodgeCd() : skillCd(id);
+  const mods = isDodge ? DODGE_MODS : def.mods;
+  const upTxt = isDodge ? _L('Vylepšenie · −20 % cooldown') : _L('Vylepšenie · +25 % poškodenia, −15 % cooldown');
+  return _T`<div class="skc ${locked ? 'locked' : ''} ${slot ? 'eq' : ''}">
+    <div class="skc-top"><b>${def.name}</b>${slot ? `<kbd>${slot}</kbd>` : ''}</div>
+    <p>${def.desc}</p>
+    <small>${locked ? _T`Odomkne sa na úrovni ${def.lvl}` : _T`Cooldown ${String(Math.round(cd * 10) / 10).replace('.', DEC)} s`}</small>
+    <div class="skc-up">
+      <button type="button" data-skup="${id}" class="${rk >= 1 ? 'on' : ''}" ${rk >= 1 || !free || locked ? 'disabled' : ''}>${upTxt}</button>
+      ${mods.map((m, k) => `<button type="button" data-skmod="${id}:${k}" class="mod ${rk >= 2 && S.mod[id] === k ? 'on' : ''}" ${locked || rk < 1 || (rk < 2 && !free) ? 'disabled' : ''} title="${m.desc}"><b>${m.name}</b><span>${m.desc}</span></button>`).join('')}
+    </div></div>`;
+}
+function renderSkills() {
+  if (!P) return;
+  const S = skState(), list = CLS_SKILLS[P.cls] || [], free = skPtsFree();
+  $('talSkN').textContent = free > 0 ? '✦' + free : '';
+  if ($('skillPane').hidden) return;
+  const opts = slot => list.filter(id => P.level >= SKILLS[id].lvl).map(id => `<option value="${id}" ${S.sel[slot] === id ? 'selected' : ''}>${SKILLS[id].name}</option>`).join('') || `<option>—</option>`;
+  $('skillPane').innerHTML = _T`<div class="sk-head">
+      <span>Body schopností: <b>${free}</b> voľné · ${skPtsTotal()}/10 (1 bod každých 5 úrovní)</span>
+      <label>Q <select data-sksel="0">${opts(0)}</select></label>
+      <label>Shift <select data-sksel="1">${opts(1)}</select></label>
+      <button type="button" class="btn" data-skreset ${skPtsSpent() ? '' : 'disabled'}>Vrátiť body</button>
+    </div>
+    <div class="sk-grid">${skillCardHTML('dodge', dodgeDef(), true)}${list.map(id => skillCardHTML(id, SKILLS[id], false)).join('')}</div>
+    <p class="note">1. bod schopnosti ju vylepší, 2. bod odomkne jednu z dvoch modifikácií (medzi nimi môžeš neskôr prepínať zadarmo). Vrátenie bodov je zadarmo. Auto-schopnosti zapneš v Menu (≡).</p>`;
+}
+$('talTabs').addEventListener('click', e => { const b = e.target.closest('[data-tt]'); if (b) setTalTab(b.dataset.tt); });
+$('skillPane').addEventListener('click', e => {
+  const up = e.target.closest('[data-skup]'), md = e.target.closest('[data-skmod]'), rs = e.target.closest('[data-skreset]');
+  const S = skState();
+  if (up && !up.disabled) { if (skPtsFree() > 0 && skRank(up.dataset.skup) === 0) S.rk[up.dataset.skup] = 1; }
+  else if (md && !md.disabled) {
+    const [id, k] = md.dataset.skmod.split(':');
+    if (skRank(id) === 1 && skPtsFree() > 0) { S.rk[id] = 2; S.mod[id] = +k; }
+    else if (skRank(id) === 2) S.mod[id] = +k;
+  } else if (rs && !rs.disabled) { S.rk = {}; S.mod = {}; }
+  else return;
+  saveGame(); renderSkills(); updateHUD();
+});
+$('skillPane').addEventListener('change', e => {
+  const sel = e.target.closest('[data-sksel]'); if (!sel || !SKILLS[sel.value]) return;
+  const S = skState(), i = +sel.dataset.sksel, o = 1 - i;
+  if (S.sel[o] === sel.value) S.sel[o] = S.sel[i];
+  S.sel[i] = sel.value;
+  saveGame(); renderSkills(); updateHUD();
+});

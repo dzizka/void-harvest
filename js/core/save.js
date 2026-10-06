@@ -26,8 +26,8 @@ function saveGame() {
   saveAccount();
   try {
     localStorage.setItem(saveKey(P.cls), JSON.stringify({ v: 1, t: Date.now(), itemId: ITEM_ID,
-      P: { cls: P.cls, level: P.level, xp: P.xp, points: P.points, ore: P.ore, equip: P.equip, inv: P.inv, tal: P.tal, bestItem: P.bestItem, keys: P.keys, contracts: P.contracts, shards: P.shards, gems: P.gems, stash: [], para: P.para, frags: P.frags, talV: 2, tut: P.tut, tutP: P.tutP, loadouts: P.loadouts || null, curLoadout: P.curLoadout, vaultFrags: P.vaultFrags || 0 },
-      G: { bossKills: G.bossKills, tier: G.tier, maxTier: G.maxTier, found: G.found, nmBest: G.nmBest || 0, filter: G.filter || 0, asv: G.asv || null, codex: G.codex || {}, archKills: G.archKills || 0, autoFire: G.autoFire, autoMine: G.autoMine,
+      P: { cls: P.cls, skill: P.skill || null, level: P.level, xp: P.xp, points: P.points, ore: P.ore, equip: P.equip, inv: P.inv, tal: P.tal, bestItem: P.bestItem, keys: P.keys, contracts: P.contracts, shards: P.shards, gems: P.gems, stash: [], para: P.para, frags: P.frags, talV: 2, tut: P.tut, tutP: P.tutP, loadouts: P.loadouts || null, curLoadout: P.curLoadout, vaultFrags: P.vaultFrags || 0 },
+      G: { bossKills: G.bossKills, tier: G.tier, maxTier: G.maxTier, found: G.found, nmBest: G.nmBest || 0, filter: G.filter || 0, asv: G.asv || null, codex: G.codex || {}, archKills: G.archKills || 0, autoFire: G.autoFire, autoMine: G.autoMine, autoSkill: !!G.autoSkill,
            kills: G.kills, mined: G.mined, oreTotal: G.oreTotal, time: G.time } }));
   } catch (e) { /* storage unavailable: play continues unsaved */ }
 }
@@ -35,6 +35,7 @@ function readSave(cls) { try { const r = localStorage.getItem(saveKey(cls)); ret
 function deleteSave(cls) { try { localStorage.removeItem(saveKey(cls)); } catch (e) { /* ignore */ } }
 function restoreSave(d) {
   const p = d.P, g = d.G || {};
+  P.skill = p.skill || null; P.skCd = null;
   Object.assign(P, { level: p.level, xp: p.xp, points: p.points, ore: p.ore, equip: p.equip, inv: p.inv || [], tal: p.tal || {}, bestItem: p.bestItem || null, keys: p.keys || [], contracts: p.contracts || [],
     shards: p.shards || 0, gems: p.gems || {}, stash: p.stash || [],
     para: p.para || { lvl: 0, pts: 0, alloc: {}, inf: 0 }, frags: p.frags || {} });
@@ -52,7 +53,7 @@ function restoreSave(d) {
   if (added) setTimeout(() => log(_T`Nové sloty lode (${added}) dostali základnú výbavu.`), 400);
   KEY_ID = P.keys.reduce((m, k) => Math.max(m, k.id + 1), KEY_ID);
   Object.assign(G, { bossKills: g.bossKills || {}, tier: g.tier || 1, maxTier: g.maxTier || 1, found: g.found || {}, nmBest: g.nmBest || 0, filter: g.filter || 0, asv: g.asv || null, codex: g.codex || {}, archKills: g.archKills || 0,
-    autoFire: g.autoFire === true, autoMine: g.autoMine === true, kills: g.kills || 0, mined: g.mined || 0, oreTotal: g.oreTotal || 0, time: g.time || 0 });
+    autoFire: g.autoFire === true, autoMine: g.autoMine === true, autoSkill: g.autoSkill === true, kills: g.kills || 0, mined: g.mined || 0, oreTotal: g.oreTotal || 0, time: g.time || 0 });
   ITEM_ID = Math.max(ITEM_ID, d.itemId || 1);
   recalcStats(); P.hull = P.stats.maxHull; P.shield = P.stats.maxShield;
 }

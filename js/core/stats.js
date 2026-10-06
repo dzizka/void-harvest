@@ -12,7 +12,7 @@ function computeStats(clsKey, equip, tal, level, para) {
     missileBase: 10, missileCd: 3, missileCount: 1, homing: true, missileRadius: 60,
     magnet: c.magnet, xpMult: 1 + (c.xpBonus || 0) / 100, mineShield: !!c.mineShield, legend: {}, mres: {}, eliteDmg: 0
   };
-  const p = { atkSpd: 0, allDmg: 0, laser: 0, missile: 0, yield: c.yieldBonus || 0, crit: 0, shield: 0, hull: 0, speed: 0, area: 0 };
+  const p = { atkSpd: 0, allDmg: 0, laser: 0, missile: 0, yield: c.yieldBonus || 0, crit: 0, shield: 0, hull: 0, speed: 0, area: 0, skCdr: 0, skDmg: 0 };
   const acc = { cdr: 0, regen: 0, fr: 0, dr: 0 };
   s.drones = null;
   for (const slot of SLOT_ORDER) {
@@ -78,6 +78,7 @@ function computeStats(clsKey, equip, tal, level, para) {
   s.convDmg = X('sConv') / 100 * (s.miningPower - 1) * 100;
   p.allDmg += s.convDmg;
   s.areaPct = Math.min(100, p.area);
+  s.skCdr = Math.min(40, p.skCdr); s.skDmg = p.skDmg;
   s.fireRate = Math.max(0.8, s.fireRate) * (1 + p.atkSpd / 100);
   s.missileCd = s.missileCd / (1 + p.atkSpd / 200) * (1 - Math.min(50, acc.cdr) / 100) * sx.cd;
   s.fireRate *= 1 + acc.fr / 100;
@@ -117,5 +118,7 @@ const SUMMARY = [
   ['crit', _L('Kritická šanca'), 1, v => (Math.round(v * 10) / 10) + ' %'],
   ['yieldMult', _L('Výnos ťažby'), 1, v => '×' + v.toFixed(2)],
   ['miningPower', _L('Ťažobná sila'), 1, v => '×' + v.toFixed(2)],
-  ['areaPct', _L('Plošné poškodenie'), 1, v => Math.round(v) + ' %']
+  ['areaPct', _L('Plošné poškodenie'), 1, v => Math.round(v) + ' %'],
+  ['skDmg', _L('Poškodenie schopností'), 1, v => '+' + Math.round(v) + ' %'],
+  ['skCdr', _L('Skrátenie cooldownov'), 1, v => Math.round(v) + ' %']
 ];

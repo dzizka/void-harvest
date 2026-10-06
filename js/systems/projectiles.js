@@ -53,8 +53,13 @@ function updateEnemyBullets(dt) {
     const sh = G.event && G.event.state === 'active' && G.event.ship;
     if (sh && !sh.dead && d2(b.x, b.y, sh.x, sh.y) < sh.r * sh.r) { b.dead = true; sh.hp -= b.dmg; burst(b.x, b.y, '#7ee0a8', 4, 120, 1.5, 0.3); continue; }
     let hm = null;
-    for (const m of minions) if (!m.dead && d2(b.x, b.y, m.x, m.y) < (m.r + b.r) ** 2) { hm = m; break; }
-    if (hm) { b.dead = true; hm.hp -= b.dmg; burst(b.x, b.y, '#ff9d6e', 4, 120, 1.5, 0.3); continue; }
+    const rg = P.ringT > 0 ? 14 : 0;
+    for (const m of minions) if (!m.dead && d2(b.x, b.y, m.x, m.y) < (m.r + b.r + rg) ** 2) { hm = m; break; }
+    if (hm) {
+      b.dead = true; if (!(rg && P.ringSafe)) hm.hp -= b.dmg; burst(b.x, b.y, '#ff9d6e', 4, 120, 1.5, 0.3);
+      if (rg && P.ringReflect) { const a = Math.atan2(-b.vy, -b.vx); bullets.push({ x: b.x, y: b.y, px: b.x, py: b.y, vx: Math.cos(a) * 900, vy: Math.sin(a) * 900, dmg: P.stats.laserHit * skDmg('ring'), crit: false, life: 0.7, w: 2, color: '#ffcf6e', bubble: false, quietHit: true }); }
+      continue;
+    }
     if (G.arena && d2(b.x, b.y, G.arena.x, G.arena.y) > (G.arena.r + 30) ** 2) { b.dead = true; continue; }
     if (d2(b.x, b.y, P.x, P.y) < (P.r + b.r) ** 2) {
       b.dead = true;

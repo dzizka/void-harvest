@@ -58,6 +58,7 @@ function render() {
   }
   drawEvent();
   drawHazards();
+  drawAbilityFx();
   drawMythicFx();
   ctx.globalCompositeOperation = 'lighter'; ctx.lineCap = 'round';
   for (const b of bullets) {

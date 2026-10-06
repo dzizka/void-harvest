@@ -121,7 +121,9 @@ function updateHUD() {
   $('abMis').textContent = P.missileT > 0 ? P.missileT.toFixed(1) + ' s' : '✓';
   $('misCd').style.width = (P.missileT > 0 ? (1 - P.missileT / s.missileCd) * 100 : 100) + '%';
   $('abInvN').textContent = `${P.inv.length}/30`;
-  $('abTalN').textContent = P.points ? `+${P.points}` : '';
+  const skf = typeof skPtsFree === 'function' ? skPtsFree() : 0;
+  $('abTalN').textContent = (P.points ? `+${P.points}` : '') + (skf > 0 ? ` ✦${skf}` : '');
+  $('abAutoSkS').textContent = G.autoSkill ? _L('ZAP') : _L('VYP'); $('abAutoSk').classList.toggle('on', !!G.autoSkill);
   $('abPara').hidden = P.level < LEVEL_CAP && !P.para.lvl;
   $('abParaN').textContent = P.para.pts ? `+${P.para.pts}` : '';
   $('abPara').classList.toggle('alert', P.para.pts > 0);
@@ -163,7 +165,7 @@ function syncPanels() {
   input.fire = false; input.missile = false;
   hideTip();
   if (open === 'inv') renderInventory();
-  if (open === 'tal') renderTalents();
+  if (open === 'tal') { renderTalents(); setTalTab(G.talTab || 'tree'); renderSkills(); }
   if (open === 'map') renderMap();
   if (open === 'station') renderStation();
   if (open === 'cheat') renderCheat();
@@ -182,19 +184,19 @@ function closePanels() { if (G) { G.panel = null; G.fromStation = false; syncPan
 // Space / Q / Shift slots with cooldown bars
 function updateSkillBar() {
   if (!P.skCd) resetAbilities();
-  const D = dodgeDef(), mx = D.charges || 1, ph = D === PHASE_DODGE;
+  const D = dodgeDef(), mx = dodgeCharges(), ph = D === PHASE_DODGE;
   const cd = ph ? Math.max(0, P.dashCd) : P.dodgeCh > 0 ? 0 : P.dodgeCd;
   $('abDodgeN').textContent = D.name; $('abDodge').title = D.desc;
   $('abDodgeS').textContent = cd > 0 ? cd.toFixed(1) + ' s' : mx > 1 ? '×' + P.dodgeCh : '✓';
-  $('abDodgeCd').style.width = (cd > 0 ? cd / D.cd * 100 : 0).toFixed(1) + '%';
+  $('abDodgeCd').style.width = (cd > 0 ? Math.min(1, cd / (ph ? D.cd : dodgeCd())) * 100 : 0).toFixed(1) + '%';
   $('abDodge').classList.toggle('ready', cd <= 0);
   for (let i = 0; i < 2; i++) {
-    const id = (CLS_SKILLS[P.cls] || [])[i], S = SKILLS[id], el = $('abSk' + i);
+    const id = skState().sel[i], S = SKILLS[id], el = $('abSk' + i);
     el.hidden = !S; if (!S) continue;
     const open = P.level >= S.lvl, c = Math.max(0, P.skCd[id] || 0);
     $('abSk' + i + 'N').textContent = S.name; el.title = S.desc;
     $('abSk' + i + 'S').textContent = !open ? _T`úr. ${S.lvl}` : c > 0 ? c.toFixed(1) + ' s' : '✓';
-    $('abSk' + i + 'Cd').style.width = (open && c > 0 ? c / S.cd * 100 : 0).toFixed(1) + '%';
+    $('abSk' + i + 'Cd').style.width = (open && c > 0 ? Math.min(1, c / skillCd(id)) * 100 : 0).toFixed(1) + '%';
     el.classList.toggle('locked', !open); el.classList.toggle('ready', open && c <= 0);
   }
 }

@@ -31,7 +31,7 @@ function fireLaser() {
   const heavy = P.equip.weapon.type === 'heavy', buff = dmgBuff(), tx = s.tx;
   const rhythm = !!tx.kRhythm && ++P.rhythm % 4 === 0;
   for (const [off, m] of shots) {
-    const crit = rhythm || (P.forceCrit > 0 ? (P.forceCrit--, true) : Math.random() * 100 < s.crit);
+    const crit = rhythm || (P.forceCrit > 0 ? (P.forceCrit--, true) : Math.random() * 100 < s.crit + (P.critT > 0 ? 20 : 0));
     const a = P.a + off + rand(-0.025, 0.025);
     bullets.push({ x: mx, y: my, px: mx, py: my, vx: Math.cos(a) * 980 + P.vx * 0.3, vy: Math.sin(a) * 980 + P.vy * 0.3,
       dmg: s.laserHit * m * buff * (crit ? s.critMult : 1), crit, life: 0.72, w: heavy ? 3.6 : P.equip.weapon.type === 'rapid' ? 1.6 : 2.6,
@@ -74,6 +74,7 @@ function explodeMissile(m) {
       let dm = m.dmg * (1 - 0.4 * clamp(dd / R, 0, 1));
       if (tx.iHydra && (e.elite || e.isBoss)) dm *= 1 + tx.iHydra / 100;
       damageEnemy(e, dm, m.crit);
+      if (m.feedback) P.missileT = Math.max(0, P.missileT - 0.15);
       if (tx.jQuake) applySlow(e, tx.jQuake, 2);
     }
   }
@@ -115,7 +116,8 @@ function damageEnemy(e, amt, crit, quiet, echo) {
   if (e.dead) return;
   if (e.shielded) { if (!e.shTxt || G.time - e.shTxt > 0.6) { addText(e.x, e.y - e.r - 14, _L('IMÚNNY'), '#e8e2ff', 12, 0.5); e.shTxt = G.time; } return; }
   if ((e.elite || e.isBoss) && P.stats.eliteDmg) amt *= 1 + P.stats.eliteDmg / 100;
-  if (e.prot > G.time) amt *= 0.5;   // covered by a shield bearer
+  if (e.prot > G.time) amt *= 0.5;
+  if (e.vulnT > G.time) amt *= 1.25;   // covered by a shield bearer
   e.lastHitT = G.time;
   if (e.esh > 0) {
     const a = Math.min(e.esh, amt); e.esh -= a; amt -= a;
@@ -177,7 +179,8 @@ function killEnemy(e) {
   if (P.stats.legend.capacitor) P.missileT = Math.max(0, P.missileT - 0.5);
   if (G.dmgSrc === 'missile' && P.stats.tx.kSalvo && Math.random() < 0.25) P.missileT = 0;
   const MN = P.stats.minion;
-  if (MN && !MN.titan && (MN.army || Math.random() < MN.chance)) spawnMinion(e.x, e.y);
+  if (MN && !MN.titan && (MN.army || Math.random() < MN.chance * (P.orderT > 0 && P.orderBuild ? 2 : 1))) spawnMinion(e.x, e.y);
+  abilityOnKill();
   if (!e.minion) contractTick('kill', { sec: G.dungeon ? G.dungeon.sector : G.sector });
   if (G.dungeon && G.dungeon.climb && G.dungeon.state === 'climb' && !e.minion && !e.isBoss) G.dungeon.prog += e.elite ? 6 : e.small ? 0.3 : 1;
   if (e.elite) contractTick('elite');
@@ -243,7 +246,7 @@ function breakAsteroid(a) {
   burst(a.x, a.y, K.stroke, 10 + a.size * 8, 120 + a.size * 50, 2.4, 0.8);
   if (K.vein) burst(a.x, a.y, K.vein, 8, 200, 1.8, 0.6);
   shake(a.size * 0.8);
-  dropOre(a.x, a.y, S.ore * K.ore * s.yieldMult * (1 + 0.06 * (zoneLevel() - 1)) * (1 + 0.25 * (G.tier - 1)) * rand(0.8, 1.2));
+  dropOre(a.x, a.y, S.ore * K.ore * s.yieldMult * (a.oreMul || 1) * (1 + 0.06 * (zoneLevel() - 1)) * (1 + 0.25 * (G.tier - 1)) * rand(0.8, 1.2));
   dropXp(a.x, a.y, S.xp * K.xp * (1 + 0.1 * (zoneLevel() - 1)));
   G.mined++;
   if (s.tx.sCrush) { P.rockStacks = Math.min(5, P.rockStacks + 1); P.rockT = 6; }

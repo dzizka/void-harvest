@@ -95,6 +95,29 @@
 .branch{display:grid;gap:0;align-content:start}
 .branch-head{padding:0 0 12px;border-bottom:2px solid var(--bc);margin-bottom:14px}
 .branch-head h3{margin:4px 0 0;font-size:18px;text-transform:uppercase;letter-spacing:.04em;color:var(--bc)}
+.sk-head{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;margin-bottom:14px;font-size:13px;color:var(--dim)}
+.sk-head b{color:var(--text)}
+.sk-head label{display:flex;gap:6px;align-items:center;font:600 11px/1 var(--f-mono);color:var(--text)}
+.sk-head select{background:#0b1424;color:var(--text);border:1px solid var(--line-hi);padding:5px 6px;font:inherit}
+.sk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.skc{display:grid;gap:7px;align-content:start;padding:12px;border:1px solid var(--line);background:rgba(8,13,26,.7)}
+.skc.eq{border-color:color-mix(in srgb,var(--accent) 55%,var(--line))}
+.skc.locked{opacity:.5}
+.skc-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.skc-top b{font-size:15px}
+.skc p{margin:0;font-size:12.5px;line-height:1.45;color:#b5c1d8}
+.skc small{font:500 11px/1.3 var(--f-mono);color:var(--dim)}
+.skc-up{display:grid;gap:5px;margin-top:2px}
+.skc-up button{display:grid;gap:2px;text-align:left;background:none;border:1px solid var(--line);color:var(--dim);padding:6px 8px;font:500 11.5px/1.35 var(--f-body,inherit);cursor:pointer}
+.skc-up button b{color:var(--text);font-size:12px}
+.skc-up button span{font-size:11px}
+.skc-up button:not(:disabled):not(.on){border-color:var(--line-hi);color:#c9d4ea}
+.skc-up button:hover:not(:disabled){border-color:var(--accent)}
+.skc-up button:disabled{cursor:default;opacity:.55}
+.skc-up button.on{opacity:1;border-color:#ffd36b;color:#ffe9b0;background:rgba(255,211,107,.08)}
+.skc-up button.on b{color:#ffd36b}
+#talTabs{margin-left:6px}
+#talTabs em{font-style:normal;color:#ffd36b}
 .node{display:grid;gap:6px;width:100%;text-align:left;padding:12px 12px 11px;border:1px solid var(--line);background:rgba(8,13,26,.7);cursor:pointer;position:relative}
 .link{height:18px;width:2px;margin-left:22px;background:var(--line)}
 .link.on{background:var(--bc)}

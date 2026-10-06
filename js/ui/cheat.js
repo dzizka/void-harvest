@@ -194,3 +194,4 @@ function cheatAction(el) {
 $('cheatBody').addEventListener('click', e => { const el = e.target.closest('[data-cheat]'); if (el && !el.disabled) cheatAction(el); });
 $('abAuto').addEventListener('click', () => { if (G) { G.autoFire = !G.autoFire; updateHUD(); } });
 $('abMine').addEventListener('click', () => { if (G) { G.autoMine = !G.autoMine; updateHUD(); } });
+$('abAutoSk').addEventListener('click', () => { if (G) { G.autoSkill = !G.autoSkill; log(G.autoSkill ? _L('Auto-schopnosti zapnuté.') : _L('Auto-schopnosti vypnuté.')); updateHUD(); } });
