@@ -375,6 +375,14 @@ function drawStation(st) {
     ctx.beginPath(); ctx.arc(0, 0, st.r, 0, TAU); ctx.stroke(); ctx.setLineDash([]); ctx.restore();
   }
   ctx.strokeStyle = 'rgba(95,212,255,.18)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.arc(0, 0, st.dock, 0, TAU); ctx.stroke();
+  const S3 = spr3d('st_station');
+  if (S3) {
+    softGlow(ctx, '#5fd4ff', 0, 0, 90, 0.16 + 0.05 * Math.sin(t * 2));
+    drawSpr(ctx, S3, 0, 0, t * 0.12, 250, 0);
+    ctx.restore();
+    worldLabel(S.kind === 'safe' ? S.name.toUpperCase() : _L('MAJÁK · BEZPEČNÁ ZÓNA'), st.x, st.y + 135, '#5fd4ff');
+    return;
+  }
   ctx.save(); ctx.rotate(t * 0.25);
   ctx.strokeStyle = '#9fb4d8'; ctx.lineWidth = 4; ctx.beginPath(); ctx.arc(0, 0, 70, 0, TAU); ctx.stroke();
   ctx.lineWidth = 2;

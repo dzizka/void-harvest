@@ -2,7 +2,7 @@
 // tiny static server: /three/* -> node_modules/three, /assets/* -> scratchpad/assets, / -> this dir
 const http = require('http'), fs = require('fs'), path = require('path');
 const root = path.join(__dirname, '../..');
-const roots = { '/three/': path.join(root, 'node_modules/three/'), '/models/': path.join(root, 'assets/models/'), '/': __dirname + '/' };
+const roots = { '/three/': path.join(root, 'node_modules/three/'), '/models/': path.join(root, 'assets/models/'), '/packs/': process.env.PACKS || '/nonexistent/', '/': __dirname + '/' };
 const types = { '.js': 'text/javascript', '.html': 'text/html', '.png': 'image/png', '.glb': 'model/gltf-binary', '.obj': 'text/plain', '.mtl': 'text/plain', '.jpg': 'image/jpeg' };
 module.exports = () => new Promise(res => {
   const srv = http.createServer((q, r) => {

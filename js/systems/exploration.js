@@ -201,8 +201,10 @@ function drawExploration() {
     const on = beaconOn(B.id), col = on ? '#7f8ca8' : '#ffd36b';
     ctx.save(); ctx.translate(B.x, B.y);
     ctx.strokeStyle = col; ctx.fillStyle = '#0b1424'; ctx.lineWidth = 2.5;
-    ctx.beginPath(); ctx.moveTo(0, -40); ctx.lineTo(18, 0); ctx.lineTo(0, 40); ctx.lineTo(-18, 0); ctx.closePath(); ctx.fill(); ctx.stroke();
-    if (!on) { ctx.globalAlpha = 0.25 + 0.25 * Math.sin(t * 2); ctx.beginPath(); ctx.arc(0, 0, 70, 0, TAU); ctx.stroke(); ctx.fillStyle = col; ctx.globalAlpha = 0.8; ctx.fillRect(-3, -3, 6, 6); }
+    const S3 = spr3d(on ? 'beacon_on' : 'beacon_off');
+    if (S3) { if (!on) softGlow(ctx, col, 0, 0, 75, 0.25 + 0.15 * Math.sin(t * 2)); drawSpr(ctx, S3, 0, 0, t * 0.15 + B.x * 0.01, 120, 0); }
+    else { ctx.beginPath(); ctx.moveTo(0, -40); ctx.lineTo(18, 0); ctx.lineTo(0, 40); ctx.lineTo(-18, 0); ctx.closePath(); ctx.fill(); ctx.stroke(); }
+    if (!on && !S3) { ctx.globalAlpha = 0.25 + 0.25 * Math.sin(t * 2); ctx.beginPath(); ctx.arc(0, 0, 70, 0, TAU); ctx.stroke(); ctx.fillStyle = col; ctx.globalAlpha = 0.8; ctx.fillRect(-3, -3, 6, 6); }
     ctx.restore(); ctx.globalAlpha = 1;
     worldLabel(on ? _L('MAJÁK PREDKOV · AKTÍVNY') : _L('MAJÁK PREDKOV'), B.x, B.y + 60, col, 10);
   }

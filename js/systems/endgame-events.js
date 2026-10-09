@@ -272,9 +272,13 @@ function drawEndgameFx() {
     ctx.globalAlpha = 0.5; ctx.strokeStyle = col; ctx.lineWidth = 2; ctx.setLineDash([16, 12]);
     ctx.rotate(t * 0.04); ctx.beginPath(); ctx.arc(0, 0, F.free ? FORT_SAFE : FORT_R, 0, TAU); ctx.stroke(); ctx.setLineDash([]); ctx.rotate(-t * 0.04);
     ctx.globalAlpha = 1; ctx.lineWidth = 3;
+    const S3 = spr3d(F.free ? 'fort_free' : 'fort_enemy');
+    if (S3) { softGlow(ctx, col, 0, 0, 110, 0.18 + 0.06 * Math.sin(t * 3)); drawSpr(ctx, S3, 0, 0, 0, 210, 0); }
+    else {
     for (let i = 0; i < 4; i++) { const a = i / 4 * TAU + t * 0.1; ctx.save(); ctx.rotate(a); ctx.strokeRect(46, -12, 34, 24); ctx.restore(); }
     ctx.fillStyle = '#0b1424'; ctx.beginPath(); ctx.arc(0, 0, 40, 0, TAU); ctx.fill(); ctx.stroke();
     ctx.fillStyle = col; ctx.globalAlpha = 0.5 + 0.3 * Math.sin(t * 3); ctx.beginPath(); ctx.arc(0, 0, 12, 0, TAU); ctx.fill();
+    }
     ctx.restore();
     worldLabel(F.free ? _L('ZÁKLADŇA · BEZPEČNÁ ZÓNA') : G.siege ? _T`PEVNOSŤ · VLNA ${G.siege.wave}/3` : _L('OBSADENÁ PEVNOSŤ'), F.x, F.y + 74, col);
   }

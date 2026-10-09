@@ -715,5 +715,595 @@
     "rough": 0.4
    }
   }
+ },
+ {
+  "frames": 48,
+  "px": 256,
+  "cols": 12,
+  "tilt": 0.45,
+  "out": "st_station",
+  "url": [
+   {
+    "url": "/models/kenney/hangar_roundGlass.glb"
+   },
+   {
+    "url": "/models/kenney/corridor.glb",
+    "p": [
+     2.1,
+     0,
+     0.0
+    ],
+    "r": [
+     0,
+     0,
+     0
+    ]
+   },
+   {
+    "url": "/models/kenney/corridor.glb",
+    "p": [
+     3.1,
+     0,
+     0.0
+    ],
+    "r": [
+     0,
+     0,
+     0
+    ]
+   },
+   {
+    "url": "/models/kenney/satelliteDish_detailed.glb",
+    "p": [
+     4.1,
+     0,
+     0.0
+    ],
+    "r": [
+     0,
+     0.0,
+     0
+    ],
+    "s": 1.6
+   },
+   {
+    "url": "/models/kenney/corridor.glb",
+    "p": [
+     -2.1,
+     0,
+     0.0
+    ],
+    "r": [
+     0,
+     0,
+     0
+    ]
+   },
+   {
+    "url": "/models/kenney/corridor.glb",
+    "p": [
+     -3.1,
+     0,
+     0.0
+    ],
+    "r": [
+     0,
+     0,
+     0
+    ]
+   },
+   {
+    "url": "/models/kenney/satelliteDish_detailed.glb",
+    "p": [
+     -4.1,
+     0,
+     0.0
+    ],
+    "r": [
+     0,
+     1.5707963267948966,
+     0
+    ],
+    "s": 1.6
+   },
+   {
+    "url": "/models/kenney/corridor.glb",
+    "p": [
+     0.0,
+     0,
+     2.1
+    ],
+    "r": [
+     0,
+     1.5707963267948966,
+     0
+    ]
+   },
+   {
+    "url": "/models/kenney/corridor.glb",
+    "p": [
+     0.0,
+     0,
+     3.1
+    ],
+    "r": [
+     0,
+     1.5707963267948966,
+     0
+    ]
+   },
+   {
+    "url": "/models/kenney/machine_wireless.glb",
+    "p": [
+     0.0,
+     0,
+     4.1
+    ],
+    "r": [
+     0,
+     3.141592653589793,
+     0
+    ],
+    "s": 1.6
+   },
+   {
+    "url": "/models/kenney/corridor.glb",
+    "p": [
+     0.0,
+     0,
+     -2.1
+    ],
+    "r": [
+     0,
+     1.5707963267948966,
+     0
+    ]
+   },
+   {
+    "url": "/models/kenney/corridor.glb",
+    "p": [
+     0.0,
+     0,
+     -3.1
+    ],
+    "r": [
+     0,
+     1.5707963267948966,
+     0
+    ]
+   },
+   {
+    "url": "/models/kenney/machine_wireless.glb",
+    "p": [
+     0.0,
+     0,
+     -4.1
+    ],
+    "r": [
+     0,
+     4.71238898038469,
+     0
+    ],
+    "s": 1.6
+   }
+  ],
+  "yaw": 0,
+  "mat": {
+   "metal": {
+    "color": "#819fb6",
+    "metal": 0.5,
+    "rough": 0.45
+   },
+   "metalDark": {
+    "color": "#5b7990",
+    "metal": 0.5,
+    "rough": 0.5
+   },
+   "dark": {
+    "color": "#374c5b",
+    "metal": 0.4,
+    "rough": 0.6
+   },
+   "metalRed": {
+    "color": "#5fd4ff",
+    "emissive": "#5fd4ff",
+    "ei": 0.8,
+    "metal": 0.2,
+    "rough": 0.4
+   },
+   "_defaultMat": {
+    "color": "#3c7fa0",
+    "emissive": "#5fd4ff",
+    "ei": 0.25,
+    "metal": 0.7,
+    "rough": 0.15
+   }
+  }
+ },
+ {
+  "frames": 1,
+  "px": 256,
+  "cols": 1,
+  "tilt": 0.45,
+  "out": "fort_enemy",
+  "url": [
+   {
+    "url": "/models/kenney/platform_large.glb",
+    "s": 2.2
+   },
+   {
+    "url": "/models/kenney/hangar_largeA.glb",
+    "p": [
+     0,
+     0.2,
+     0
+    ]
+   },
+   {
+    "url": "/models/kenney/turret_double.glb",
+    "p": [
+     1.7,
+     0.2,
+     1.7
+    ],
+    "r": [
+     0,
+     0.7853981633974483,
+     0
+    ],
+    "s": 1.3
+   },
+   {
+    "url": "/models/kenney/turret_double.glb",
+    "p": [
+     -1.7,
+     0.2,
+     1.7
+    ],
+    "r": [
+     0,
+     -0.7853981633974483,
+     0
+    ],
+    "s": 1.3
+   },
+   {
+    "url": "/models/kenney/turret_double.glb",
+    "p": [
+     1.7,
+     0.2,
+     -1.7
+    ],
+    "r": [
+     0,
+     2.356194490192345,
+     0
+    ],
+    "s": 1.3
+   },
+   {
+    "url": "/models/kenney/turret_double.glb",
+    "p": [
+     -1.7,
+     0.2,
+     -1.7
+    ],
+    "r": [
+     0,
+     -2.356194490192345,
+     0
+    ],
+    "s": 1.3
+   },
+   {
+    "url": "/models/kenney/structure_detailed.glb",
+    "p": [
+     2.0,
+     0.2,
+     0.0
+    ],
+    "r": [
+     0,
+     1.5707963267948966,
+     0
+    ],
+    "s": 0.8
+   },
+   {
+    "url": "/models/kenney/structure_detailed.glb",
+    "p": [
+     -2.0,
+     0.2,
+     0.0
+    ],
+    "r": [
+     0,
+     1.5707963267948966,
+     0
+    ],
+    "s": 0.8
+   },
+   {
+    "url": "/models/kenney/structure_detailed.glb",
+    "p": [
+     0.0,
+     0.2,
+     2.0
+    ],
+    "r": [
+     0,
+     0,
+     0
+    ],
+    "s": 0.8
+   },
+   {
+    "url": "/models/kenney/structure_detailed.glb",
+    "p": [
+     0.0,
+     0.2,
+     -2.0
+    ],
+    "r": [
+     0,
+     0,
+     0
+    ],
+    "s": 0.8
+   }
+  ],
+  "yaw": 0.3,
+  "mat": {
+   "metal": {
+    "color": "#5e5660",
+    "metal": 0.6,
+    "rough": 0.4
+   },
+   "metalDark": {
+    "color": "#45404a",
+    "metal": 0.6,
+    "rough": 0.45
+   },
+   "dark": {
+    "color": "#26242c",
+    "metal": 0.4,
+    "rough": 0.6
+   },
+   "metalRed": {
+    "color": "#ff4d6d",
+    "emissive": "#ff4d6d",
+    "ei": 1.0,
+    "metal": 0.2,
+    "rough": 0.4
+   },
+   "_defaultMat": {
+    "color": "#3a1a24",
+    "emissive": "#ff4d6d",
+    "ei": 0.3,
+    "metal": 0.7,
+    "rough": 0.15
+   }
+  }
+ },
+ {
+  "frames": 1,
+  "px": 256,
+  "cols": 1,
+  "tilt": 0.45,
+  "out": "fort_free",
+  "url": [
+   {
+    "url": "/models/kenney/platform_large.glb",
+    "s": 2.2
+   },
+   {
+    "url": "/models/kenney/hangar_largeA.glb",
+    "p": [
+     0,
+     0.2,
+     0
+    ]
+   },
+   {
+    "url": "/models/kenney/turret_double.glb",
+    "p": [
+     1.7,
+     0.2,
+     1.7
+    ],
+    "r": [
+     0,
+     0.7853981633974483,
+     0
+    ],
+    "s": 1.3
+   },
+   {
+    "url": "/models/kenney/turret_double.glb",
+    "p": [
+     -1.7,
+     0.2,
+     1.7
+    ],
+    "r": [
+     0,
+     -0.7853981633974483,
+     0
+    ],
+    "s": 1.3
+   },
+   {
+    "url": "/models/kenney/turret_double.glb",
+    "p": [
+     1.7,
+     0.2,
+     -1.7
+    ],
+    "r": [
+     0,
+     2.356194490192345,
+     0
+    ],
+    "s": 1.3
+   },
+   {
+    "url": "/models/kenney/turret_double.glb",
+    "p": [
+     -1.7,
+     0.2,
+     -1.7
+    ],
+    "r": [
+     0,
+     -2.356194490192345,
+     0
+    ],
+    "s": 1.3
+   },
+   {
+    "url": "/models/kenney/structure_detailed.glb",
+    "p": [
+     2.0,
+     0.2,
+     0.0
+    ],
+    "r": [
+     0,
+     1.5707963267948966,
+     0
+    ],
+    "s": 0.8
+   },
+   {
+    "url": "/models/kenney/structure_detailed.glb",
+    "p": [
+     -2.0,
+     0.2,
+     0.0
+    ],
+    "r": [
+     0,
+     1.5707963267948966,
+     0
+    ],
+    "s": 0.8
+   },
+   {
+    "url": "/models/kenney/structure_detailed.glb",
+    "p": [
+     0.0,
+     0.2,
+     2.0
+    ],
+    "r": [
+     0,
+     0,
+     0
+    ],
+    "s": 0.8
+   },
+   {
+    "url": "/models/kenney/structure_detailed.glb",
+    "p": [
+     0.0,
+     0.2,
+     -2.0
+    ],
+    "r": [
+     0,
+     0,
+     0
+    ],
+    "s": 0.8
+   }
+  ],
+  "yaw": 0.3,
+  "mat": {
+   "metal": {
+    "color": "#7d8ba0",
+    "metal": 0.6,
+    "rough": 0.4
+   },
+   "metalDark": {
+    "color": "#56627a",
+    "metal": 0.6,
+    "rough": 0.45
+   },
+   "dark": {
+    "color": "#2a303c",
+    "metal": 0.4,
+    "rough": 0.6
+   },
+   "metalRed": {
+    "color": "#5fd4ff",
+    "emissive": "#5fd4ff",
+    "ei": 1.0,
+    "metal": 0.2,
+    "rough": 0.4
+   },
+   "_defaultMat": {
+    "color": "#1a2a40",
+    "emissive": "#5fd4ff",
+    "ei": 0.3,
+    "metal": 0.7,
+    "rough": 0.15
+   }
+  }
+ },
+ {
+  "frames": 32,
+  "px": 160,
+  "cols": 8,
+  "tilt": 0.45,
+  "out": "beacon_off",
+  "url": "/models/kenney/rock_crystalsLargeB.glb",
+  "yaw": 0,
+  "mat": {
+   "rockTrack": {
+    "color": "#4a4560",
+    "rough": 0.85,
+    "metal": 0.05
+   },
+   "rock": {
+    "color": "#56506e",
+    "rough": 0.85,
+    "metal": 0.05
+   },
+   "crystal": {
+    "color": "#ffd36b",
+    "emissive": "#ffd36b",
+    "ei": 1.6,
+    "metal": 0.2,
+    "rough": 0.4
+   }
+  }
+ },
+ {
+  "frames": 32,
+  "px": 160,
+  "cols": 8,
+  "tilt": 0.45,
+  "out": "beacon_on",
+  "url": "/models/kenney/rock_crystalsLargeB.glb",
+  "yaw": 0,
+  "mat": {
+   "rockTrack": {
+    "color": "#2e3240",
+    "rough": 0.9,
+    "metal": 0.05
+   },
+   "rock": {
+    "color": "#383d4c",
+    "rough": 0.9,
+    "metal": 0.05
+   },
+   "crystal": {
+    "color": "#8a96b0",
+    "emissive": "#5f7090",
+    "ei": 0.4,
+    "rough": 0.3,
+    "metal": 0.2
+   }
+  }
  }
 ]

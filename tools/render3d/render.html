@@ -9,7 +9,33 @@ const R = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawin
 R.outputColorSpace = THREE.SRGBColorSpace; R.toneMapping = THREE.ACESFilmicToneMapping; R.toneMappingExposure = 1.1;
 document.body.appendChild(R.domElement);
 const cache = {};
+async function loadRaw(url) {
+  if (url.endsWith('.glb')) return (await new GLTFLoader().loadAsync(url)).scene;
+  return await new OBJLoader().loadAsync(url);
+}
+window.bbox = async url => { const o = await loadRaw(url), b = new THREE.Box3().setFromObject(o); return { min: b.min.toArray().map(v => +v.toFixed(2)), max: b.max.toArray().map(v => +v.toFixed(2)) }; };
+// composite model from raw parts: [{url, p:[x,y,z], r:[x,y,z] (rad), s}]
+async function loadParts(parts) {
+  const g = new THREE.Group();
+  for (const pt of parts) {
+    const raw = await loadRaw(pt.url), o = new THREE.Group();
+    // Kenney parts sit off-origin: centre each part on x/z, base on y = 0
+    const bb = new THREE.Box3().setFromObject(raw), c = bb.getCenter(new THREE.Vector3());
+    raw.position.set(-c.x, -bb.min.y, -c.z); o.add(raw);
+    o.position.set(...(pt.p || [0, 0, 0])); o.rotation.set(...(pt.r || [0, 0, 0])); o.scale.setScalar(pt.s || 1);
+    o.traverse(m => { if (m.isMesh) m.userData.tag = pt.tag; });
+    g.add(o);
+  }
+  return g;
+}
 async function load(url) {
+  if (Array.isArray(url)) {
+    const obj = await loadParts(url);
+    const box = new THREE.Box3().setFromObject(obj), c = box.getCenter(new THREE.Vector3()), sz = box.getSize(new THREE.Vector3());
+    const g = new THREE.Group(); obj.position.sub(c); g.add(obj); g.scale.setScalar(1 / Math.max(sz.x, sz.y, sz.z));
+    obj.traverse(o => { if (o.isMesh) (Array.isArray(o.material) ? o.material : [o.material]).forEach(m => { m.flatShading = true; m.needsUpdate = true; }); });
+    return g;
+  }
   if (cache[url]) return cache[url].clone(true);
   let obj;
   if (url.endsWith('.glb') || url.endsWith('.gltf')) obj = (await new GLTFLoader().loadAsync(url)).scene;
@@ -54,7 +80,7 @@ window.renderSheet = async (sp) => {
   model.traverse(o => {
     if (!o.isMesh) return;
     const one = m => {
-      const R = (sp.all && { ...sp.all }) || (sp.mat && sp.mat[m.name]);
+      const R = (sp.all && { ...sp.all }) || (sp.mat && (sp.mat[o.userData.tag + ':' + m.name] || sp.mat[m.name]));
       if (!R) return m.clone();
       const n = new THREE.MeshStandardMaterial({ color: R.color, metalness: R.metal ?? 0.35, roughness: R.rough ?? 0.55, flatShading: true });
       if (R.emissive) { n.emissive = new THREE.Color(R.emissive); n.emissiveIntensity = R.ei ?? 0.6; }
