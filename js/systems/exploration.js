@@ -189,9 +189,12 @@ function drawExploration() {
   for (const a of X.anoms) {
     if (!a.found || a.done || !egVis(a.x, a.y, 80)) continue;
     const A = ANOMS[a.kind];
-    ctx.save(); ctx.translate(a.x, a.y); ctx.rotate(t * 0.6);
+    ctx.save(); ctx.translate(a.x, a.y);
+    const S3 = spr3d('anom_' + a.kind);
+    if (S3) { softGlow(ctx, A.color, 0, 0, 52, 0.28 + 0.12 * Math.sin(t * 3 + a.x)); drawSpr(ctx, S3, 0, 0, t * 0.35 + a.x * 0.01, 92, 0); }
+    ctx.rotate(t * 0.6);
     ctx.strokeStyle = A.color; ctx.lineWidth = 2; ctx.globalAlpha = 0.8;
-    ctx.beginPath(); for (let i = 0; i < 5; i++) { const g = i / 5 * TAU, r = 18 + (i % 2) * 8; i ? ctx.lineTo(Math.cos(g) * r, Math.sin(g) * r) : ctx.moveTo(r, 0); } ctx.closePath(); ctx.stroke();
+    if (!S3) { ctx.beginPath(); for (let i = 0; i < 5; i++) { const g = i / 5 * TAU, r = 18 + (i % 2) * 8; i ? ctx.lineTo(Math.cos(g) * r, Math.sin(g) * r) : ctx.moveTo(r, 0); } ctx.closePath(); ctx.stroke(); }
     ctx.globalAlpha = 0.3 + 0.2 * Math.sin(t * 4); ctx.beginPath(); ctx.arc(0, 0, 34, 0, TAU); ctx.stroke();
     ctx.restore(); ctx.globalAlpha = 1;
     worldLabel(A.name.toUpperCase(), a.x, a.y + 46, A.color, 10);

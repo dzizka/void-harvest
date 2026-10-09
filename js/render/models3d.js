@@ -36,6 +36,12 @@ const SPR3D = {
   base_hangar: { f: 1, px: 128, cols: 1 },
   base_green: { f: 1, px: 128, cols: 1 },
   base_empty: { f: 1, px: 128, cols: 1 },
+  anom_wreck: { f: 32, px: 128, cols: 8 },
+  anom_crystal: { f: 32, px: 128, cols: 8 },
+  anom_core: { f: 32, px: 128, cols: 8 },
+  bg_wreck: { f: 8, px: 160, cols: 8 },
+  bg_wreck2: { f: 8, px: 160, cols: 8 },
+  bg_fleet: { f: 8, px: 128, cols: 8 },
   mini_minion: { f: 48, px: 64, cols: 16 },
   mini_altar: { f: 48, px: 64, cols: 16 },
   mini_ally: { f: 48, px: 64, cols: 16 },
@@ -67,7 +73,12 @@ function setModels(on) {
 function spr3d(k) {
   if (!GFX.models) return null;
   const S = SPR3D[k]; if (!S) return null;
-  if (!S.img) { S.img = new Image(); S.img.onload = () => { S.ok = true; if (k.startsWith('ship_') && !G && typeof buildSelect === 'function') buildSelect(); }; S.img.onerror = () => { S.bad = true; }; S.img.src = SPR_BASE + k + '.webp'; }
+  if (!S.img) { S.img = new Image(); S.img.onload = () => {
+    S.ok = true;
+    if (k.startsWith('ship_') && !G && typeof buildSelect === 'function') buildSelect();
+    // background props are baked into the backdrop canvas, so rebuild it once they arrive
+    if ((k.startsWith('bg_') || k === 'ast_rock') && G && BG.theme && GFX.q !== 'low') BG.backdrop = makeBackdrop(BG.theme);
+  }; S.img.onerror = () => { S.bad = true; }; S.img.src = SPR_BASE + k + '.webp'; }
   return S.ok ? S : null;
 }
 // background planets (Kenney Planets, CC0); the backdrop is rebuilt once its planet arrives

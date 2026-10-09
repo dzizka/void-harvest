@@ -1763,5 +1763,154 @@
    "metal": 0.4,
    "rough": 0.6
   }
+ },
+ {
+  "frames": 32,
+  "px": 128,
+  "cols": 8,
+  "tilt": 0.45,
+  "out": "anom_wreck",
+  "url": "/models/majadroid/m4-ship1.obj",
+  "tumble": [
+   0.3,
+   1,
+   0.2
+  ],
+  "fixZ": 0.9,
+  "all": {
+   "color": "#3b3a3f",
+   "metal": 0.6,
+   "rough": 0.55
+  }
+ },
+ {
+  "frames": 32,
+  "px": 128,
+  "cols": 8,
+  "tilt": 0.45,
+  "out": "anom_crystal",
+  "url": "/models/kenney/rock_crystalsLargeA.glb",
+  "tumble": [
+   0.2,
+   1,
+   0.3
+  ],
+  "mat": {
+   "rockTrack": {
+    "color": "#2c3a4c",
+    "rough": 0.9,
+    "metal": 0.05
+   },
+   "rock": {
+    "color": "#34445a",
+    "rough": 0.9,
+    "metal": 0.05
+   },
+   "crystal": {
+    "color": "#6fe3ff",
+    "emissive": "#6fe3ff",
+    "ei": 1.3,
+    "metal": 0.2,
+    "rough": 0.4
+   }
+  }
+ },
+ {
+  "frames": 32,
+  "px": 128,
+  "cols": 8,
+  "tilt": 0.45,
+  "out": "anom_core",
+  "url": "/models/kenney/machine_wireless.glb",
+  "tumble": [
+   0.5,
+   1,
+   0.4
+  ],
+  "mat": {
+   "metal": {
+    "color": "#5c5a78",
+    "metal": 0.6,
+    "rough": 0.4
+   },
+   "metalDark": {
+    "color": "#403e58",
+    "metal": 0.6,
+    "rough": 0.45
+   },
+   "dark": {
+    "color": "#24223a",
+    "metal": 0.4,
+    "rough": 0.6
+   },
+   "metalRed": {
+    "color": "#9a8cff",
+    "emissive": "#9a8cff",
+    "ei": 1.3,
+    "metal": 0.2,
+    "rough": 0.4
+   }
+  }
+ },
+ {
+  "frames": 8,
+  "px": 160,
+  "cols": 8,
+  "tilt": 0.45,
+  "out": "bg_wreck",
+  "url": "/models/majadroid/m2-ship2.obj",
+  "fixZ": 0.6,
+  "all": {
+   "color": "#3b3a3f",
+   "metal": 0.6,
+   "rough": 0.55
+  }
+ },
+ {
+  "frames": 8,
+  "px": 160,
+  "cols": 8,
+  "tilt": 0.45,
+  "out": "bg_wreck2",
+  "url": "/models/quaternius/Spaceship3.obj",
+  "fixZ": -0.5,
+  "all": {
+   "color": "#3b3a3f",
+   "metal": 0.6,
+   "rough": 0.55
+  }
+ },
+ {
+  "frames": 8,
+  "px": 128,
+  "cols": 8,
+  "tilt": 0.45,
+  "out": "bg_fleet",
+  "url": "/models/kenney/craft_cargoA.glb",
+  "yaw": -1.5707963267948966,
+  "mat": {
+   "metal": {
+    "color": "#6a7690",
+    "metal": 0.5,
+    "rough": 0.45
+   },
+   "metalDark": {
+    "color": "#4a5468",
+    "metal": 0.5,
+    "rough": 0.5
+   },
+   "dark": {
+    "color": "#272c38",
+    "metal": 0.4,
+    "rough": 0.6
+   },
+   "metalRed": {
+    "color": "#5fd4ff",
+    "emissive": "#5fd4ff",
+    "ei": 1.0,
+    "metal": 0.2,
+    "rough": 0.4
+   }
+  }
  }
 ]

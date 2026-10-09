@@ -74,8 +74,20 @@ function makeBackdrop(theme) {
   const g = c.getContext('2d'), rnd = seeded(theme), rr = (a, b) => a + rnd() * (b - a);
   // scenery props
   const n = { fleet: 7, rocks: 34, gas: 14, ice: 26, wrecks: 9, rifts: 6 }[D.props];
+  // pseudo-3D props when their sheets are loaded (the backdrop is rebuilt when they arrive)
+  const spr = typeof spr3d === 'function' ? { rocks: spr3d('ast_rock'), wrecks: [spr3d('bg_wreck'), spr3d('bg_wreck2')], fleet: spr3d('bg_fleet') } : {};
   for (let i = 0; i < n; i++) {
     const x = rr(0, SZ), y = rr(0, SZ), sc = rr(0.6, 1.4), a = rr(0, TAU);
+    const S3 = D.props === 'wrecks' ? spr.wrecks && spr.wrecks[i % 2] : spr[D.props];
+    if (S3 && (D.props === 'rocks' || D.props === 'wrecks' || D.props === 'fleet')) {
+      // distant, dimmed, fixed light direction (no canvas rotation)
+      const size = D.props === 'rocks' ? rr(22, 60) : D.props === 'wrecks' ? rr(140, 280) : rr(80, 150);
+      g.save(); g.globalAlpha = D.props === 'fleet' ? 0.75 : 0.6;
+      drawSpr(g, S3, x, y, a, size, 0);
+      g.globalCompositeOperation = 'source-atop'; g.fillStyle = 'rgba(5,8,15,.35)'; g.fillRect(x - size / 2, y - size / 2, size, size);
+      g.restore();
+      continue;
+    }
     g.save(); g.translate(x, y); g.rotate(a); g.scale(sc, sc);
     if (D.props === 'rocks') {
       g.fillStyle = 'rgba(30,36,52,.9)'; g.strokeStyle = 'rgba(110,125,160,.35)'; g.lineWidth = 1.2;
