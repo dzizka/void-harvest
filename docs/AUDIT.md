@@ -112,5 +112,13 @@ Zmeny (`UNLOCK`, `isUnlocked`, `tutDone` v `journal.js`):
 - Kontrakty v HUD sa zobrazia až po tutoriáli (alebo pri úrovni účtu 8+).
 - Dialóg 1. kapitoly príbehu počká na koniec tutoriálu (alebo úroveň 4), takže sa na začiatku nebijú o pozornosť.
 
-### Fáza 5 – výkon a mobil
+### Fáza 5 – výkon a mobil ✅ hotová
 Predvolená stredná grafika na mobile, kreslenie len viditeľných striel, menej alokácií, cielenie opravárov raz za 0,25 s, gamepad. Riziko: zmena vzhľadu na PC → nastavenie sa mení len pri prvom spustení v dotykovom režime.
+
+Zmeny:
+- **Grafika na mobile:** pri prvom spustení v dotykovom režime sa nastaví „stredná“ (bez žiary cez celú obrazovku). Ak hráč už grafiku zvolil, nič sa nemení; PC ostáva na „vysokej“.
+- **Kreslenie:** strely hráča, nepriateľov, rakety a kruhové efekty mimo obrazovky sa nekreslia.
+- **Alokácie:** zoznamy striel, rakiet, lootu, častíc, textov, nepriateľov a asteroidov sa čistia na mieste (`prune`) namiesto nového poľa každú snímku.
+- **Limit častíc:** stopy rakiet, plameň motora, gravitačné studne, čierne diery a blesky búrky rešpektujú limit 1 600 častíc (`fxFull`).
+- **Opravár a štítonosič** hľadajú cieľ / stred skupiny 4× za sekundu namiesto každej snímky; opravár medzi hľadaniami drží aktuálneho pacienta.
+- **Gamepad** (`js/ui/gamepad.js`, štandardné rozloženie): ľavá páčka let, pravá mierenie a streľba, RT streľba, LT rakety, A úhyb, X / Y schopnosti, B / RB interakcia (B zatvára okno), LB skener, Start inventár, Back mapa, D-pad hore / dole auto-boj / auto-ťažba, D-pad vľavo / hore / vpravo výber daru hordy. Pohyb myšou vráti ovládanie myši a klávesnici. Okná (inventár, stanica) sa ovládajú myšou alebo dotykom.

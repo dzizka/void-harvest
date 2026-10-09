@@ -122,7 +122,7 @@ function tickExploration(dt) {
         for (const e of enemies) { if (e.dead || e.isBoss) continue; const d = pull(e, 320); if (d < 90) damageEnemy(e, e.maxHp * 0.25 * dt, false, true); }
         for (const a of asteroids) pull(a, 160);
         for (const p of pickups) pull(p, 300);
-        if (Math.random() < 0.8) { const a = rand(0, TAU), r = rand(120, H.r * 0.7); particles.push({ x: H.x + Math.cos(a) * r, y: H.y + Math.sin(a) * r, vx: -Math.sin(a) * 160 - Math.cos(a) * 90, vy: Math.cos(a) * 160 - Math.sin(a) * 90, life: 0.8, max: 0.8, size: 2, color: '#b48cff', drag: 0 }); }
+        if (Math.random() < 0.8 && !fxFull()) { const a = rand(0, TAU), r = rand(120, H.r * 0.7); particles.push({ x: H.x + Math.cos(a) * r, y: H.y + Math.sin(a) * r, vx: -Math.sin(a) * 160 - Math.cos(a) * 90, vy: Math.cos(a) * 160 - Math.sin(a) * 90, life: 0.8, max: 0.8, size: 2, color: '#b48cff', drag: 0 }); }
         if (H.t <= 0) { X.hole = null; X.holeT = rand(70, 110); ring(H.x, H.y, '#b48cff', 300, 0.8); }
       }
     }

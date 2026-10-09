@@ -29,8 +29,8 @@ function update(dt) {
   tickStory(dt);
   if (!G.dungeon) tickFort(dt);
   updateTrails(dt);
-  if (asteroids.some(a => a.dead)) asteroids = asteroids.filter(a => !a.dead);
-  if (enemies.some(e => e.dead)) enemies = enemies.filter(e => !e.dead);
+  prune(asteroids, a => !a.dead);
+  prune(enemies, e => !e.dead);
   updateInteract();
 }
 
@@ -49,7 +49,8 @@ function updatePlayer(dt) {
   const s = P.stats, k = input.keys;
   let ix = (k.KeyD || k.ArrowRight ? 1 : 0) - (k.KeyA || k.ArrowLeft ? 1 : 0);
   let iy = (k.KeyS || k.ArrowDown ? 1 : 0) - (k.KeyW || k.ArrowUp ? 1 : 0);
-  if (TOUCH.on) { if (!ix && !iy) { ix = input.mv.x; iy = input.mv.y; } touchAim(); }
+  if (PAD.active) { if (!ix && !iy) { ix = PAD.mv.x; iy = PAD.mv.y; } padAim(); }
+  else if (TOUCH.on) { if (!ix && !iy) { ix = input.mv.x; iy = input.mv.y; } touchAim(); }
   P.thrust = 0;
   if (ix || iy) { const l = Math.max(1, Math.hypot(ix, iy)); ix /= l; iy /= l; P.vx += ix * s.accel * dt; P.vy += iy * s.accel * dt; P.thrust = 1; }
   if (P.dashT > 0) { P.vx = Math.cos(P.dashA) * 1150; P.vy = Math.sin(P.dashA) * 1150; }
@@ -79,7 +80,7 @@ function updatePlayer(dt) {
     P.a = Math.atan2(mw.y - P.y, mw.x - P.x);
   }
   const firing = input.fire || !!tgt;
-  if (P.thrust && Math.random() < 0.8) {
+  if (P.thrust && Math.random() < 0.8 && !fxFull()) {
     const ba = Math.atan2(-iy, -ix) + rand(-0.3, 0.3);
     particles.push({ x: P.x - Math.cos(P.a) * 14, y: P.y - Math.sin(P.a) * 14, vx: Math.cos(ba) * 160 + P.vx * 0.4, vy: Math.sin(ba) * 160 + P.vy * 0.4, life: 0.3, max: 0.3, size: 2.2, color: CLASSES[P.cls].color, drag: 3 });
   }

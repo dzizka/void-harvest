@@ -31,7 +31,7 @@ function tickStorm(dt) {
       if (!S.chests) makeStormChests();
       for (const c of S.chests) if (c.gone && (c.gone -= dt) <= 0) { Object.assign(c, freeSpot(G.station.r + 500, 300, 300)); c.gone = 0; c.slot = c.gift ? null : pick(SLOT_ORDER); }
       // lightning near the pilot
-      if (Math.random() < dt * 0.6) { const a = rand(0, TAU), r = rand(200, 600), x = P.x + Math.cos(a) * r, y = P.y + Math.sin(a) * r; particles.push({ bolt: true, x, y: y - 220, x2: x + rand(-40, 40), y2: y, life: 0.25, max: 0.25, color: '#d9a8ff' }); }
+      if (Math.random() < dt * 0.6 && !fxFull()) { const a = rand(0, TAU), r = rand(200, 600), x = P.x + Math.cos(a) * r, y = P.y + Math.sin(a) * r; particles.push({ bolt: true, x, y: y - 220, x2: x + rand(-40, 40), y2: y, life: 0.25, max: 0.25, color: '#d9a8ff' }); }
     }
     if (S.t <= 0) {
       if (S.ember > 0) log(_T`Búrka utíchla. ${S.ember} žiary sa rozplynulo.`);

@@ -48,6 +48,7 @@ function render() {
   for (const e of enemies) if (vis(e.x, e.y, e.r + 30)) drawEnemy(e);
 
   for (const m of missiles) {
+    if (!vis(m.x, m.y, 20)) continue;
     if (m.plasma) {
       ctx.globalCompositeOperation = 'lighter';
       ctx.fillStyle = 'rgba(127,200,255,.35)'; ctx.beginPath(); ctx.arc(m.x, m.y, 11, 0, TAU); ctx.fill();
@@ -67,6 +68,7 @@ function render() {
   drawMythicFx();
   ctx.globalCompositeOperation = 'lighter'; ctx.lineCap = 'round';
   for (const b of bullets) {
+    if (!vis(b.x, b.y, (b.len || 16) + 10)) continue;
     const sp = Math.hypot(b.vx, b.vy) || 1, l = b.len || 16, ex = b.x - b.vx / sp * l, ey = b.y - b.vy / sp * l;
     ctx.strokeStyle = b.color + '55'; ctx.lineWidth = b.w * 3;
     ctx.beginPath(); ctx.moveTo(b.x, b.y); ctx.lineTo(ex, ey); ctx.stroke();
@@ -75,6 +77,7 @@ function render() {
     if (b.core) { ctx.strokeStyle = '#ffffff'; ctx.lineWidth = b.w * 0.4; ctx.beginPath(); ctx.moveTo(b.x, b.y); ctx.lineTo(ex, ey); ctx.stroke(); }
   }
   for (const b of ebullets) {
+    if (!vis(b.x, b.y, b.r * 2.4 + 4)) continue;
     ctx.fillStyle = b.color + '50'; ctx.beginPath(); ctx.arc(b.x, b.y, b.r * 2.4, 0, TAU); ctx.fill();
     ctx.fillStyle = b.color; ctx.beginPath(); ctx.arc(b.x, b.y, b.r * 1.15, 0, TAU); ctx.fill();
     ctx.fillStyle = '#fff2f4'; ctx.beginPath(); ctx.arc(b.x, b.y, b.r * 0.6, 0, TAU); ctx.fill();
@@ -149,6 +152,7 @@ function render() {
       const mx2 = (p.x + p.x2) / 2 + rand(-12, 12), my2 = (p.y + p.y2) / 2 + rand(-12, 12);
       ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(mx2, my2); ctx.lineTo(p.x2, p.y2); ctx.stroke();
     } else if (p.ring) {
+      if (!vis(p.x, p.y, p.r1 + 8)) continue;
       const r = lerp(p.r1, p.r0, t);
       ctx.strokeStyle = p.color; ctx.globalAlpha = t * 0.8; ctx.lineWidth = 2 + 3 * t;
       ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, TAU); ctx.stroke();

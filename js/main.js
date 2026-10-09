@@ -5,6 +5,7 @@ function frame(now) {
   const dt = Math.min(0.05, (now - last) / 1000); last = now;
   if (G) G.fps = lerp(G.fps, 1 / Math.max(0.001, (now - last2) / 1000), 0.05);
   last2 = now;
+  padPoll();
   const sp = G ? G.cheat.speed : 1;
   if (G && G.hitStop > 0 && !G.paused) G.hitStop -= dt;
   else if (G && G.mode === 'play' && !G.paused && !transitioning && !TOUCH.portrait && !TAB.ro) {

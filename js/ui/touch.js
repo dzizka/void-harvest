@@ -215,3 +215,5 @@ tapItem('craftBody', '[data-mv]', el => moveSheet(el.dataset.mv));
 $('abTouch').addEventListener('click', () => { setMore(false); setTouchPref(TOUCH.pref === 'auto' ? (TOUCH.on ? 'off' : 'on') : TOUCH.pref === 'on' ? 'off' : 'auto'); });
 matchMedia('(pointer: coarse)').addEventListener('change', () => { if (TOUCH.pref === 'auto') applyTouch(); });
 applyTouch();
+// first run on a phone: medium graphics (the full-screen glow is the most expensive pass); a player's own choice is kept
+try { if (TOUCH.on && !localStorage.getItem('void-harvest-gfx')) setGfx('mid'); } catch (e) { /* storage blocked */ }

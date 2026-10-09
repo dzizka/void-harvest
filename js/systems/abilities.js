@@ -82,11 +82,12 @@ function moveDir() {
   const k = input.keys;
   const ix = (k.KeyD || k.ArrowRight ? 1 : 0) - (k.KeyA || k.ArrowLeft ? 1 : 0), iy = (k.KeyS || k.ArrowDown ? 1 : 0) - (k.KeyW || k.ArrowUp ? 1 : 0);
   if (ix || iy) return Math.atan2(iy, ix);
+  if (PAD.active && (PAD.mv.x || PAD.mv.y)) return Math.atan2(PAD.mv.y, PAD.mv.x);
   return TOUCH.on && (input.mv.x || input.mv.y) ? Math.atan2(input.mv.y, input.mv.x) : P.a;
 }
 // target point: the cursor, or the auto-target when skills are cast automatically
 function aimPoint() {
-  if (G.autoCasting || (TOUCH.on && !input.aim.on)) { const t = P.autoT && P.autoT.T && !P.autoT.dead ? P.autoT : nearMouseEnemy(600, P); if (t) return { x: t.x, y: t.y }; }
+  if (G.autoCasting || (PAD.active ? !PAD.aim.on : TOUCH.on && !input.aim.on)) { const t = P.autoT && P.autoT.T && !P.autoT.dead ? P.autoT : nearMouseEnemy(600, P); if (t) return { x: t.x, y: t.y }; }
   return mouseWorld();
 }
 function blinkTo(a, dist) {
@@ -398,7 +399,7 @@ function updateAbilities(dt) {
       e.vulnT = G.time + 0.3;
       if (!e.isBoss) { const dx = w.x - e.x, dy = w.y - e.y, d = Math.hypot(dx, dy) || 1, pull = Math.min(d, 240 * dt); e.x += dx / d * pull; e.y += dy / d * pull; }
     }
-    if (Math.random() < 0.6) { const a = rand(0, TAU), r = rand(w.r * 0.4, w.r); particles.push({ x: w.x + Math.cos(a) * r, y: w.y + Math.sin(a) * r, vx: -Math.cos(a) * r * 1.5, vy: -Math.sin(a) * r * 1.5, life: 0.5, max: 0.5, size: 2, color: '#9a8cff', drag: 0 }); }
+    if (Math.random() < 0.6 && !fxFull()) { const a = rand(0, TAU), r = rand(w.r * 0.4, w.r); particles.push({ x: w.x + Math.cos(a) * r, y: w.y + Math.sin(a) * r, vx: -Math.cos(a) * r * 1.5, vy: -Math.sin(a) * r * 1.5, life: 0.5, max: 0.5, size: 2, color: '#9a8cff', drag: 0 }); }
     if (w.pulse && (w.pt -= dt) <= 0) { w.pt = 1; fxSplash(w.x, w.y, w.r * 0.6, w.pulse, '#9a8cff'); }
     if (w.t <= 0 && w.boom) { fxSplash(w.x, w.y, w.r * 0.7, w.boom, '#c9b8ff'); burst(w.x, w.y, '#9a8cff', 40, 420, 2.8, 0.6); shake(6); }
   }

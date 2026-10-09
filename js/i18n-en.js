@@ -1,6 +1,7 @@
 'use strict';
 // English dictionary: Slovak source text → English. Keys with {0}, {1}… are templates (see js/i18n.js).
 Object.assign(EN, {
+  "Gamepad pripojený: ľavá páčka let, pravá mierenie a streľba (alebo RT), LT rakety, A úhyb, X / Y schopnosti, B interakcia, LB skener, Start inventár, Back mapa, D-pad auto-boj / auto-ťažba.": "Gamepad connected: left stick flies, right stick aims and fires (or RT), LT missiles, A dodge, X / Y skills, B interact, LB scanner, Start inventory, Back map, D-pad auto-combat / auto-mining.",
   "Odomkne sa na úrovni {0}": "Unlocks at level {0}",
   "{0} sa odomkne na úrovni {1}.": "{0} unlocks at level {1}.",
   "Zostrelenie: 50 % šanca postaviť minióna (max 4)": "Kill: 50 % chance to build a minion (max 4)",

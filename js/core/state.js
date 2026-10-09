@@ -10,6 +10,7 @@ const input = { keys: {}, mx: innerWidth / 2, my: innerHeight / 2, fire: false, 
                 mv: { x: 0, y: 0 }, aim: { x: 0, y: 0, on: false } };   // mv / aim = touch sticks (-1..1)
 // touch controls: pref auto|on|off (Menu), on = active now
 const TOUCH = { pref: 'auto', on: false, last: -1e9, sticks: {}, dir: null };
+const PAD = { n: 0, active: false, mv: { x: 0, y: 0 }, aim: { x: 0, y: 0, on: false }, trig: false, dir: null, prev: [] };
 
 let G = null;   // game state
 let P = null;   // player

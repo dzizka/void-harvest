@@ -215,8 +215,14 @@ function updateEnemies(dt) {
         break;
       }
       case 'healer': {
-        let best = null, bh = 1;
-        for (const o of enemies) if (o !== e && !o.dead && !o.isBoss && o.hp < o.maxHp && d2(o.x, o.y, e.x, e.y) < 520 * 520) { const f = o.hp / o.maxHp; if (f < bh) { bh = f; best = o; } }
+        // keep the patient between scans; look for the most wounded ally 4× a second
+        const h = e.healT;
+        let best = h && !h.dead && h.hp < h.maxHp && d2(h.x, h.y, e.x, e.y) < 520 * 520 ? h : null;
+        e.scanT = (e.scanT || 0) - dt;
+        if (e.scanT <= 0) {
+          e.scanT = 0.25; let bh = 1; best = null;
+          for (const o of enemies) if (o !== e && !o.dead && !o.isBoss && o.hp < o.maxHp && d2(o.x, o.y, e.x, e.y) < 520 * 520) { const f = o.hp / o.maxHp; if (f < bh) { bh = f; best = o; } }
+        }
         e.healT = best;
         if (best) {
           const gx = best.x - e.x, gy = best.y - e.y, gl = Math.hypot(gx, gy) || 1, want = gl > 110 ? 1 : -0.3;
@@ -227,9 +233,14 @@ function updateEnemies(dt) {
         break;
       }
       case 'shieldbearer': {
-        let cx = 0, cy = 0, n = 0;
-        for (const o of enemies) if (o !== e && !o.dead && !o.isBoss && o.type !== 'shieldbearer' && d2(o.x, o.y, e.x, e.y) < 520 * 520) { cx += o.x; cy += o.y; n++; }
-        if (n) { const gx = cx / n + ux * 70 - e.x, gy = cy / n + uy * 70 - e.y, gl = Math.hypot(gx, gy) || 1, k = Math.min(1, gl / 80); tx = gx / gl * sp * k; ty = gy / gl * sp * k; }
+        // group centre refreshed 4× a second
+        e.scanT = (e.scanT || 0) - dt;
+        if (e.scanT <= 0) {
+          e.scanT = 0.25; let cx = 0, cy = 0, n = 0;
+          for (const o of enemies) if (o !== e && !o.dead && !o.isBoss && o.type !== 'shieldbearer' && d2(o.x, o.y, e.x, e.y) < 520 * 520) { cx += o.x; cy += o.y; n++; }
+          e.grpN = n; if (n) { e.grpX = cx / n; e.grpY = cy / n; }
+        }
+        if (e.grpN) { const gx = e.grpX + ux * 70 - e.x, gy = e.grpY + uy * 70 - e.y, gl = Math.hypot(gx, gy) || 1, k = Math.min(1, gl / 80); tx = gx / gl * sp * k; ty = gy / gl * sp * k; }
         else if (d > 320) { tx = ux * sp; ty = uy * sp; }
         e.protT = (e.protT || 0) - dt;
         if (e.protT <= 0) { e.protT = 0.4; for (const o of enemies) if (!o.dead && !o.isBoss && o !== e && d2(o.x, o.y, e.x, e.y) < 175 * 175) o.prot = G.time + 0.6; }

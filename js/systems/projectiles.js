@@ -39,7 +39,7 @@ function updateBullets(dt) {
       }
     }
   }
-  bullets = bullets.filter(b => !b.dead);
+  prune(bullets, b => !b.dead);
 }
 
 function updateEnemyBullets(dt) {
@@ -68,7 +68,7 @@ function updateEnemyBullets(dt) {
     }
     for (const a of asteroids) if (d2(b.x, b.y, a.x, a.y) < (a.r * 0.9) ** 2) { b.dead = true; burst(b.x, b.y, '#8b93a6', 3, 90, 1.4, 0.25); break; }
   }
-  ebullets = ebullets.filter(b => !b.dead);
+  prune(ebullets, b => !b.dead);
 }
 
 function updateMissiles(dt) {
@@ -86,14 +86,14 @@ function updateMissiles(dt) {
     }
     m.x += m.vx * dt; m.y += m.vy * dt;
     m.trailT -= dt;
-    if (m.trailT <= 0) { m.trailT = 0.02; particles.push({ x: m.x, y: m.y, vx: rand(-20, 20), vy: rand(-20, 20), life: 0.4, max: 0.4, size: m.plasma ? 4 : 2.2, color: m.plasma ? '#7fc8ff' : '#ff9a4a', drag: 2 }); }
+    if (m.trailT <= 0 && !fxFull()) { m.trailT = 0.02; particles.push({ x: m.x, y: m.y, vx: rand(-20, 20), vy: rand(-20, 20), life: 0.4, max: 0.4, size: m.plasma ? 4 : 2.2, color: m.plasma ? '#7fc8ff' : '#ff9a4a', drag: 2 }); }
     if (hitsBarrier(m)) { m.dead = true; ring(m.x, m.y, '#5fd4ff', 30, 0.3); continue; }
     if (m.life <= 0 || m.x < 0 || m.y < 0 || m.x > WORLD.w || m.y > WORLD.h) { explodeMissile(m); continue; }
     for (const e of enemies) if (!e.dead && d2(e.x, e.y, m.x, m.y) < (e.r + 7) ** 2) { explodeMissile(m); break; }
     if (m.dead) continue;
     for (const a of asteroids) if (!a.dead && d2(a.x, a.y, m.x, m.y) < (a.r * 0.9) ** 2) { explodeMissile(m); break; }
   }
-  missiles = missiles.filter(m => !m.dead);
+  prune(missiles, m => !m.dead);
 }
 
 function updatePickups(dt) {
@@ -115,12 +115,12 @@ function updatePickups(dt) {
     if (p.kind !== 'item' && p.kind !== 'key' && p.kind !== 'gem' && p.t > 45) p.dead = true;
     if (p.kind === 'item' && p.t > 180 && !['legendary', 'set', 'mythic'].includes(p.item.rarity)) p.dead = true;
   }
-  pickups = pickups.filter(p => !p.dead);
+  prune(pickups, p => !p.dead);
 }
 
 function updateTrails(dt) {
   for (const t of trails) t.life -= dt;
-  if (trails.length && trails[0].life <= 0) trails = trails.filter(t => t.life > 0);
+  if (trails.length && trails[0].life <= 0) prune(trails, t => t.life > 0);
 }
 
 function updateFx(dt) {
@@ -128,7 +128,7 @@ function updateFx(dt) {
     p.life -= dt;
     if (!p.ring && !p.bolt && !p.beam) { const f = Math.exp(-p.drag * dt); p.vx *= f; p.vy *= f; p.x += p.vx * dt; p.y += p.vy * dt; if (p.shard) p.a += p.va * dt; }
   }
-  particles = particles.filter(p => p.life > 0);
+  prune(particles, p => p.life > 0);
   for (const t of texts) { t.life -= dt; t.y -= 38 * dt; }
-  texts = texts.filter(t => t.life > 0);
+  prune(texts, t => t.life > 0);
 }
