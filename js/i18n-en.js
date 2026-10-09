@@ -1,6 +1,7 @@
 'use strict';
 // English dictionary: Slovak source text → English. Keys with {0}, {1}… are templates (see js/i18n.js).
 Object.assign(EN, {
+  "Hudba: Leonardo Paz – Outer Space Music Pack (CC-BY 4.0) · „Starfire“ – Scott Buckley, scottbuckley.com.au (CC-BY 4.0) · Outer Space Loop – wipics (CC0). 3D modely a planéty: Kenney, Quaternius, Majadroid (CC0).": "Music: Leonardo Paz – Outer Space Music Pack (CC-BY 4.0) · “Starfire” – Scott Buckley, scottbuckley.com.au (CC-BY 4.0) · Outer Space Loop – wipics (CC0). 3D models and planets: Kenney, Quaternius, Majadroid (CC0).",
   "Zvukové efekty": "Sound effects",
   "Ambientná hudba": "Ambient music",
   "Zvuky": "Sounds",

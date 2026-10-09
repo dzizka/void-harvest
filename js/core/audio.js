@@ -3,14 +3,14 @@
    AUDIO – everything is synthesised with WebAudio (no sound files).
    sfx(name, x, y) plays an effect (quieter with distance from the ship);
    rate limits per sound + a voice cap keep hordes from turning into noise.
-   Ambient music: slow detuned pad chords, a pulse layer during boss fights.
+   Music: licensed tracks streamed per situation (hangar, Haven, sector, gate, boss…).
    Browsers allow audio only after a user gesture, so the context starts on
    the first click / key / touch.
    ===================================================================== */
-const AUD = { ctx: null, master: null, sfx: null, mus: null, noise: null, voices: 0, last: {}, set: { sfx: true, music: false, vol: 0.7 }, pad: null, mood: 'calm' };
+const AUD = { ctx: null, master: null, sfx: null, mus: null, noise: null, voices: 0, last: {}, set: { sfx: true, music: true, vol: 0.7 } };
 try { Object.assign(AUD.set, JSON.parse(localStorage.getItem('void-harvest-audio') || '{}')); } catch (e) { /* defaults */ }
-// the old synthesised pad was switched on by default; start silent until proper music tracks are in
-if (!AUD.set.mv) { AUD.set.music = false; AUD.set.mv = 1; }
+// v2: real music tracks replaced the synthesised pad – switch music back on once for everyone
+if ((AUD.set.mv || 0) < 2) { AUD.set.music = true; AUD.set.mv = 2; }
 function saveAudioSet() { try { localStorage.setItem('void-harvest-audio', JSON.stringify(AUD.set)); } catch (e) { /* ignore */ } }
 
 function audioInit() {
@@ -20,11 +20,9 @@ function audioInit() {
   const comp = c.createDynamicsCompressor(); comp.threshold.value = -18; comp.ratio.value = 6; comp.connect(c.destination);
   AUD.master = c.createGain(); AUD.master.gain.value = AUD.set.vol; AUD.master.connect(comp);
   AUD.sfx = c.createGain(); AUD.sfx.gain.value = AUD.set.sfx ? 1 : 0; AUD.sfx.connect(AUD.master);
-  AUD.mus = c.createGain(); AUD.mus.gain.value = AUD.set.music ? 1 : 0; AUD.mus.connect(AUD.master);
   const n = c.createBuffer(1, c.sampleRate, c.sampleRate), d = n.getChannelData(0);
   for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
   AUD.noise = n;
-  startMusic();
 }
 for (const ev of ['pointerdown', 'keydown', 'touchend']) addEventListener(ev, audioInit, { passive: true });
 
@@ -33,7 +31,6 @@ function setAudio(k, v) {
   if (!AUD.ctx) return;
   const t = AUD.ctx.currentTime;
   if (k === 'sfx') AUD.sfx.gain.setTargetAtTime(v ? 1 : 0, t, 0.05);
-  if (k === 'music') AUD.mus.gain.setTargetAtTime(v ? 1 : 0, t, 0.3);
   if (k === 'vol') AUD.master.gain.setTargetAtTime(v, t, 0.05);
 }
 
@@ -90,37 +87,66 @@ function sfx(name, x, y, vol) {
   AUD.last[name] = now; voice(1); S[1](v);
 }
 
-/* ---------- ambient music: Am – F – C – G pads, boss pulse ---------- */
-const CHORDS = [[57, 60, 64], [53, 57, 60], [48, 52, 55], [55, 59, 62]];
-function startMusic() {
-  const c = AUD.ctx, f = c.createBiquadFilter(), g = c.createGain();
-  f.type = 'lowpass'; f.frequency.value = 700; f.Q.value = 0.5; g.gain.value = 0.0001; g.gain.setTargetAtTime(0.045, c.currentTime, 2);
-  f.connect(g); g.connect(AUD.mus);
-  const oscs = [];
-  for (let i = 0; i < 6; i++) { const o = c.createOscillator(); o.type = 'sawtooth'; o.detune.value = (i % 2 ? 7 : -7); o.connect(f); o.start(); oscs.push(o); }
-  // slow filter breathing
-  const lfo = c.createOscillator(), lg = c.createGain(); lfo.frequency.value = 0.05; lg.gain.value = 250; lfo.connect(lg); lg.connect(f.frequency); lfo.start();
-  // boss layer: low pulse gated by an LFO
-  const bo = c.createOscillator(), bg = c.createGain(), bl = c.createOscillator(), blg = c.createGain();
-  bo.type = 'triangle'; bo.frequency.value = 55; bg.gain.value = 0; bo.connect(bg); bg.connect(AUD.mus); bo.start();
-  bl.frequency.value = 2.2; blg.gain.value = 0; bl.connect(blg); blg.connect(bg.gain); bl.start();
-  AUD.pad = { oscs, g, f, bg, blg, step: -1, t: 0 };
-  setChord(0);
+/* ---------- music: real tracks (CC-BY / CC0, see assets/CREDITS.md) chosen by situation ----------
+   Each mood is a sequence of parts; the last part loops. HTMLAudio elements stream the files
+   (no big decoded buffers on phones) and crossfade through element.volume. */
+const MUS_BASE = 'assets/music/';
+const MUSIC = {
+  hangar:    { parts: ['starfire'], vol: 0.8 },
+  haven:     { parts: ['colony_intro', 'colony_loop'] },
+  calm:      { parts: ['outerspace'] },
+  sector:    { parts: ['racing_intro', 'racing_loop'] },
+  gate:      { parts: ['liftoff_a', 'liftoff_t', 'liftoff_b'] },
+  boss:      { parts: ['battle_intro', 'battle_loop'] },
+  emergency: { parts: ['emergency'] },
+  death:     { parts: ['stillness'] }
+};
+const MUS = { cur: null, want: null, wantT: 0, tracks: {} };
+const musExt = (() => { try { return new Audio().canPlayType('audio/ogg; codecs="vorbis"') ? '.ogg' : '.mp3'; } catch (e) { return '.mp3'; } })();
+const musVol = () => (AUD.set.music ? 0.38 * AUD.set.vol : 0);
+function musTrack(key) {
+  let T = MUS.tracks[key];
+  if (T) return T;
+  const M = MUSIC[key];
+  T = MUS.tracks[key] = { key, i: 0, v: 0, target: 0, els: M.parts.map((f, k) => {
+    const a = new Audio(); a.preload = k ? 'none' : 'auto'; a.src = MUS_BASE + f + musExt;
+    a.loop = k === M.parts.length - 1;
+    a.addEventListener('ended', () => { if (a.loop) return; const n = T.els[k + 1]; T.i = k + 1; n.currentTime = 0; n.volume = a.volume; if (T.target > 0) n.play().catch(() => {}); });
+    return a;
+  }) };
+  return T;
 }
-function setChord(i) {
-  const c = AUD.ctx, t = c.currentTime, ch = CHORDS[i % CHORDS.length];
-  AUD.pad.oscs.forEach((o, k) => o.frequency.setTargetAtTime(NOTE(ch[k % 3] - 12 * (k < 3 ? 1 : 0)), t, 1.2));
-  AUD.pad.step = i;
+function musPlay(T) { const a = T.els[T.i]; a.volume = T.v; const p = a.play(); if (p) p.catch(() => {}); if (T.els[T.i + 1]) T.els[T.i + 1].preload = 'auto'; }
+// what should be playing right now
+function musMood() {
+  if (!G) return 'hangar';
+  if (G.mode === 'dead') return 'death';
+  if (G.boss && !G.boss.dead) return 'boss';
+  const D = G.dungeon;
+  if (D) return D.horde || D.climb || D.rush ? 'emergency' : 'gate';
+  if (G.siege || (typeof stormHere === 'function' && stormHere())) return 'emergency';
+  if (G.sector === 'haven') return 'haven';
+  return curSector().kind === 'safe' ? 'calm' : 'sector';
 }
-// called with the HUD (10× per second): chord changes and mood (calm / boss)
+// called 10× per second: debounced mood changes (boss/death switch at once), 2 s crossfades
 function audioTick(dt) {
-  if (!AUD.ctx || !AUD.pad) return;
-  const A = AUD.pad, c = AUD.ctx;
-  A.t += dt; if (A.t > 9) { A.t = 0; setChord(A.step + 1); }
-  const mood = G && G.boss && !G.boss.dead ? 'boss' : 'calm';
-  if (mood !== AUD.mood) {
-    AUD.mood = mood; const t = c.currentTime, b = mood === 'boss';
-    A.bg.gain.setTargetAtTime(b ? 0.05 : 0, t, 0.6); A.blg.gain.setTargetAtTime(b ? 0.05 : 0, t, 0.6);
-    A.f.frequency.setTargetAtTime(b ? 1100 : 700, t, 1);
+  if (!AUD.ctx || AUD.ctx.state !== 'running') return;
+  const mood = musMood();
+  if (mood !== MUS.want) { MUS.want = mood; MUS.wantT = 0; }
+  MUS.wantT += dt;
+  if (MUS.want !== MUS.cur && (MUS.wantT > 1.5 || mood === 'boss' || mood === 'death' || !MUS.cur)) {
+    const old = MUS.cur && MUS.tracks[MUS.cur]; if (old) old.target = 0;
+    MUS.cur = MUS.want;
+    const T = musTrack(MUS.cur); T.target = 1;
+    // a mood we return to after a short while continues; otherwise start from the top
+    if (T.els[T.i].paused) { if (T.v <= 0.01) { T.i = 0; T.els.forEach(a => { a.currentTime = 0; }); } musPlay(T); }
+  }
+  const mv = musVol();
+  for (const k in MUS.tracks) {
+    const T = MUS.tracks[k], goal = T.target * mv;
+    T.v += Math.sign(goal - T.v) * Math.min(Math.abs(goal - T.v), dt * 0.2);   // ~2 s crossfade
+    const a = T.els[T.i]; a.volume = clamp(T.v * (MUSIC[k].vol || 1), 0, 1);
+    if (T.v <= 0.001 && (T.target === 0 || mv === 0) && !a.paused) a.pause();
+    if (T.target > 0 && mv > 0 && a.paused && a.readyState >= 2) musPlay(T);
   }
 }
