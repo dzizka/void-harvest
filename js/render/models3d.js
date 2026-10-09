@@ -41,6 +41,20 @@ function drawSpr(c, S, x, y, a, size, row) {
   const i = sprIdx(S, a) + (S.banks ? clamp(row | 0, 0, S.banks - 1) * S.f : 0);
   c.drawImage(S.img, (i % S.cols) * S.px, Math.floor(i / S.cols) * S.px, S.px, S.px, x - size / 2, y - size / 2, size, size);
 }
+// soft round glow (no hard edge) in a colour, cached per colour and drawn scaled
+const GLOWS = {};
+function softGlow(c, col, x, y, r, alpha) {
+  let g = GLOWS[col];
+  if (!g) {
+    g = GLOWS[col] = document.createElement('canvas'); g.width = g.height = 64;
+    const k = g.getContext('2d'), gr = k.createRadialGradient(32, 32, 0, 32, 32, 32);
+    gr.addColorStop(0, col); gr.addColorStop(0.45, col + '80'); gr.addColorStop(1, col + '00');
+    k.fillStyle = gr; k.fillRect(0, 0, 64, 64);
+  }
+  const ga = c.globalAlpha; c.globalAlpha = ga * alpha;
+  c.drawImage(g, x - r, y - r, r * 2, r * 2);
+  c.globalAlpha = ga;
+}
 // hit flash: the same frame added on top
 function flashSpr(c, S, x, y, a, size, row, k) {
   const ga = c.globalAlpha, op = c.globalCompositeOperation;

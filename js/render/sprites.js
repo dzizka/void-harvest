@@ -14,7 +14,7 @@ function drawShip(c, cls, x, y, a, scale, thrust, flash, halo, row) {
     // pseudo-3D sprite: class-coloured glow underneath, engine flame behind, sheet frame on top
     const D = 56 * scale;
     c.save(); c.translate(x, y);
-    if (halo) { c.fillStyle = halo + '22'; c.beginPath(); c.arc(0, 0, D * 0.5, 0, TAU); c.fill(); }
+    if (halo) softGlow(c, halo, 0, 0, D * 0.6, 0.3);
     if (thrust) {
       const fl = rand(0.7, 1.2), bx = -Math.cos(a) * D * 0.36, by = -Math.sin(a) * D * 0.36;
       c.globalCompositeOperation = 'lighter';
@@ -130,7 +130,7 @@ function drawEnemy(e) {
   const S3 = spr3d('en_' + e.type), white = e.flash > 0 || (e.state === 'wind' && Math.floor(e.stateT * 14) % 2 === 0);
   if (S3) {
     // type colour stays readable as a soft glow under the model
-    ctx.fillStyle = col + '24'; ctx.beginPath(); ctx.arc(0, 0, e.r * 1.25, 0, TAU); ctx.fill();
+    softGlow(ctx, col, 0, 0, e.r * 1.7, 0.22);
     drawSpr(ctx, S3, 0, 0, e.a, e.r * 3.3, 0);
     if (white) flashSpr(ctx, S3, 0, 0, e.a, e.r * 3.3, 0, 0.8);
   } else {
