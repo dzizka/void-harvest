@@ -53,6 +53,8 @@ function render() {
       ctx.fillStyle = 'rgba(127,200,255,.35)'; ctx.beginPath(); ctx.arc(m.x, m.y, 11, 0, TAU); ctx.fill();
       ctx.fillStyle = '#dff3ff'; ctx.beginPath(); ctx.arc(m.x, m.y, 5, 0, TAU); ctx.fill();
       ctx.globalCompositeOperation = 'source-over';
+    } else if (spr3d('missile')) {
+      drawSpr(ctx, spr3d('missile'), m.x, m.y, m.a, 24, 0);
     } else {
       ctx.save(); ctx.translate(m.x, m.y); ctx.rotate(m.a);
       ctx.fillStyle = '#ffd7a8'; ctx.beginPath(); ctx.moveTo(7, 0); ctx.lineTo(-5, -3); ctx.lineTo(-5, 3); ctx.fill(); ctx.restore();

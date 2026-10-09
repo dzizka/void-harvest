@@ -1305,5 +1305,209 @@
     "metal": 0.2
    }
   }
+ },
+ {
+  "frames": 48,
+  "px": 64,
+  "cols": 16,
+  "tilt": 0.45,
+  "out": "mini_minion",
+  "url": "/models/kenney/craft_speederD.glb",
+  "yaw": -1.5707963267948966,
+  "mat": {
+   "metal": {
+    "color": "#b39691",
+    "metal": 0.5,
+    "rough": 0.45
+   },
+   "metalDark": {
+    "color": "#8c7472",
+    "metal": 0.5,
+    "rough": 0.5
+   },
+   "dark": {
+    "color": "#594948",
+    "metal": 0.4,
+    "rough": 0.6
+   },
+   "metalRed": {
+    "color": "#ff9d6e",
+    "emissive": "#ff9d6e",
+    "ei": 0.8,
+    "metal": 0.2,
+    "rough": 0.4
+   },
+   "_defaultMat": {
+    "color": "#79574e",
+    "metal": 0.7,
+    "rough": 0.15
+   }
+  }
+ },
+ {
+  "frames": 48,
+  "px": 64,
+  "cols": 16,
+  "tilt": 0.45,
+  "out": "mini_altar",
+  "url": "/models/kenney/craft_speederD.glb",
+  "yaw": -1.5707963267948966,
+  "mat": {
+   "metal": {
+    "color": "#b38091",
+    "metal": 0.5,
+    "rough": 0.45
+   },
+   "metalDark": {
+    "color": "#8c6172",
+    "metal": 0.5,
+    "rough": 0.5
+   },
+   "dark": {
+    "color": "#593d47",
+    "metal": 0.4,
+    "rough": 0.6
+   },
+   "metalRed": {
+    "color": "#ff5f6d",
+    "emissive": "#ff5f6d",
+    "ei": 0.8,
+    "metal": 0.2,
+    "rough": 0.4
+   },
+   "_defaultMat": {
+    "color": "#793e4d",
+    "metal": 0.7,
+    "rough": 0.15
+   }
+  }
+ },
+ {
+  "frames": 48,
+  "px": 64,
+  "cols": 16,
+  "tilt": 0.45,
+  "out": "mini_ally",
+  "url": "/models/kenney/craft_speederC.glb",
+  "yaw": -1.5707963267948966,
+  "mat": {
+   "metal": {
+    "color": "#a879c4",
+    "metal": 0.5,
+    "rough": 0.45
+   },
+   "metalDark": {
+    "color": "#825b9e",
+    "metal": 0.5,
+    "rough": 0.5
+   },
+   "dark": {
+    "color": "#533965",
+    "metal": 0.4,
+    "rough": 0.6
+   },
+   "metalRed": {
+    "color": "#e14bff",
+    "emissive": "#e14bff",
+    "ei": 0.8,
+    "metal": 0.2,
+    "rough": 0.4
+   },
+   "_defaultMat": {
+    "color": "#6d3688",
+    "metal": 0.7,
+    "rough": 0.15
+   }
+  }
+ },
+ {
+  "frames": 48,
+  "px": 64,
+  "cols": 16,
+  "tilt": 0.45,
+  "out": "mini_drone",
+  "url": "/models/kenney/craft_speederC.glb",
+  "yaw": -1.5707963267948966,
+  "mat": {
+   "metal": {
+    "color": "#919eb6",
+    "metal": 0.5,
+    "rough": 0.45
+   },
+   "metalDark": {
+    "color": "#6f7b92",
+    "metal": 0.5,
+    "rough": 0.5
+   },
+   "dark": {
+    "color": "#464e5d",
+    "metal": 0.4,
+    "rough": 0.6
+   },
+   "metalRed": {
+    "color": "#9fb4d8",
+    "emissive": "#9fb4d8",
+    "ei": 0.8,
+    "metal": 0.2,
+    "rough": 0.4
+   },
+   "_defaultMat": {
+    "color": "#536078",
+    "metal": 0.7,
+    "rough": 0.15
+   }
+  }
+ },
+ {
+  "frames": 48,
+  "px": 128,
+  "cols": 16,
+  "tilt": 0.45,
+  "out": "mini_titan",
+  "url": "/models/kenney/craft_cargoA.glb",
+  "yaw": -1.5707963267948966,
+  "mat": {
+   "metal": {
+    "color": "#b3a791",
+    "metal": 0.5,
+    "rough": 0.45
+   },
+   "metalDark": {
+    "color": "#8c8372",
+    "metal": 0.5,
+    "rough": 0.5
+   },
+   "dark": {
+    "color": "#595348",
+    "metal": 0.4,
+    "rough": 0.6
+   },
+   "metalRed": {
+    "color": "#ffcf6e",
+    "emissive": "#ffcf6e",
+    "ei": 0.8,
+    "metal": 0.2,
+    "rough": 0.4
+   },
+   "_defaultMat": {
+    "color": "#796b4e",
+    "metal": 0.7,
+    "rough": 0.15
+   }
+  }
+ },
+ {
+  "frames": 32,
+  "px": 48,
+  "cols": 16,
+  "tilt": 0.45,
+  "out": "missile",
+  "url": "/models/majadroid/missile.obj",
+  "yaw": 1.5707963267948966,
+  "all": {
+   "color": "#e8d2b0",
+   "metal": 0.5,
+   "rough": 0.4
+  }
  }
 ]

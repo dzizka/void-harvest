@@ -210,7 +210,13 @@ function drawMythicFx() {
   if (minions.length) {
     const M = P.stats.minion, col = M && M.altar ? '#ff5f6d' : '#ff9d6e';
     for (const m of minions) {
-      ctx.save(); ctx.translate(m.x, m.y); ctx.rotate(m.a);
+      const S3 = spr3d(m.titan ? 'mini_titan' : M && M.altar ? 'mini_altar' : 'mini_minion');
+      ctx.save(); ctx.translate(m.x, m.y);
+      if (S3) {
+        if (m.titan) softGlow(ctx, '#ffcf6e', 0, 0, 40, 0.25);
+        drawSpr(ctx, S3, 0, 0, m.a, m.titan ? 76 : 34, 0);
+      } else {
+      ctx.rotate(m.a);
       ctx.lineJoin = 'round';
       if (m.titan) {
         ctx.fillStyle = '#24160c'; ctx.strokeStyle = '#ffcf6e'; ctx.lineWidth = 2.5;
@@ -221,6 +227,7 @@ function drawMythicFx() {
         ctx.fillStyle = '#1e100c'; ctx.strokeStyle = col; ctx.lineWidth = 1.6;
         ctx.beginPath(); ctx.moveTo(11, 0); ctx.lineTo(-7, -7); ctx.lineTo(-3, 0); ctx.lineTo(-7, 7); ctx.closePath(); ctx.fill(); ctx.stroke();
       }
+      }
       ctx.restore();
       if (m.hp < m.maxHp) {
         const w = m.r * 2.4;
@@ -230,6 +237,7 @@ function drawMythicFx() {
     }
   }
   for (const a of allies) {
+    if (spr3d('mini_ally')) { softGlow(ctx, '#e14bff', a.x, a.y, 20, 0.3); drawSpr(ctx, spr3d('mini_ally'), a.x, a.y, a.a, 30, 0); continue; }
     ctx.save(); ctx.translate(a.x, a.y); ctx.rotate(a.a);
     ctx.fillStyle = '#1a0b22'; ctx.strokeStyle = '#e14bff'; ctx.lineWidth = 1.5;
     ctx.beginPath(); ctx.moveTo(9, 0); ctx.lineTo(-6, -6); ctx.lineTo(-3, 0); ctx.lineTo(-6, 6); ctx.closePath(); ctx.fill(); ctx.stroke();
@@ -239,6 +247,7 @@ function drawMythicFx() {
     const kind = P.stats.drones ? P.stats.drones.kind : 'assault';
     const col = kind === 'mining' ? '#c8a27c' : kind === 'repair' ? '#5be09a' : CLASSES[P.cls].color;
     for (const d of P.drones) {
+      if (spr3d('mini_drone')) { softGlow(ctx, col, d.x, d.y, 16, 0.45); drawSpr(ctx, spr3d('mini_drone'), d.x, d.y, d.a, 26, 0); continue; }
       ctx.save(); ctx.translate(d.x, d.y); ctx.rotate(d.a);
       ctx.fillStyle = '#0b1424'; ctx.strokeStyle = col; ctx.lineWidth = 1.5;
       ctx.beginPath(); ctx.moveTo(8, 0); ctx.lineTo(0, -5); ctx.lineTo(-6, 0); ctx.lineTo(0, 5); ctx.closePath(); ctx.fill(); ctx.stroke();
