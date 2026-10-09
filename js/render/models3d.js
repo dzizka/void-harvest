@@ -49,6 +49,7 @@ try { GFX.models = localStorage.getItem('void-harvest-models') !== 'off'; } catc
 function setModels(on) {
   GFX.models = on;
   try { localStorage.setItem('void-harvest-models', on ? 'on' : 'off'); } catch (e) { /* storage blocked */ }
+  if (G && BG.theme && GFX.q !== 'low') BG.backdrop = makeBackdrop(BG.theme);
 }
 // sheets load lazily on first use, so a ship you never fly costs nothing
 function spr3d(k) {
@@ -56,6 +57,18 @@ function spr3d(k) {
   const S = SPR3D[k]; if (!S) return null;
   if (!S.img) { S.img = new Image(); S.img.onload = () => { S.ok = true; if (k.startsWith('ship_') && !G && typeof buildSelect === 'function') buildSelect(); }; S.img.onerror = () => { S.bad = true; }; S.img.src = SPR_BASE + k + '.webp'; }
   return S.ok ? S : null;
+}
+// background planets (Kenney Planets, CC0); the backdrop is rebuilt once its planet arrives
+const PLANETS = [];
+function planetImg(i) {
+  if (!GFX.models) return null;
+  let P_ = PLANETS[i];
+  if (!P_) {
+    P_ = PLANETS[i] = { img: new Image(), ok: false };
+    P_.img.onload = () => { P_.ok = true; if (G && BG.theme && (BACKDROP[BG.theme] || {}).pimg === i && GFX.q !== 'low') BG.backdrop = makeBackdrop(BG.theme); };
+    P_.img.src = SPR_BASE + 'planet' + i + '.webp';
+  }
+  return P_.ok ? P_.img : null;
 }
 // boss definitions may be copies (nightmare variants), so match by name too
 const bossKey = B => B.key3d || (B.key3d = Object.keys(BOSSES).find(k => BOSSES[k] === B || BOSSES[k].name === B.name) || '-');

@@ -58,14 +58,14 @@ function drawGlow() {
 // deterministic random for sector scenery
 function seeded(str) { let h = 2166136261; for (const ch of str) h = Math.imul(h ^ ch.charCodeAt(0), 16777619); return () => { h += 0x6D2B79F5; let t = h; t = Math.imul(t ^ t >>> 15, t | 1); t ^= t + Math.imul(t ^ t >>> 7, t | 61); return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
 const BACKDROP = {
-  haven:  { planet: ['#2a6fb0', '#0b2340', '#7fd0ff'], ring: true,  props: 'fleet' },
-  kepler: { planet: ['#5a6a90', '#151b2c', '#9fb4ff'], ring: false, props: 'rocks' },
-  ruby:   { planet: ['#c0392b', '#2a0a10', '#ff8a6a'], ring: false, props: 'gas' },
-  tessar: { planet: ['#8fe3ff', '#0d2a3a', '#e0fbff'], ring: true,  props: 'ice' },
-  vex:    { planet: ['#b0782a', '#20140a', '#ffc46b'], ring: true,  props: 'wrecks' },
-  rim:    { planet: ['#2a0d3a', '#05020a', '#c77dff'], ring: false, props: 'rifts' },
-  baria:  { planet: ['#3fbf8f', '#08261c', '#9fffd8'], ring: false, props: 'gas', tint: [90, 255, 180] },
-  hercules: { planet: ['#ffffff', '#3a5aa0', '#9fc4ff'], ring: true, props: 'rifts', tint: [110, 170, 255] },
+  haven:  { planet: ['#2a6fb0', '#0b2340', '#7fd0ff'], ring: true,  props: 'fleet' , pimg: 3 },
+  kepler: { planet: ['#5a6a90', '#151b2c', '#9fb4ff'], ring: false, props: 'rocks' , pimg: 4 },
+  ruby:   { planet: ['#c0392b', '#2a0a10', '#ff8a6a'], ring: false, props: 'gas' , pimg: 8 },
+  tessar: { planet: ['#8fe3ff', '#0d2a3a', '#e0fbff'], ring: true,  props: 'ice' , pimg: 7 },
+  vex:    { planet: ['#b0782a', '#20140a', '#ffc46b'], ring: true,  props: 'wrecks' , pimg: 5 },
+  rim:    { planet: ['#2a0d3a', '#05020a', '#c77dff'], ring: false, props: 'rifts' , pimg: 6 },
+  baria:  { planet: ['#3fbf8f', '#08261c', '#9fffd8'], ring: false, props: 'gas', tint: [90, 255, 180] , pimg: 0 },
+  hercules: { planet: ['#ffffff', '#3a5aa0', '#9fc4ff'], ring: true, props: 'rifts', tint: [110, 170, 255] , pimg: 2 },
   dungeon:{ planet: null, props: 'rifts' }
 };
 function makeBackdrop(theme) {
@@ -118,11 +118,21 @@ function makeBackdrop(theme) {
     const atm = g.createRadialGradient(x, y, R * 0.9, x, y, R * 1.35);
     atm.addColorStop(0, c3 + '55'); atm.addColorStop(1, c3 + '00');
     g.fillStyle = atm; g.beginPath(); g.arc(x, y, R * 1.35, 0, TAU); g.fill();
+    const PIm = D.pimg != null && typeof planetImg === 'function' ? planetImg(D.pimg) : null;
+    if (PIm) {
+      // Kenney planet texture + light from the top-left and a dark terminator for depth
+      g.drawImage(PIm, x - R, y - R, R * 2, R * 2);
+      g.save(); g.beginPath(); g.arc(x, y, R * 0.995, 0, TAU); g.clip();
+      const sh = g.createRadialGradient(x - R * 0.45, y - R * 0.5, R * 0.2, x - R * 0.1, y - R * 0.1, R * 1.45);
+      sh.addColorStop(0, 'rgba(255,255,255,.10)'); sh.addColorStop(0.45, 'rgba(0,0,0,0)'); sh.addColorStop(0.8, 'rgba(2,3,9,.55)'); sh.addColorStop(1, 'rgba(2,3,9,.92)');
+      g.fillStyle = sh; g.fillRect(x - R, y - R, R * 2, R * 2); g.restore();
+    } else {
     const body = g.createRadialGradient(x - R * 0.4, y - R * 0.45, R * 0.1, x, y, R);
     body.addColorStop(0, c1); body.addColorStop(0.7, c2); body.addColorStop(1, '#020309');
     g.fillStyle = body; g.beginPath(); g.arc(x, y, R, 0, TAU); g.fill();
     g.save(); g.beginPath(); g.arc(x, y, R, 0, TAU); g.clip(); g.globalAlpha = 0.18; g.strokeStyle = c3; g.lineWidth = R * 0.05;
     for (let j = 0; j < 6; j++) { g.beginPath(); g.ellipse(x, y + rr(-R, R), R * 1.2, R * 0.08, 0.2, 0, TAU); g.stroke(); } g.restore();
+    }
     if (D.ring) {
       g.save(); g.translate(x, y); g.rotate(-0.35); g.strokeStyle = c3 + '66'; g.lineWidth = R * 0.06;
       g.beginPath(); g.ellipse(0, 0, R * 1.75, R * 0.42, 0, Math.PI * 1.02, Math.PI * 1.98); g.stroke();
