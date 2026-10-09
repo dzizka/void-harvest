@@ -275,5 +275,445 @@
     "metal": 0.1
    }
   }
+ },
+ {
+  "frames": 48,
+  "px": 96,
+  "cols": 16,
+  "tilt": 0.45,
+  "out": "en_charger",
+  "url": "/models/kenney/craft_speederA.glb",
+  "yaw": -1.5707963267948966,
+  "mat": {
+   "metal": {
+    "color": "#b37e7e",
+    "metal": 0.5,
+    "rough": 0.45
+   },
+   "metalDark": {
+    "color": "#8c6061",
+    "metal": 0.5,
+    "rough": 0.5
+   },
+   "dark": {
+    "color": "#593c3c",
+    "metal": 0.4,
+    "rough": 0.6
+   },
+   "metalRed": {
+    "color": "#ff5a36",
+    "emissive": "#ff5a36",
+    "ei": 0.8,
+    "metal": 0.2,
+    "rough": 0.4
+   },
+   "_defaultMat": {
+    "color": "#793c37",
+    "metal": 0.7,
+    "rough": 0.15
+   }
+  }
+ },
+ {
+  "frames": 48,
+  "px": 96,
+  "cols": 16,
+  "tilt": 0.45,
+  "out": "en_splitter",
+  "url": "/models/majadroid/m3-ship2.obj",
+  "yaw": 1.5707963267948966,
+  "all": {
+   "color": "#ac76db",
+   "metal": 0.5,
+   "rough": 0.45
+  }
+ },
+ {
+  "frames": 48,
+  "px": 96,
+  "cols": 16,
+  "tilt": 0.45,
+  "out": "en_minelayer",
+  "url": "/models/majadroid/m4-ship2.obj",
+  "yaw": 1.5707963267948966,
+  "all": {
+   "color": "#d68c49",
+   "metal": 0.5,
+   "rough": 0.45
+  }
+ },
+ {
+  "frames": 48,
+  "px": 96,
+  "cols": 16,
+  "tilt": 0.45,
+  "out": "en_healer",
+  "url": "/models/majadroid/m2-ship3.obj",
+  "yaw": 1.5707963267948966,
+  "all": {
+   "color": "#5bc090",
+   "metal": 0.5,
+   "rough": 0.45
+  }
+ },
+ {
+  "frames": 48,
+  "px": 96,
+  "cols": 16,
+  "tilt": 0.45,
+  "out": "en_shieldbearer",
+  "url": "/models/majadroid/m2-ship2.obj",
+  "yaw": 1.5707963267948966,
+  "all": {
+   "color": "#6aa2db",
+   "metal": 0.5,
+   "rough": 0.45
+  }
+ },
+ {
+  "frames": 48,
+  "px": 96,
+  "cols": 16,
+  "tilt": 0.45,
+  "out": "en_stalker",
+  "url": "/models/kenney/craft_racer.glb",
+  "yaw": -1.5707963267948966,
+  "mat": {
+   "metal": {
+    "color": "#979fb3",
+    "metal": 0.5,
+    "rough": 0.45
+   },
+   "metalDark": {
+    "color": "#737c90",
+    "metal": 0.5,
+    "rough": 0.5
+   },
+   "dark": {
+    "color": "#494e5b",
+    "metal": 0.4,
+    "rough": 0.6
+   },
+   "metalRed": {
+    "color": "#aeb8d0",
+    "emissive": "#aeb8d0",
+    "ei": 0.8,
+    "metal": 0.2,
+    "rough": 0.4
+   },
+   "_defaultMat": {
+    "color": "#596275",
+    "metal": 0.7,
+    "rough": 0.15
+   }
+  }
+ },
+ {
+  "frames": 48,
+  "px": 96,
+  "cols": 16,
+  "tilt": 0.45,
+  "out": "en_goblin",
+  "url": "/models/kenney/craft_cargoB.glb",
+  "yaw": -1.5707963267948966,
+  "mat": {
+   "metal": {
+    "color": "#b39c6b",
+    "metal": 0.5,
+    "rough": 0.45
+   },
+   "metalDark": {
+    "color": "#8c7951",
+    "metal": 0.5,
+    "rough": 0.5
+   },
+   "dark": {
+    "color": "#594d32",
+    "metal": 0.4,
+    "rough": 0.6
+   },
+   "metalRed": {
+    "color": "#ffb000",
+    "emissive": "#ffb000",
+    "ei": 0.8,
+    "metal": 0.2,
+    "rough": 0.4
+   },
+   "_defaultMat": {
+    "color": "#795e22",
+    "metal": 0.7,
+    "rough": 0.15
+   }
+  }
+ },
+ {
+  "frames": 8,
+  "px": 96,
+  "cols": 8,
+  "tilt": 0.45,
+  "out": "en_chest",
+  "url": "/models/kenney-station/container.glb",
+  "yaw": 0,
+  "mat": {
+   "colormap": {
+    "color": "#c9a24a",
+    "metal": 0.7,
+    "rough": 0.3
+   }
+  }
+ },
+ {
+  "frames": 48,
+  "px": 192,
+  "cols": 16,
+  "tilt": 0.45,
+  "out": "boss_brood",
+  "url": "/models/kenney/hangar_roundGlass.glb",
+  "yaw": -1.5707963267948966,
+  "mat": {
+   "metal": {
+    "color": "#b37a91",
+    "metal": 0.5,
+    "rough": 0.45
+   },
+   "metalDark": {
+    "color": "#8c5c72",
+    "metal": 0.5,
+    "rough": 0.5
+   },
+   "dark": {
+    "color": "#593947",
+    "metal": 0.4,
+    "rough": 0.6
+   },
+   "metalRed": {
+    "color": "#ff4d6d",
+    "emissive": "#ff4d6d",
+    "ei": 0.8,
+    "metal": 0.2,
+    "rough": 0.4
+   },
+   "_defaultMat": {
+    "color": "#79374d",
+    "metal": 0.7,
+    "rough": 0.15
+   }
+  }
+ },
+ {
+  "frames": 48,
+  "px": 192,
+  "cols": 16,
+  "tilt": 0.45,
+  "out": "boss_warden",
+  "url": "/models/quaternius/Spaceship3.obj",
+  "yaw": 1.5707963267948966,
+  "mat": {
+   "White": {
+    "color": "#935a49",
+    "metal": 0.55,
+    "rough": 0.4
+   },
+   "Black": {
+    "color": "#ff7a45",
+    "emissive": "#ff7a45",
+    "ei": 0.8,
+    "metal": 0.2,
+    "rough": 0.4
+   },
+   "Orange": {
+    "color": "#ff7a45",
+    "emissive": "#ff7a45",
+    "ei": 0.8,
+    "metal": 0.2,
+    "rough": 0.4
+   }
+  }
+ },
+ {
+  "frames": 48,
+  "px": 192,
+  "cols": 16,
+  "tilt": 0.45,
+  "out": "boss_dread",
+  "url": "/models/majadroid/m4-ship1.obj",
+  "yaw": 1.5707963267948966,
+  "all": {
+   "color": "#d6a051",
+   "metal": 0.5,
+   "rough": 0.45
+  }
+ },
+ {
+  "frames": 48,
+  "px": 192,
+  "cols": 16,
+  "tilt": 0.45,
+  "out": "boss_architect",
+  "url": "/models/kenney/gate_complex.glb",
+  "yaw": -1.5707963267948966,
+  "mat": {
+   "metal": {
+    "color": "#abaec4",
+    "metal": 0.5,
+    "rough": 0.45
+   },
+   "metalDark": {
+    "color": "#85889e",
+    "metal": 0.5,
+    "rough": 0.5
+   },
+   "dark": {
+    "color": "#555765",
+    "metal": 0.4,
+    "rough": 0.6
+   },
+   "metalRed": {
+    "color": "#e8e2ff",
+    "emissive": "#e8e2ff",
+    "ei": 0.8,
+    "metal": 0.2,
+    "rough": 0.4
+   },
+   "_defaultMat": {
+    "color": "#707288",
+    "metal": 0.7,
+    "rough": 0.15
+   }
+  }
+ },
+ {
+  "frames": 48,
+  "px": 192,
+  "cols": 16,
+  "tilt": 0.45,
+  "out": "boss_queen",
+  "url": "/models/majadroid/m3-ship1.obj",
+  "yaw": 1.5707963267948966,
+  "all": {
+   "color": "#5ecca0",
+   "metal": 0.5,
+   "rough": 0.45
+  }
+ },
+ {
+  "frames": 48,
+  "px": 192,
+  "cols": 16,
+  "tilt": 0.45,
+  "out": "boss_gravit",
+  "url": "/models/kenney/hangar_roundA.glb",
+  "yaw": -1.5707963267948966,
+  "mat": {
+   "metal": {
+    "color": "#819ac4",
+    "metal": 0.5,
+    "rough": 0.45
+   },
+   "metalDark": {
+    "color": "#60779e",
+    "metal": 0.5,
+    "rough": 0.5
+   },
+   "dark": {
+    "color": "#3d4b65",
+    "metal": 0.4,
+    "rough": 0.6
+   },
+   "metalRed": {
+    "color": "#6fa8ff",
+    "emissive": "#6fa8ff",
+    "ei": 0.8,
+    "metal": 0.2,
+    "rough": 0.4
+   },
+   "_defaultMat": {
+    "color": "#405b88",
+    "metal": 0.7,
+    "rough": 0.15
+   }
+  }
+ },
+ {
+  "frames": 48,
+  "px": 192,
+  "cols": 16,
+  "tilt": 0.45,
+  "out": "boss_void",
+  "url": "/models/majadroid/m2-ship1.obj",
+  "yaw": 1.5707963267948966,
+  "all": {
+   "color": "#8a81db",
+   "metal": 0.5,
+   "rough": 0.45
+  }
+ },
+ {
+  "frames": 48,
+  "px": 192,
+  "cols": 16,
+  "tilt": 0.45,
+  "out": "boss_devourer",
+  "url": "/models/kenney/satelliteDish_large.glb",
+  "yaw": -1.5707963267948966,
+  "mat": {
+   "metal": {
+    "color": "#b39c6b",
+    "metal": 0.5,
+    "rough": 0.45
+   },
+   "metalDark": {
+    "color": "#8c7951",
+    "metal": 0.5,
+    "rough": 0.5
+   },
+   "dark": {
+    "color": "#594d32",
+    "metal": 0.4,
+    "rough": 0.6
+   },
+   "metalRed": {
+    "color": "#ffb000",
+    "emissive": "#ffb000",
+    "ei": 0.8,
+    "metal": 0.2,
+    "rough": 0.4
+   },
+   "_defaultMat": {
+    "color": "#795e22",
+    "metal": 0.7,
+    "rough": 0.15
+   }
+  }
+ },
+ {
+  "frames": 48,
+  "px": 192,
+  "cols": 16,
+  "tilt": 0.45,
+  "out": "boss_leviathan",
+  "url": "/models/quaternius/Spaceship2.obj",
+  "yaw": 1.5707963267948966,
+  "mat": {
+   "White": {
+    "color": "#795b9d",
+    "metal": 0.55,
+    "rough": 0.4
+   },
+   "Black": {
+    "color": "#e9a8ff",
+    "emissive": "#e9a8ff",
+    "ei": 0.8,
+    "metal": 0.2,
+    "rough": 0.4
+   },
+   "Orange": {
+    "color": "#e9a8ff",
+    "emissive": "#e9a8ff",
+    "ei": 0.8,
+    "metal": 0.2,
+    "rough": 0.4
+   }
+  }
  }
 ]

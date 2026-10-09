@@ -77,6 +77,16 @@ function drawBoss(e) {
   const n = B.sides * 2;
   for (let i = 0; i < n; i++) { const a = i / n * TAU; ctx.moveTo(Math.cos(a) * (e.r + 6), Math.sin(a) * (e.r + 6)); ctx.lineTo(Math.cos(a) * (e.r + 18), Math.sin(a) * (e.r + 18)); }
   ctx.stroke(); ctx.globalAlpha = 1; ctx.restore();
+  const S3 = spr3d('boss_' + (e.bossKey && SPR3D['boss_' + e.bossKey] ? e.bossKey : bossKey(B)));
+  if (S3) {
+    // model + pulsing glow in the boss colour (faster in phase 2)
+    const pulse = 0.5 + 0.5 * Math.sin(t * (e.ph2 ? 9 : 4)), D = e.r * 2.7;
+    softGlow(ctx, col, 0, 0, e.r * (1.5 + pulse * 0.25), 0.28 + pulse * 0.12);
+    drawSpr(ctx, S3, 0, 0, e.a, D, 0);
+    if (e.flash > 0 || (e.state === 'wind' && Math.floor(e.patClock * 14) % 2 === 0)) flashSpr(ctx, S3, 0, 0, e.a, D, 0, 0.7);
+    ctx.restore();
+    return;
+  }
   ctx.rotate(e.a);
   ctx.beginPath();
   for (let i = 0; i < B.sides; i++) { const a = i / B.sides * TAU; const r = e.r * (i % 2 ? 0.86 : 1); i ? ctx.lineTo(Math.cos(a) * r, Math.sin(a) * r) : ctx.moveTo(r, 0); }
