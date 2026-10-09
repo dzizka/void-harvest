@@ -91,7 +91,7 @@ function render() {
       ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over';
     }
     const myth = SLOT_ORDER.some(sl => P.equip[sl].rarity === 'mythic');
-    drawShip(ctx, P.cls, P.x, P.y, P.a, 1.2, P.thrust, P.hitFlash, myth ? RARITY.mythic.color : null);
+    drawShip(ctx, P.cls, P.x, P.y, P.a, 1.2, P.thrust, P.hitFlash, myth ? RARITY.mythic.color : null, bankRow(P, G.paused ? 1 : 1 / Math.max(20, G.fps || 60)));
     if (P.shield > 0) {
       const f = P.shield / P.stats.maxShield, hit = P.shieldFlash > 0;
       if (hit) { ctx.fillStyle = 'rgba(160,225,255,.14)'; ctx.beginPath(); ctx.arc(P.x, P.y, 31, 0, TAU); ctx.fill(); }

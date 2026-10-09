@@ -11,7 +11,8 @@ html = html.replace(/<link rel="stylesheet" href="(css\/[^"]+)">\n?/g, (_, f) =>
 html = html.replace(/<script src="(js\/[^"]+)"><\/script>\n?/g, (_, f) => { js.push(f); return ''; });
 const style = '<style>\n' + css.map(f => `/* ===== ${f} ===== */\n` + read(f)).join('\n') + '</style>\n';
 // v jednom <script> stačí jedno 'use strict'
-const script = "<script>\n'use strict';\n" + js.map(f => `/* ===== ${f} ===== */\n` + read(f).replace(/^'use strict';\n/, '')).join('\n') + '</script>\n';
+const script = "<script>\n'use strict';\n" + js.map(f => `/* ===== ${f} ===== */\n` + read(f).replace(/^'use strict';\n/, '').replace("const SPR_BASE = 'assets/sprites/'", "const SPR_BASE = '../assets/sprites/'")).join('\n') + '</script>\n';
+// dist/ leží o priečinok nižšie – sprite sheety berie z ../assets/
 html = html.replace('</head>', style + '</head>').replace('</body>', script + '</body>');
 fs.mkdirSync(path.join(root, 'dist'), { recursive: true });
 const out = path.join(root, 'dist', 'void-harvest.html');

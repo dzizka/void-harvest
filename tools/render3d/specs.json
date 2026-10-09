@@ -1,0 +1,279 @@
+[
+ {
+  "frames": 48,
+  "px": 128,
+  "cols": 16,
+  "tilt": 0.45,
+  "banks": [
+   -0.5,
+   0,
+   0.5
+  ],
+  "out": "ship_interceptor",
+  "url": "/models/quaternius/Spaceship4.obj",
+  "yaw": 1.5707963267948966,
+  "mat": {
+   "White": {
+    "color": "#c4ccd8",
+    "metal": 0.45,
+    "rough": 0.45
+   },
+   "Orange": {
+    "color": "#5fd4ff",
+    "emissive": "#5fd4ff",
+    "ei": 0.7,
+    "metal": 0.2,
+    "rough": 0.4
+   }
+  }
+ },
+ {
+  "frames": 48,
+  "px": 128,
+  "cols": 16,
+  "tilt": 0.45,
+  "banks": [
+   -0.5,
+   0,
+   0.5
+  ],
+  "out": "ship_juggernaut",
+  "url": "/models/quaternius/Spaceship.obj",
+  "yaw": 1.5707963267948966,
+  "mat": {
+   "White": {
+    "color": "#c4ccd8",
+    "metal": 0.45,
+    "rough": 0.45
+   },
+   "Black": {
+    "color": "#c29bff",
+    "emissive": "#c29bff",
+    "ei": 0.7,
+    "metal": 0.2,
+    "rough": 0.4
+   }
+  }
+ },
+ {
+  "frames": 48,
+  "px": 128,
+  "cols": 16,
+  "tilt": 0.45,
+  "banks": [
+   -0.5,
+   0,
+   0.5
+  ],
+  "out": "ship_scavenger",
+  "url": "/models/kenney/craft_miner.glb",
+  "yaw": -1.5707963267948966,
+  "mat": {
+   "metalRed": {
+    "color": "#7ee0a8",
+    "emissive": "#7ee0a8",
+    "ei": 0.7,
+    "metal": 0.2,
+    "rough": 0.4
+   }
+  }
+ },
+ {
+  "frames": 48,
+  "px": 128,
+  "cols": 16,
+  "tilt": 0.45,
+  "banks": [
+   -0.5,
+   0,
+   0.5
+  ],
+  "out": "ship_carrier",
+  "url": "/models/quaternius/Spaceship5.obj",
+  "yaw": 1.5707963267948966,
+  "mat": {
+   "White": {
+    "color": "#c4ccd8",
+    "metal": 0.45,
+    "rough": 0.45
+   },
+   "Black": {
+    "color": "#ff9d6e",
+    "emissive": "#ff9d6e",
+    "ei": 0.7,
+    "metal": 0.2,
+    "rough": 0.4
+   }
+  }
+ },
+ {
+  "frames": 48,
+  "px": 96,
+  "cols": 16,
+  "tilt": 0.45,
+  "out": "en_drone",
+  "url": "/models/majadroid/m1-ship1.obj",
+  "yaw": -1.5707963267948966,
+  "all": {
+   "color": "#a8384c",
+   "metal": 0.5,
+   "rough": 0.45
+  }
+ },
+ {
+  "frames": 48,
+  "px": 96,
+  "cols": 16,
+  "tilt": 0.45,
+  "out": "en_fighter",
+  "url": "/models/majadroid/m3-ship3.obj",
+  "yaw": -1.5707963267948966,
+  "all": {
+   "color": "#b04a86",
+   "metal": 0.5,
+   "rough": 0.45
+  }
+ },
+ {
+  "frames": 48,
+  "px": 96,
+  "cols": 16,
+  "tilt": 0.45,
+  "out": "en_gunship",
+  "url": "/models/majadroid/m1-ship2.obj",
+  "yaw": -1.5707963267948966,
+  "all": {
+   "color": "#b8613f",
+   "metal": 0.5,
+   "rough": 0.45
+  }
+ },
+ {
+  "frames": 48,
+  "px": 96,
+  "cols": 16,
+  "tilt": 0.45,
+  "out": "en_sniper",
+  "url": "/models/majadroid/m4-ship3.obj",
+  "yaw": -1.5707963267948966,
+  "all": {
+   "color": "#b59a2a",
+   "metal": 0.5,
+   "rough": 0.45
+  }
+ },
+ {
+  "frames": 32,
+  "px": 128,
+  "cols": 8,
+  "tilt": 0.45,
+  "out": "ast_rock",
+  "url": "/models/kenney/meteor_detailed.glb",
+  "tumble": [
+   1,
+   0.7,
+   0.4
+  ],
+  "mat": {
+   "rockTrack": {
+    "color": "#7b8294",
+    "rough": 0.9,
+    "metal": 0.05
+   },
+   "rock": {
+    "color": "#6d7486",
+    "rough": 0.9,
+    "metal": 0.05
+   }
+  }
+ },
+ {
+  "frames": 32,
+  "px": 128,
+  "cols": 8,
+  "tilt": 0.45,
+  "out": "ast_iron",
+  "url": "/models/kenney/rock_largeA.glb",
+  "tumble": [
+   0.6,
+   1,
+   0.3
+  ],
+  "mat": {
+   "rockTrack": {
+    "color": "#8a5644",
+    "rough": 0.8,
+    "metal": 0.3
+   },
+   "rock": {
+    "color": "#a2694f",
+    "rough": 0.7,
+    "metal": 0.4
+   }
+  }
+ },
+ {
+  "frames": 32,
+  "px": 128,
+  "cols": 8,
+  "tilt": 0.45,
+  "out": "ast_crystal",
+  "url": "/models/kenney/rock_crystals.glb",
+  "tumble": [
+   0.3,
+   1,
+   0.8
+  ],
+  "mat": {
+   "rockTrack": {
+    "color": "#4c5a72",
+    "rough": 0.9,
+    "metal": 0.05
+   },
+   "rock": {
+    "color": "#56657e",
+    "rough": 0.9,
+    "metal": 0.05
+   },
+   "crystal": {
+    "color": "#7fe3ff",
+    "emissive": "#3fb8e0",
+    "ei": 0.8,
+    "rough": 0.2,
+    "metal": 0.1
+   }
+  }
+ },
+ {
+  "frames": 32,
+  "px": 128,
+  "cols": 8,
+  "tilt": 0.45,
+  "out": "ast_radiant",
+  "url": "/models/kenney/rock_crystalsLargeA.glb",
+  "tumble": [
+   1,
+   0.4,
+   0.6
+  ],
+  "mat": {
+   "rockTrack": {
+    "color": "#3e2c4e",
+    "rough": 0.9,
+    "metal": 0.05
+   },
+   "rock": {
+    "color": "#4a3560",
+    "rough": 0.9,
+    "metal": 0.05
+   },
+   "crystal": {
+    "color": "#f08bff",
+    "emissive": "#e14bff",
+    "ei": 0.9,
+    "rough": 0.2,
+    "metal": 0.1
+   }
+  }
+ }
+]

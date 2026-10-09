@@ -1,0 +1,86 @@
+<!doctype html><html><body style="margin:0;background:#000">
+<script type="importmap">{"imports":{"three":"/three/build/three.module.js","three/addons/":"/three/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
+import { MTLLoader } from 'three/addons/loaders/MTLLoader.js';
+const R = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
+R.outputColorSpace = THREE.SRGBColorSpace; R.toneMapping = THREE.ACESFilmicToneMapping; R.toneMappingExposure = 1.1;
+document.body.appendChild(R.domElement);
+const cache = {};
+async function load(url) {
+  if (cache[url]) return cache[url].clone(true);
+  let obj;
+  if (url.endsWith('.glb') || url.endsWith('.gltf')) obj = (await new GLTFLoader().loadAsync(url)).scene;
+  else {
+    const dir = url.slice(0, url.lastIndexOf('/') + 1), base = url.slice(dir.length).replace(/\.obj$/, '');
+    const L = new OBJLoader();
+    try {
+      let txt = await (await fetch(dir + base + '.mtl')).text();
+      // Windows absolute texture paths -> basename, looked up in texDir
+      txt = txt.replace(/^(map_\w+)\s+.*[\\/]([^\\/\r\n]+)$/gm, '$1 $2');
+      const ML = new MTLLoader(); ML.setResourcePath(window.TEXDIR || dir);
+      const m = ML.parse(txt, dir); m.preload(); L.setMaterials(m);
+    } catch (e) { console.log('mtl', e.message); }
+    obj = await L.loadAsync(url);
+    obj.traverse(o => { if (o.isLine || o.isLineSegments || o.isPoints) o.visible = false; });
+  }
+  // normalise: centre + unit size
+  const box = new THREE.Box3().setFromObject(obj), c = box.getCenter(new THREE.Vector3()), s = box.getSize(new THREE.Vector3());
+  const g = new THREE.Group(); obj.position.sub(c); g.add(obj); g.userData.size = Math.max(s.x, s.y, s.z);
+  g.scale.setScalar(1 / g.userData.size);
+  obj.traverse(o => { if (o.isMesh) { const ms = Array.isArray(o.material) ? o.material : [o.material]; ms.forEach(m => { if (m.map) m.map.colorSpace = THREE.SRGBColorSpace; m.flatShading = true; m.needsUpdate = true; if (m.isMeshPhongMaterial && m.shininess > 60) m.shininess = 60; }); } });
+  // wait until every texture image is decoded (MTL textures load async)
+  const imgs = []; obj.traverse(o => { if (o.isMesh) (Array.isArray(o.material) ? o.material : [o.material]).forEach(m => { if (m.map && m.map.image === undefined) imgs.push(m.map); }); });
+  for (let k = 0; k < 100 && imgs.some(t => !t.image); k++) await new Promise(r => setTimeout(r, 50));
+  obj.traverse(o => { if (o.isMesh) (Array.isArray(o.material) ? o.material : [o.material]).forEach(m => { if (m.map) m.map.needsUpdate = true; }); });
+  cache[url] = g; return g.clone(true);
+}
+// scene with key light from top-left (matches the 2D game's light), rim light, ambient
+function scene() {
+  const sc = new THREE.Scene();
+  sc.add(new THREE.HemisphereLight(0xbcd4ff, 0x1a1020, 1.1));
+  const key = new THREE.DirectionalLight(0xffffff, 2.6); key.position.set(-2, 4, -1.5); sc.add(key);
+  const rim = new THREE.DirectionalLight(0x5fd4ff, 1.4); rim.position.set(3, 1, 3); sc.add(rim);
+  return sc;
+}
+// spec: {url, yaw, pitch(model fix), roll, size, tilt (camera tilt from vertical, rad), frames, bank}
+window.renderSheet = async (sp) => {
+  window.TEXDIR = sp.texDir; const model = await load(sp.url), sc = scene();
+  const pivot = new THREE.Group(), fix = new THREE.Group(); fix.add(model); pivot.add(fix); sc.add(pivot);
+  fix.rotation.set(sp.fixX || 0, sp.fixY || 0, sp.fixZ || 0);
+  // per-render material overrides: own copies, recolour by material name, or one flat paint for everything
+  model.traverse(o => {
+    if (!o.isMesh) return;
+    const one = m => {
+      const R = (sp.all && { ...sp.all }) || (sp.mat && sp.mat[m.name]);
+      if (!R) return m.clone();
+      const n = new THREE.MeshStandardMaterial({ color: R.color, metalness: R.metal ?? 0.35, roughness: R.rough ?? 0.55, flatShading: true });
+      if (R.emissive) { n.emissive = new THREE.Color(R.emissive); n.emissiveIntensity = R.ei ?? 0.6; }
+      return n;
+    };
+    o.material = Array.isArray(o.material) ? o.material.map(one) : one(o.material);
+  });
+  const N = sp.frames || 1, px = sp.px || 128, cols = sp.cols || N, rows = Math.ceil(N / cols) * (sp.banks ? sp.banks.length : 1);
+  R.setPixelRatio(1); R.setSize(px, px, false);
+  const cam = new THREE.OrthographicCamera(-0.62, 0.62, 0.62, -0.62, 0.01, 10);
+  const t = sp.tilt ?? 0.35; cam.position.set(0, Math.cos(t) * 4, Math.sin(t) * 4); cam.up.set(0, 0, -1); cam.lookAt(0, 0, 0);
+  const out = document.createElement('canvas'); out.width = cols * px; out.height = rows * px; const o = out.getContext('2d');
+  const banks = sp.banks || [0];
+  banks.forEach((bk, bi) => {
+    for (let i = 0; i < N; i++) {
+      pivot.rotation.set(0, -i / N * Math.PI * 2 + (sp.yaw || 0), 0);
+      fix.rotation.set(sp.fixX || 0, sp.fixY || 0, (sp.fixZ || 0));
+      fix.rotateOnWorldAxis(new THREE.Vector3(0, 0, 1), 0); // noop placeholder
+      pivot.children[0].rotation.z = (sp.fixZ || 0) + bk; // roll around forward axis
+      if (sp.tumble) pivot.quaternion.setFromAxisAngle(new THREE.Vector3(...sp.tumble).normalize(), i / N * Math.PI * 2);
+      R.render(sc, cam);
+      const k = bi * N + i; o.drawImage(R.domElement, (k % cols) * px, Math.floor(k / cols) * px);
+    }
+  });
+  return out.toDataURL(sp.fmt || 'image/png', 0.9);
+};
+window.mats = async url => { const m = await load(url), out = {}; m.traverse(o => { if (o.isMesh) (Array.isArray(o.material) ? o.material : [o.material]).forEach(x => out[x.name] = '#' + x.color.getHexString()); }); return out; };
+window.ready = true;
+</script></body></html>

@@ -155,6 +155,7 @@ function updateHUD() {
   $('abAutoS').textContent = G.autoFire ? _L('ZAP') : _L('VYP'); $('abAuto').classList.toggle('on', G.autoFire);
   $('abLangS').textContent = LANG === 'sk' ? 'SK' : 'EN';
   $('abMineS').textContent = G.autoMine ? _L('ZAP') : _L('VYP'); $('abMine').classList.toggle('on', G.autoMine);
+  $('abModelsS').textContent = GFX.models ? _L('ZAP') : _L('VYP'); $('abModels').classList.toggle('on', GFX.models);
   $('abTouchS').textContent = TOUCH.pref === 'auto' ? 'AUTO' : TOUCH.pref === 'on' ? _L('ZAP') : _L('VYP'); $('abTouch').classList.toggle('on', TOUCH.on);
   $('abGfxS').textContent = GFX.q === 'high' ? _L('vysoká') : GFX.q === 'mid' ? _L('stredná') : _L('nízka');
   const C = G.cheat;

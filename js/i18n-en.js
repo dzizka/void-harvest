@@ -1,6 +1,9 @@
 'use strict';
 // English dictionary: Slovak source text → English. Keys with {0}, {1}… are templates (see js/i18n.js).
 Object.assign(EN, {
+  "3D modely": "3D models",
+  "3D modely: {0}.": "3D models: {0}.",
+  "Lode, nepriatelia a asteroidy ako tieňované 3D modely, alebo pôvodná vektorová grafika": "Ships, enemies and asteroids as shaded 3D models, or the original vector graphics",
   "Zavrieť": "Close",
   "Nasadiť": "Equip",
   "Rozobrať · +{0} rudy": "Salvage · +{0} ore",

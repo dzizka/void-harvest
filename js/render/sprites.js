@@ -8,8 +8,26 @@ function shipPath(c, cls) {
   pts.forEach((p, i) => i ? c.lineTo(p[0], p[1]) : c.moveTo(p[0], p[1]));
   c.closePath();
 }
-function drawShip(c, cls, x, y, a, scale, thrust, flash, halo) {
-  const col = shipCol(cls);
+function drawShip(c, cls, x, y, a, scale, thrust, flash, halo, row) {
+  const col = shipCol(cls), S3 = spr3d('ship_' + cls);
+  if (S3) {
+    // pseudo-3D sprite: class-coloured glow underneath, engine flame behind, sheet frame on top
+    const D = 56 * scale;
+    c.save(); c.translate(x, y);
+    if (halo) { c.fillStyle = halo + '22'; c.beginPath(); c.arc(0, 0, D * 0.5, 0, TAU); c.fill(); }
+    if (thrust) {
+      const fl = rand(0.7, 1.2), bx = -Math.cos(a) * D * 0.36, by = -Math.sin(a) * D * 0.36;
+      c.globalCompositeOperation = 'lighter';
+      const g = c.createRadialGradient(bx, by, 0, bx, by, D * 0.3 * fl);
+      g.addColorStop(0, col + 'cc'); g.addColorStop(1, col + '00');
+      c.fillStyle = g; c.beginPath(); c.arc(bx, by, D * 0.3 * fl, 0, TAU); c.fill();
+      c.globalCompositeOperation = 'source-over';
+    }
+    drawSpr(c, S3, 0, 0, a, D, row ?? 1);
+    if (flash > 0) flashSpr(c, S3, 0, 0, a, D, row ?? 1, 0.75);
+    c.restore();
+    return;
+  }
   c.save(); c.translate(x, y); c.rotate(a); c.scale(scale, scale);
   if (halo) { c.lineJoin = 'round'; shipPath(c, cls); c.strokeStyle = halo + '50'; c.lineWidth = 10; c.stroke(); }
   if (thrust) {
@@ -109,10 +127,16 @@ function drawEnemy(e) {
     ctx.save(); ctx.rotate(e.spin * 1.5); ctx.setLineDash([6, 5]); ctx.strokeStyle = '#ffd36b'; ctx.lineWidth = 2;
     ctx.beginPath(); ctx.arc(0, 0, e.r + 9, 0, TAU); ctx.stroke(); ctx.restore();
   }
+  const S3 = spr3d('en_' + e.type), white = e.flash > 0 || (e.state === 'wind' && Math.floor(e.stateT * 14) % 2 === 0);
+  if (S3) {
+    // type colour stays readable as a soft glow under the model
+    ctx.fillStyle = col + '24'; ctx.beginPath(); ctx.arc(0, 0, e.r * 1.25, 0, TAU); ctx.fill();
+    drawSpr(ctx, S3, 0, 0, e.a, e.r * 3.3, 0);
+    if (white) flashSpr(ctx, S3, 0, 0, e.a, e.r * 3.3, 0, 0.8);
+  } else {
   ctx.rotate(e.a);
   const s = e.r / e.T.r;
   ctx.scale(s, s);
-  const white = e.flash > 0 || (e.state === 'wind' && Math.floor(e.stateT * 14) % 2 === 0);
   ctx.beginPath();
   switch (e.type) {
     case 'drone': ctx.moveTo(12, 0); ctx.lineTo(-8, -9); ctx.lineTo(-4, 0); ctx.lineTo(-8, 9); break;
@@ -138,6 +162,7 @@ function drawEnemy(e) {
   if (e.type === 'chest') { ctx.strokeStyle = col; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(-16, -3); ctx.lineTo(16, -3); ctx.stroke(); ctx.fillStyle = col; ctx.fillRect(-3, -5, 6, 7); }
   if (e.type === 'goblin') { ctx.fillStyle = '#ffd36b'; ctx.beginPath(); ctx.arc(-14, 0, 5, 0, TAU); ctx.fill(); }
   ctx.fillStyle = col; ctx.beginPath(); ctx.arc(e.type === 'charger' ? 0 : 2, 0, 2.2, 0, TAU); ctx.fill();
+  }
   ctx.restore();
   ctx.globalAlpha = 1;
   if (e.cloak) return;
@@ -228,6 +253,13 @@ function drawAsteroid(a) {
     ctx.beginPath(); ctx.arc(a.x, a.y, a.r * 1.6, 0, TAU); ctx.fill();
     ctx.globalCompositeOperation = 'source-over';
   }
+  const S3 = spr3d('ast_' + a.kind);
+  if (S3) {
+    // tumble frame follows the asteroid's spin; each rock starts at its own phase
+    const D = a.r * 2.45, ph = (a.verts.length * 1.7 + a.r) % TAU;
+    drawSpr(ctx, S3, a.x, a.y, -(a.rot + ph), D, 0);
+    if (a.flash > 0) flashSpr(ctx, S3, a.x, a.y, -(a.rot + ph), D, 0, 0.5);
+  } else {
   ctx.save(); ctx.translate(a.x, a.y); ctx.rotate(a.rot);
   ctx.beginPath(); a.verts.forEach((v, i) => i ? ctx.lineTo(v[0], v[1]) : ctx.moveTo(v[0], v[1])); ctx.closePath();
   ctx.fillStyle = a.flash > 0 ? '#3b4252' : a.K.fill; ctx.fill();
@@ -247,6 +279,7 @@ function drawAsteroid(a) {
     }
   }
   ctx.restore();
+  }
   if (a.hp < a.maxHp) {
     ctx.strokeStyle = '#c8a27c'; ctx.lineWidth = 2; ctx.globalAlpha = 0.7;
     ctx.beginPath(); ctx.arc(a.x, a.y, a.r + 6, -Math.PI / 2, -Math.PI / 2 + TAU * clamp(a.hp / a.maxHp, 0, 1)); ctx.stroke();
