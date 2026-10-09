@@ -3,7 +3,7 @@
    PSEUDO-3D SPRITES
    Sprite sheets pre-rendered from CC0 low-poly models (Kenney, Quaternius,
    Majadroid) by tools/render3d. Each sheet holds f yaw frames (frame i =
-   angle -i/f·2π, frame 0 faces right); ships add 3 bank rows (left, level,
+   angle +i/f·2π (clockwise), frame 0 faces right); ships add 3 bank rows (left, level,
    right). Asteroid sheets are tumble frames. Missing or unloaded sheets fall
    back to the vector drawing, so the game never depends on them.
    ===================================================================== */
@@ -35,7 +35,7 @@ function spr3d(k) {
   if (!S.img) { S.img = new Image(); S.img.onload = () => { S.ok = true; if (k.startsWith('ship_') && !G && typeof buildSelect === 'function') buildSelect(); }; S.img.onerror = () => { S.bad = true; }; S.img.src = SPR_BASE + k + '.webp'; }
   return S.ok ? S : null;
 }
-const sprIdx = (S, a) => ((Math.round(-a / TAU * S.f) % S.f) + S.f) % S.f;
+const sprIdx = (S, a) => ((Math.round(a / TAU * S.f) % S.f) + S.f) % S.f;
 // draw frame for angle a centred on x,y; size = drawn frame edge in world px; row = bank row
 function drawSpr(c, S, x, y, a, size, row) {
   const i = sprIdx(S, a) + (S.banks ? clamp(row | 0, 0, S.banks - 1) * S.f : 0);
