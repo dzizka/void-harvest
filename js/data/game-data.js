@@ -35,9 +35,9 @@ const CLASSES = {
   carrier: {
     name: _L('Carrier'), role: _L('Veliteľ roja'), color: '#ff9d6e',
     desc: _L('Nosič s montážnou linkou. Z trosiek zostrelených nepriateľov skladá bojových miniónov, ktorí strieľajú za neho a berú na seba paľbu.'),
-    hull: 115, shield: 70, speed: 275, accel: 800, crit: 5, dodge: 3, magnet: 140, fireMult: 0.85, minions: true,
+    hull: 125, shield: 70, speed: 275, accel: 800, crit: 5, dodge: 3, magnet: 140, fireMult: 0.95, minions: true,
     meters: { 'Rýchlosť': 3, 'Odolnosť': 3, 'Útok': 3, 'Minióni': 5 },
-    perks: [_L('Zostrelenie: 35 % šanca postaviť minióna (max 4)'), _L('Minióni rastú so zbraňou a odpútajú paľbu'), _L('Slabšia vlastná kadencia (−15 %)')],
+    perks: [_L('Zostrelenie: 50 % šanca postaviť minióna (max 4)'), _L('Minióni rastú so zbraňou a odpútajú paľbu'), _L('Slabšia vlastná kadencia (−5 %)')],
     start: { weapon: 'pulse', secondary: 'hornet', shield: 'barrier', engine: 'ion', reactor: 'fusionCore', drones: 'assault', armor: 'composite' }
   }
 };

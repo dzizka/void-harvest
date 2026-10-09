@@ -67,8 +67,8 @@ function dmgBuff() {
   if (P.goldT > 0) m *= 1.4;
   if (tx.kOreShield && P.oshield > 0) m *= 1.3;
   if (tx.sInvest) m *= 1 + tx.sInvest / 100 * Math.min(10, Math.floor(P.ore / 500));
-  if (tx.cLeader && minions.length) m *= 1 + tx.cLeader / 100 * minions.length;
-  return m;
+  if (tx.cLeader && minions.length) m *= 1 + tx.cLeader / 100 * aliveMinions();
+  return Math.min(m, 3.5);   // balance v2: stacked situational buffs never exceed ×3.5
 }
 
 /* ---------- carrier minions & artillery fire zones ---------- */

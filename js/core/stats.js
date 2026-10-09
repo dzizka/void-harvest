@@ -51,10 +51,10 @@ function computeStats(clsKey, equip, tal, level, para) {
   if (c.minions) {
     const titan = !!X('kTitan');
     s.minion = { max: titan ? 1 : 4 + X('cHangar') + (X('kArmy') ? 3 : 0),
-      chance: Math.min(1, (0.35 + (X('cBuild') + X('cNecro')) / 100) * (X('kAltar') ? 2 : 1)), army: !!X('kArmy'),
+      chance: Math.min(1, (0.5 + (X('cBuild') + X('cNecro')) / 100) * (X('kAltar') ? 2 : 1)), army: !!X('kArmy'),
       dmgMul: 1 + (X('cFab') + X('cHydr') + X('cShort')) / 100,
-      hp: 0.25 * (1 + (X('cArmor') + X('cFrame')) / 100) * (titan ? 8 : 1),
-      rate: 1.25 * (1 + X('cCoord') / 100), life: 30 * (1 - X('cShort') / 100), titan, altar: !!X('kAltar') };
+      hp: 0.35 * (1 + (X('cArmor') + X('cFrame')) / 100) * (titan ? 8 : 1),
+      rate: 1.25 * (1 + X('cCoord') / 100), life: 40 * (1 - X('cShort') / 100), titan, altar: !!X('kAltar') };
     s.minion.dmg = 0.45 * s.minion.dmgMul * (titan ? 8 : 1);
   } else s.minion = null;
   // build sets

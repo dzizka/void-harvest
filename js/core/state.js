@@ -46,7 +46,8 @@ function recalcStats() {
   P.hull = Math.min(P.hull, P.stats.maxHull);
   P.shield = Math.min(P.shield, P.stats.maxShield);
 }
-const xpNeed = lvl => Math.round(40 * Math.pow(lvl, 1.8));
+// balance v2: unchanged up to level 12, then +20 % per level (level 30 ≈ ×4.6 of the old cost)
+const xpNeed = lvl => Math.round(40 * Math.pow(lvl, 1.8) * (1 + 0.2 * Math.max(0, lvl - 12)));
 const curSector = () => SECTORS[G.sector];
 // hostile sectors get harder the farther you fly from the central beacon (+0 … +3 levels)
 function depthAt(x, y) {

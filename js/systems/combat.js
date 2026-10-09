@@ -177,6 +177,8 @@ function dropItem(x, y, ilvl, tier) {
   }
 }
 
+// balance v2: full drop rate while learning the game, tapering to 35 % from level 15 (rarity matters more than volume)
+const lootQty = () => clamp(1 - (P.level - 5) * 0.065, 0.35, 1);
 function killEnemy(e) {
   if (G.dungeon && P.refund) P.refund = null;   // the run is paying out: no entry refund any more
   if (e.dead) return; e.dead = true;
@@ -241,11 +243,11 @@ function killEnemy(e) {
   if (e.elite) {
     if (P.level >= 15 && !(G.dungeon && G.dungeon.vault) && Math.random() < 0.08) { P.vaultFrags = (P.vaultFrags || 0) + 1; addText(e.x, e.y - 30, _L('ÚLOMOK MAPY'), '#ffb000', 12, 1); log(_T`<span style="color:#ffb000">Úlomok mapy trezoru</span> (${P.vaultFrags}/5).`); }
     dropItem(e.x, e.y, e.lvl, 2);
-    if (Math.random() < 0.5) dropItem(e.x, e.y, e.lvl, 1);
+    if (Math.random() < 0.25) dropItem(e.x, e.y, e.lvl, 1);
     if (seasonMod('elites')) dropItem(e.x, e.y, e.lvl, 1);
     log(`${eliteAdj(e.T)} ${e.T.name} ${e.T.g === 'f' ? _L('zničená') : e.T.g === 'n' ? _L('zničené') : _L('zničený')}.`);
     if (Math.random() < (G.dungeon && G.dungeon.nm ? 0.2 : 0.12)) dropKey(e.x, e.y, G.dungeon && G.dungeon.nm ? G.dungeon.nm.k : keyBaseLevel());
-  } else if (Math.random() < e.T.gear * (e.small ? 0.3 : 1) * (nmHas('loot') ? 1.5 : 1) * (1 + (P.stats.tx.sDiv || 0) / 100)) {
+  } else if (Math.random() < e.T.gear * lootQty() * (e.small ? 0.3 : 1) * (nmHas('loot') ? 1.5 : 1) * (1 + (P.stats.tx.sDiv || 0) / 100)) {
     dropItem(e.x, e.y, e.lvl, e.T.tier);
   }
 }

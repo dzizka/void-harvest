@@ -4,9 +4,9 @@
    ===================================================================== */
 let ITEM_ID = 1;
 const RARITY_TABLES = [
-  { common: 58, magic: 30, rare: 11.2, legendary: 0.8 },   // normal
-  { common: 32, magic: 40, rare: 25.5, legendary: 2.5 },   // tough enemy / crystal / container
-  { magic: 34, rare: 58, legendary: 8 }                    // elite / boss
+  { common: 48, magic: 38, rare: 13.7, legendary: 0.3 },   // normal (balance v2: fewer whites, rarer legendaries)
+  { common: 26, magic: 44, rare: 29, legendary: 1 },   // tough enemy / crystal / container
+  { magic: 37, rare: 60, legendary: 3 }                    // elite / boss
 ];
 function rollRarity(tier) {
   const t = { ...RARITY_TABLES[tier] };

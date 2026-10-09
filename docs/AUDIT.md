@@ -84,8 +84,24 @@ Každá fáza je samostatný commit, po ktorom prejde `npm test` a cielený test
 ### Fáza 2 – zvuk a herný pocit ✅ hotová
 Syntetizované zvuky cez WebAudio (bez súborov), hlasitosť a vypnutie v Menu, predvolene stlmené do prvého kliknutia (pravidlo prehliadačov). Riziko: veľa zvukov naraz v hordách → limit súbežných zvukov a zoskupovanie rovnakých zvukov. Stĺp svetla pri legendárke, silnejšie výbuchy elít a bossov.
 
-### Fáza 3 – balans
-Pomalšia krivka XP od úrovne 15, vzácnejší ale lepší loot, posilnený Carrier, strop pre násobenie poškodenia, výdavky rudy v neskorej hre. Riziko: rozbitie existujúcich postáv a uložených hier → zmeny len v krivkách a šanciach, nie v uložených predmetoch; overenie tým istým botom (cieľové tempo: úroveň 30 za ~90–120 min, Carrier v rozpätí ±20 % od ostatných lodí).
+### Fáza 3 – balans ✅ hotová
+Zmeny (iba krivky a šance, uložené predmety a postavy sa nemenia):
+- **Skúsenosti:** do úrovne 12 bez zmeny (nováčik), potom +20 % XP na úroveň navyše (úroveň 30 ≈ 4,6× pôvodnej ceny). Odmeny z kontraktov, príbehu a udalostí sú percentom úrovne, takže sa škálujú samy a cielená hra sa oplatí viac než grind.
+- **Loot:** množstvo z bežných nepriateľov klesá od úrovne 5 do 15 na 35 % (začiatok ostáva štedrý), elity dávajú druhý predmet už len na 25 %. Menej bielych, viac modrých a žltých; legendárky: bežní 0,3 %, silnejší 1 %, elity a bossovia 3 % (pôvodne 0,8 / 2,5 / 8 %). Garantované legendárky z lovcov a pašerákov ostali.
+- **Carrier:** kadencia −5 % (bolo −15 %), trup 125, šanca na minióna 50 % (bolo 35 %), minióni majú viac odolnosti a žijú 40 s.
+- **Strop poškodenia:** súčin situačných bonusov (`dmgBuff`) je najviac ×3,5; Veliteľ počíta len živých miniónov.
+- Ruda: hra má dosť výdavkov (zušľachtenie, gamble, základňa, rafinéria, vylepšenia) – bot ich len nepoužíva, preto sa tu nemenila.
+
+Overenie tým istým botom (bez talentov a brán; skutočný hráč je rýchlejší):
+
+| Loď | Úroveň po 45 min (pred → po) | Smrti (pred → po) | Úroveň 25 dosiahnutá |
+|---|---|---|---|
+| Interceptor | 34 → 26 | 6 → 8 | 40 min (80 min test: úr. 29) |
+| Juggernaut | 31 → 24 | 4 → 9 | – |
+| Scavenger | 35 → 25 | 3 → 8 | 44 min |
+| Carrier | 25 → 24 | 10 → 5 | 55 min (80 min test: úr. 27) |
+
+Rozdiel medzi loďami klesol z 10 úrovní na 1–2, legendárky ~25 za hodinu u bota (vrátane garantovaných z lovcov a pašerákov).
 
 ### Fáza 4 – onboarding
 Postupné odomykanie systémov podľa úrovne, spojenie tutoriálu s 1. kapitolou. Riziko: hráči s existujúcou uloženou hrou by stratili prístup → odomknuté podľa dosiahnutej úrovne, nikdy neuzamknúť už použité.
