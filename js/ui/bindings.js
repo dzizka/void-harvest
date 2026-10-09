@@ -100,6 +100,7 @@ $('exchange').addEventListener('click', e => {
 $('gamble').addEventListener('click', e => { const el = e.target.closest('[data-gamble]'); if (el) gamble(el.dataset.gamble); });
 $('stTabs').addEventListener('click', e => {
   const b = e.target.closest('[data-st]'); if (!b) return;
+  if (lockedMsg(b, b.dataset.st)) return;
   if (b.dataset.st === 'craft') { G.fromStation = true; G.panel = 'craft'; syncPanels(); return; }
   G.stTab = b.dataset.st; renderStation();
 });

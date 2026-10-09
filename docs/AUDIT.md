@@ -103,8 +103,14 @@ Overenie tým istým botom (bez talentov a brán; skutočný hráč je rýchlej�
 
 Rozdiel medzi loďami klesol z 10 úrovní na 1–2, legendárky ~25 za hodinu u bota (vrátane garantovaných z lovcov a pašerákov).
 
-### Fáza 4 – onboarding
+### Fáza 4 – onboarding ✅ hotová
 Postupné odomykanie systémov podľa úrovne, spojenie tutoriálu s 1. kapitolou. Riziko: hráči s existujúcou uloženou hrou by stratili prístup → odomknuté podľa dosiahnutej úrovne, nikdy neuzamknúť už použité.
+
+Zmeny (`UNLOCK`, `isUnlocked`, `tutDone` v `journal.js`):
+- Úroveň účtu = najvyššia úroveň z aktuálnej lode a všetkých lodí v `ACC.st.shipLvl`, takže veterán má všetko odomknuté hneď, aj na novej lodi.
+- Dielňa sa odomkne na úrovni 5, Základňa na 8, Sezóna v denníku na 10 a Výzvy na 12. Zamknutá karta je stlmená so zámkom a po kliknutí hra v logu napíše, kedy sa odomkne.
+- Kontrakty v HUD sa zobrazia až po tutoriáli (alebo pri úrovni účtu 8+).
+- Dialóg 1. kapitoly príbehu počká na koniec tutoriálu (alebo úroveň 4), takže sa na začiatku nebijú o pozornosť.
 
 ### Fáza 5 – výkon a mobil
 Predvolená stredná grafika na mobile, kreslenie len viditeľných striel, menej alokácií, cielenie opravárov raz za 0,25 s, gamepad. Riziko: zmena vzhľadu na PC → nastavenie sa mení len pri prvom spustení v dotykovom režime.

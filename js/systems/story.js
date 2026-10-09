@@ -156,7 +156,7 @@ function tickStory(dt) {
   G.storyT = 0.5;
   seasonState();
   if (G.panel || transitioning || G.mode !== 'play') return;
-  if (!S.done && !S.shown && CHAPTERS[S.ch] && P.level >= CHAPTERS[S.ch].lvl && !G.dungeon) { S.shown = true; S.dlg = { ch: S.ch, outro: false }; openDialog(); return; }
+  if (!S.done && !S.shown && CHAPTERS[S.ch] && P.level >= CHAPTERS[S.ch].lvl && !G.dungeon && (S.ch > 0 || tutDone() || P.level >= 4 || accLvl() >= 8)) { S.shown = true; S.dlg = { ch: S.ch, outro: false }; openDialog(); return; }
   const st = curStep(); if (!st) return;
   // objectives that are states rather than events
   if (st.t === 'visit' && !G.dungeon && G.sector === st.sec) storyProgress(1);

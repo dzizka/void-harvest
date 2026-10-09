@@ -3,6 +3,8 @@
 function renderStation() {
   const S = curSector();
   G.stTab = G.stTab || 'port';
+  if (!isUnlocked(G.stTab)) G.stTab = 'port';
+  gateTabs('#stTabs [data-st]', 'st');
   if (G.stTab === 'base') renderBase();
   document.querySelectorAll('#station [data-st-card]').forEach(c => { c.hidden = c.dataset.stCard !== G.stTab; });
   const BS = baseState();

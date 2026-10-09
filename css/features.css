@@ -205,3 +205,5 @@
 #tabLock h2{margin:0;font-size:22px;text-transform:uppercase;color:#ffd36b}
 #tabLock p{margin:0;color:var(--dim);line-height:1.5}
 #mailBtn{color:#ffd36b!important;border-color:#ffd36b!important}
+.tabs button.locked{opacity:.45}
+.tabs button.locked::after{content:" 🔒";font-size:.85em}

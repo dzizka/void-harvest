@@ -110,6 +110,8 @@ function renderAch() {
   const done = Object.keys(ACC.ach).length;
   $('achN').textContent = `${done}/${ACH.length}`;
   G.achTab = G.achTab || 'ach';
+  if (!isUnlocked(G.achTab)) G.achTab = 'story';
+  gateTabs('#achTabs [data-at]', 'at');
   document.querySelectorAll('#achTabs [data-at]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.at === G.achTab)));
   if (G.achTab === 'enc') { $('achBody').innerHTML = renderEnc(); return; }
   if (G.achTab === 'story') { $('achBody').innerHTML = renderStoryTab(); return; }
@@ -124,13 +126,23 @@ function renderAch() {
       <div class="bar"><i style="width:${(v / A.n * 100).toFixed(0)}%"></i></div>
       <small>${fmtN(v)}/${fmtN(A.n)} · titul „${A.title}“ · ${A.sh} úlomkov</small></div></div>`; }).join('')}</div>`;
 }
-$('achTabs').addEventListener('click', e => { const b = e.target.closest('[data-at]'); if (b) { G.achTab = b.dataset.at; renderAch(); } });
+$('achTabs').addEventListener('click', e => { const b = e.target.closest('[data-at]'); if (b && !lockedMsg(b, b.dataset.at)) { G.achTab = b.dataset.at; renderAch(); } });
 $('achBody').addEventListener('change', e => { if (e.target.id === 'achTitle') { ACC.title = e.target.value; saveAccount(); updateHUD(); } });
 $('achBody').addEventListener('click', e => {
   const b = e.target.closest('[data-skin]'); if (!b || b.disabled) return;
   const k = allSkins()[+b.dataset.skin]; if (k.c) ACC.skin[P.cls] = k.c; else delete ACC.skin[P.cls];
   saveAccount(); renderAch();
 });
+/* ---------- onboarding: systems open up with the account's best level, never lock again ---------- */
+const UNLOCK = { craft: 5, base: 8, season: 10, chal: 12 };
+const accLvl = () => Math.max(P ? P.level : 1, ...Object.values((ACC && ACC.st.shipLvl) || {}), 1);
+const isUnlocked = k => !UNLOCK[k] || accLvl() >= UNLOCK[k] || (G && G.cheat && G.cheat.unlock);
+const tutDone = () => !P || P.tut == null || P.tut >= TUT.length;
+// lock / unlock tab buttons; returns false (and explains) when a locked tab is clicked
+function gateTabs(sel, attr) {
+  document.querySelectorAll(sel).forEach(b => { const k = b.dataset[attr], lk = !isUnlocked(k); b.classList.toggle('locked', lk); b.title = lk ? _T`Odomkne sa na úrovni ${UNLOCK[k]}` : ''; });
+}
+function lockedMsg(b, k) { if (isUnlocked(k)) return false; log(_T`${b.textContent.trim()} sa odomkne na úrovni ${UNLOCK[k]}.`); sfx('click'); return true; }
 const TUT = [
   { type: 'mine',    n: 5,  text: _L('Rozbi 5 asteroidov'), hint: _L('mier na asteroid a drž ľavé tlačidlo'), ore: 25 },
   { type: 'kill',    n: 10, text: _L('Zostreľ 10 nepriateľov'), hint: _L('mimo modrého kruhu majáka'), ore: 30 },

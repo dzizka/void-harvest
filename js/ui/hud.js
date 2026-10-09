@@ -126,7 +126,7 @@ function updateHUD() {
   const W = G.wb, wbOn = W && (W.state === 'warn' || W.state === 'active');
   $('hWb').hidden = !wbOn;
   if (wbOn) $('hWb').textContent = `☄ ${BOSSES.devourer.name} · ${SECTORS[W.sec].name} · ${W.state === 'warn' ? _L('príchod o ') + fmtTime(W.t) : _L('odletí o ') + fmtTime(W.t)}`;
-  const cts = P.contracts || [];
+  const cts = tutDone() || accLvl() >= 8 ? P.contracts || [] : [];
   $('hContracts').hidden = !cts.length;
   const chtml = cts.map(c => `<div class="${c.done ? 'done' : ''}">${c.done ? '✓' : '▸'} ${CONTRACTS[c.type].text(c)} <b>${c.prog}/${c.n}</b></div>`).join('');
   if ($('hContracts').innerHTML !== chtml) $('hContracts').innerHTML = chtml;
