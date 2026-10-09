@@ -217,6 +217,26 @@ function drawBase() {
   const b = basePos(); if (!b) return;
   const B = baseState(), t = G.time;
   ctx.save(); ctx.translate(b.x, b.y);
+  const PL = spr3d('base_plate');
+  if (PL) {
+    // pseudo-3D: asteroid with a landing platform, a model per module (scaffold until built), level lights underneath
+    softGlow(ctx, '#7ee0a8', 0, 0, 170, 0.12);
+    drawSpr(ctx, PL, 0, 0, 0, 380, 0);
+    const spots3 = { ref: [-70, -44], lab: [66, -54], hangar: [-52, 62], green: [68, 52] }, cols3 = { ref: '#c8a27c', lab: '#6fe3ff', hangar: '#5be09a', green: '#7ee0a8' };
+    for (const k of MOD_KEYS) {
+      const lv = B.lv[k] || 0, [x, y] = spots3[k], M3 = spr3d(lv ? 'base_' + k : 'base_empty');
+      if (lv) softGlow(ctx, cols3[k], x, y, 44, 0.2 + 0.08 * Math.sin(t * 2 + x));
+      if (M3) drawSpr(ctx, M3, x, y, 0, lv ? 100 : 80, 0);
+      for (let i = 0; i < MODULES[k].max; i++) {
+        ctx.fillStyle = i < lv ? cols3[k] : 'rgba(127,140,168,.35)'; ctx.globalAlpha = i < lv ? 0.7 + 0.3 * Math.sin(t * 3 + i) : 1;
+        ctx.fillRect(x - MODULES[k].max * 3.5 + i * 7, y + 36, 5, 4);
+      }
+      ctx.globalAlpha = 1;
+    }
+    ctx.restore();
+    worldLabel(_L('TVOJA ZÁKLADŇA'), b.x, b.y + 185, '#7ee0a8');
+    return;
+  }
   ctx.fillStyle = '#2a2f3a'; ctx.strokeStyle = '#6b7488'; ctx.lineWidth = 2;
   ctx.beginPath(); for (let i = 0; i < 11; i++) { const a = i / 11 * TAU, r = 120 + Math.sin(i * 2.7) * 18; i ? ctx.lineTo(Math.cos(a) * r, Math.sin(a) * r) : ctx.moveTo(r, 0); } ctx.closePath(); ctx.fill(); ctx.stroke();
   const spots = { ref: [-50, -30], lab: [45, -40], hangar: [-30, 50], green: [55, 40] }, cols = { ref: '#c8a27c', lab: '#6fe3ff', hangar: '#5be09a', green: '#7ee0a8' };

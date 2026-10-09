@@ -1509,5 +1509,259 @@
    "metal": 0.5,
    "rough": 0.4
   }
+ },
+ {
+  "frames": 1,
+  "cols": 1,
+  "tilt": 0.45,
+  "yaw": 0.5,
+  "out": "base_plate",
+  "px": 320,
+  "url": [
+   {
+    "url": "/models/kenney/rock_largeA.glb",
+    "sc": [
+     5.2,
+     0.9,
+     5.2
+    ],
+    "tag": "rock"
+   },
+   {
+    "url": "/models/kenney/platform_large.glb",
+    "p": [
+     0,
+     0.75,
+     0
+    ],
+    "s": 1.25
+   },
+   {
+    "url": "/models/kenney/corridor.glb",
+    "p": [
+     1.7,
+     0.75,
+     0
+    ],
+    "s": 0.6
+   },
+   {
+    "url": "/models/kenney/corridor.glb",
+    "p": [
+     -1.7,
+     0.75,
+     0
+    ],
+    "s": 0.6
+   }
+  ],
+  "mat": {
+   "rock:rockTrack": {
+    "color": "#3c404c",
+    "rough": 0.95,
+    "metal": 0.05
+   },
+   "rock:rock": {
+    "color": "#474c58",
+    "rough": 0.95,
+    "metal": 0.05
+   },
+   "metal": {
+    "color": "#5e6678",
+    "metal": 0.55,
+    "rough": 0.5
+   },
+   "metalDark": {
+    "color": "#454c5c",
+    "metal": 0.5,
+    "rough": 0.5
+   },
+   "dark": {
+    "color": "#30343e",
+    "metal": 0.4,
+    "rough": 0.6
+   },
+   "metalRed": {
+    "color": "#7ee0a8",
+    "emissive": "#7ee0a8",
+    "ei": 0.8,
+    "metal": 0.2,
+    "rough": 0.4
+   }
+  }
+ },
+ {
+  "frames": 1,
+  "cols": 1,
+  "tilt": 0.45,
+  "yaw": 0.5,
+  "out": "base_ref",
+  "px": 128,
+  "url": "/models/kenney/machine_generatorLarge.glb",
+  "mat": {
+   "metal": {
+    "color": "#a6a2a6",
+    "metal": 0.5,
+    "rough": 0.45
+   },
+   "metalDark": {
+    "color": "#767276",
+    "metal": 0.5,
+    "rough": 0.5
+   },
+   "dark": {
+    "color": "#474447",
+    "metal": 0.4,
+    "rough": 0.6
+   },
+   "metalRed": {
+    "color": "#c8a27c",
+    "emissive": "#c8a27c",
+    "ei": 0.8,
+    "metal": 0.2,
+    "rough": 0.4
+   },
+   "_defaultMat": {
+    "color": "#7a6c61",
+    "emissive": "#c8a27c",
+    "ei": 0.35,
+    "metal": 0.7,
+    "rough": 0.15
+   }
+  }
+ },
+ {
+  "frames": 1,
+  "cols": 1,
+  "tilt": 0.45,
+  "yaw": 0.5,
+  "out": "base_lab",
+  "px": 128,
+  "url": "/models/kenney/satelliteDish_detailed.glb",
+  "mat": {
+   "metal": {
+    "color": "#8fb2c7",
+    "metal": 0.5,
+    "rough": 0.45
+   },
+   "metalDark": {
+    "color": "#5f8297",
+    "metal": 0.5,
+    "rough": 0.5
+   },
+   "dark": {
+    "color": "#394e5b",
+    "metal": 0.4,
+    "rough": 0.6
+   },
+   "metalRed": {
+    "color": "#6fe3ff",
+    "emissive": "#6fe3ff",
+    "ei": 0.8,
+    "metal": 0.2,
+    "rough": 0.4
+   },
+   "_defaultMat": {
+    "color": "#4990a9",
+    "emissive": "#6fe3ff",
+    "ei": 0.35,
+    "metal": 0.7,
+    "rough": 0.15
+   }
+  }
+ },
+ {
+  "frames": 1,
+  "cols": 1,
+  "tilt": 0.45,
+  "yaw": 0.5,
+  "out": "base_hangar",
+  "px": 128,
+  "url": "/models/kenney/hangar_largeA.glb",
+  "mat": {
+   "metal": {
+    "color": "#8ab2ae",
+    "metal": 0.5,
+    "rough": 0.45
+   },
+   "metalDark": {
+    "color": "#5a827e",
+    "metal": 0.5,
+    "rough": 0.5
+   },
+   "dark": {
+    "color": "#364e4c",
+    "metal": 0.4,
+    "rough": 0.6
+   },
+   "metalRed": {
+    "color": "#5be09a",
+    "emissive": "#5be09a",
+    "ei": 0.8,
+    "metal": 0.2,
+    "rough": 0.4
+   },
+   "_defaultMat": {
+    "color": "#3e8e72",
+    "emissive": "#5be09a",
+    "ei": 0.35,
+    "metal": 0.7,
+    "rough": 0.15
+   }
+  }
+ },
+ {
+  "frames": 1,
+  "cols": 1,
+  "tilt": 0.45,
+  "yaw": 0.5,
+  "out": "base_green",
+  "px": 128,
+  "url": "/models/kenney/hangar_roundGlass.glb",
+  "mat": {
+   "metal": {
+    "color": "#93b2b1",
+    "metal": 0.5,
+    "rough": 0.45
+   },
+   "metalDark": {
+    "color": "#638281",
+    "metal": 0.5,
+    "rough": 0.5
+   },
+   "dark": {
+    "color": "#3c4e4e",
+    "metal": 0.4,
+    "rough": 0.6
+   },
+   "metalRed": {
+    "color": "#7ee0a8",
+    "emissive": "#7ee0a8",
+    "ei": 0.8,
+    "metal": 0.2,
+    "rough": 0.4
+   },
+   "_defaultMat": {
+    "color": "#1d5a3a",
+    "emissive": "#7ee0a8",
+    "ei": 0.45,
+    "metal": 0.6,
+    "rough": 0.15
+   }
+  }
+ },
+ {
+  "frames": 1,
+  "cols": 1,
+  "tilt": 0.3,
+  "yaw": 0.5,
+  "out": "base_empty",
+  "px": 128,
+  "url": "/models/kenney/structure.glb",
+  "all": {
+   "color": "#3a4152",
+   "metal": 0.4,
+   "rough": 0.6
+  }
  }
 ]

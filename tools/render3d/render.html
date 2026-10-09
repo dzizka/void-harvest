@@ -22,7 +22,7 @@ async function loadParts(parts) {
     // Kenney parts sit off-origin: centre each part on x/z, base on y = 0
     const bb = new THREE.Box3().setFromObject(raw), c = bb.getCenter(new THREE.Vector3());
     raw.position.set(-c.x, -bb.min.y, -c.z); o.add(raw);
-    o.position.set(...(pt.p || [0, 0, 0])); o.rotation.set(...(pt.r || [0, 0, 0])); o.scale.setScalar(pt.s || 1);
+    o.position.set(...(pt.p || [0, 0, 0])); o.rotation.set(...(pt.r || [0, 0, 0])); if (pt.sc) o.scale.set(...pt.sc); else o.scale.setScalar(pt.s || 1);
     o.traverse(m => { if (m.isMesh) m.userData.tag = pt.tag; });
     g.add(o);
   }

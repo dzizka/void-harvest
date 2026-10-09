@@ -2,7 +2,7 @@
 
 All 3D models are CC0 (public domain); attribution is not required but appreciated.
 
-- **Kenney – Space Kit** (kenney.nl) – `models/kenney/` (miner ship, raiders, smuggler, Carrier minions and drones, boss stations, station, strongholds, ancestor beacons, asteroids)
+- **Kenney – Space Kit** (kenney.nl) – `models/kenney/` (miner ship, raiders, smuggler, Carrier minions and drones, home base modules, boss stations, station, strongholds, ancestor beacons, asteroids)
 - **Kenney – Space Station Kit** (kenney.nl) – `models/kenney-station/` (cursed chest)
 - **Kenney – Planets** (kenney.nl) – `sprites/planet*.webp` (sector backdrops; license in `models/kenney-planets-License.txt`)
 - **Quaternius – LowPoly Spaceships** (quaternius.com) – `models/quaternius/` (player ships, Warden and Leviathan bosses)
