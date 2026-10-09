@@ -3,7 +3,7 @@
 const VAULT_TIME = 60, VAULT_FRAGS = 5;
 function enterVault() {
   if (G.dungeon || (P.vaultFrags || 0) < VAULT_FRAGS || transitioning) return;
-  P.vaultFrags -= VAULT_FRAGS; closePanels();
+  P.vaultFrags -= VAULT_FRAGS; P.refund = { vault: VAULT_FRAGS }; closePanels();
   G.saved = { sector: G.sector, asteroids, pickups, gates: G.gates, x: P.x, y: P.y + 60 };
   G.dungeon = { vault: true, boss: 'devourer', lvl: P.level + TIERS[G.tier].lvl, room: 0, wave: 0, state: 'vault', portal: null, sector: G.sector, t: 0, chests: 0, gobs: 0, gobT: 12, started: false };
   ACC.st.vaults = (ACC.st.vaults || 0) + 1;

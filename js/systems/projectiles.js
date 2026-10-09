@@ -113,7 +113,7 @@ function updatePickups(dt) {
     confineArena(p, 10, 0.5);
     if (d < P.r + 10 && p.t > 0.35 && !p.cool) { if (collect(p)) p.dead = true; }
     if (p.kind !== 'item' && p.kind !== 'key' && p.kind !== 'gem' && p.t > 45) p.dead = true;
-    if (p.kind === 'item' && p.t > 180) p.dead = true;
+    if (p.kind === 'item' && p.t > 180 && !['legendary', 'set', 'mythic'].includes(p.item.rarity)) p.dead = true;
   }
   pickups = pickups.filter(p => !p.dead);
 }

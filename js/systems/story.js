@@ -82,7 +82,8 @@ const SEASON_JOURNEY = [
 function seasonState() {
   ACC.cos = ACC.cos || {}; ACC.titles = ACC.titles || [];
   const id = seasonIdx() + 1;
-  if (!ACC.season || ACC.season.id !== id) ACC.season = { id, sxp: 0, claimed: {}, c: {}, jd: {} };
+  // only a newer season resets progress; a clock moved backwards keeps the current one
+  if (!ACC.season || id > ACC.season.id) ACC.season = { id, sxp: 0, claimed: {}, c: {}, jd: {} };
   return ACC.season;
 }
 function seasonReward(t) {
@@ -135,7 +136,7 @@ function storyProgress(n) {
   }
   saveGame();
 }
-function storyGiveItem(it) { if (P.inv.length < 30) P.inv.push(it); else if (P.stash.length < STASH_MAX) P.stash.push(it); }
+function storyGiveItem(it) { giveItem(it); }
 function finishChapter() {
   const S = storyState(), C = CHAPTERS[S.ch], R = C.rw, il = Math.min(P.level, LEVEL_CAP) + TIERS[G.tier].lvl + 1;
   if (R.shards) P.shards += R.shards;

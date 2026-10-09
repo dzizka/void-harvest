@@ -68,10 +68,12 @@ function loadoutSummary(L) {
   const items = SLOT_ORDER.map(sl => L.equip[sl]).filter(Boolean);
   return _T`${key ? key.name : _L('bez kľúčového talentu')} · ${Object.values(L.tal).reduce((a, b) => a + b, 0)} talentov · ${items.length}/7 predmetov`;
 }
-function findItemById(id) {
-  for (const sl of SLOT_ORDER) if (P.equip[sl] && P.equip[sl].id === id) return { where: 'e', sl };
-  let k = P.inv.findIndex(x => x.id === id); if (k >= 0) return { where: 'i', k };
-  k = P.stash.findIndex(x => x.id === id); if (k >= 0) return { where: 's', k };
+// slot is checked too: an id from an old save could belong to an item of another kind
+function findItemById(id, slot) {
+  const ok = x => x.id === id && (!slot || x.slot === slot);
+  for (const sl of SLOT_ORDER) if (P.equip[sl] && ok(P.equip[sl])) return { where: 'e', sl };
+  let k = P.inv.findIndex(ok); if (k >= 0) return { where: 'i', k };
+  k = P.stash.findIndex(ok); if (k >= 0) return { where: 's', k };
   return null;
 }
 function saveLoadout(i) {
@@ -87,10 +89,11 @@ function applyLoadout(i) {
   let missing = 0;
   for (const sl of SLOT_ORDER) {
     const id = L.equip[sl]; if (!id || (P.equip[sl] && P.equip[sl].id === id)) continue;
-    const f = findItemById(id); if (!f || f.where === 'e') { missing++; continue; }
+    const f = findItemById(id, sl); if (!f || f.where === 'e') { missing++; continue; }
+    // taking the item frees a spot where it lay, so the replaced one always fits (mail only as a last resort)
     const it = f.where === 'i' ? P.inv.splice(f.k, 1)[0] : P.stash.splice(f.k, 1)[0];
     const old = P.equip[sl]; P.equip[sl] = it;
-    if (old) { if (P.inv.length < 30) P.inv.push(old); else P.stash.push(old); }
+    if (old) { if (P.inv.length < 30) P.inv.push(old); else if (P.stash.length < STASH_MAX) P.stash.push(old); else ACC.mail.push(old); }
   }
   const sum = o => Object.values(o || {}).reduce((a, b) => a + b, 0);
   const totT = P.points + sum(P.tal), needT = sum(L.tal);

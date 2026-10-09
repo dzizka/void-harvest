@@ -74,6 +74,7 @@ function upgradeModule(k) {
 /* ---------- refinery ---------- */
 function tickBase() {
   const B = baseState(), now = Date.now();
+  if (B.last > now) B.last = now;   // clock moved backwards: resume instead of stalling
   const dt = Math.min(BASE_CAP_MS, Math.max(0, now - (B.last || now)));
   if (dt < 1000) return;
   B.last = now;
@@ -162,7 +163,7 @@ function claimExpedition(i) {
   if (E.type === 'mine') { P.ore += 400 * L; giveMat('iron', 6 * L); giveMat('crystal', 4 * L); out.push(_T`${400 * L} rudy`, _T`${6 * L} železa`, _T`${4 * L} kryštálu`); }
   else if (E.type === 'combat') {
     const n = 2 + Math.floor(L / 2);
-    for (let k = 0; k < n; k++) { const it = generateItem(il, Math.random() < 0.35 ? 'legendary' : 'rare'); if (P.inv.length < 30) P.inv.push(it); else if (P.stash.length < STASH_MAX) P.stash.push(it); }
+    for (let k = 0; k < n; k++) { giveItem(generateItem(il, Math.random() < 0.35 ? 'legendary' : 'rare')); }
     P.shards += 5 * L; out.push(_T`${n} predmety`, _T`${5 * L} úlomkov`);
   } else {
     giveMat('plasma', 3 * L); giveMat('dark', 2 * L); giveMat('exotic', 1 + Math.floor(L / 2));
@@ -197,7 +198,7 @@ const SMELT = [
   { id: 'key',    name: _L('Kľúč nočnej brány'),    cost: { dark: 6, exotic: 2 },     act: () => { if (P.keys.length < 20) P.keys.push(makeKey(keyBaseLevel() + 2)); } },
   { id: 'frags',  name: _L('Úlomky mapy ×2'),       cost: { plasma: 6, dark: 3 },      act: () => { P.vaultFrags = (P.vaultFrags || 0) + 2; } }
 ];
-function smelt(i) { const S = SMELT[i]; if (!S || !canAfford(S.cost)) return; payMats(S.cost); S.act(); log(_T`Zlievareň: ${S.name}.`); saveAll(); }
+function smelt(i) { const S = SMELT[i]; if (!S || !canAfford(S.cost)) return; if (S.id === 'key' && P.keys.length >= 20) { log(_L('Kľúčov máš 20 – zlievareň nič neminula.')); return; } payMats(S.cost); S.act(); log(_T`Zlievareň: ${S.name}.`); saveAll(); }
 function saveAll() { saveAccount(); saveGame(); if (G && G.panel === 'station') renderStation(); }
 
 /* ---------- per frame ---------- */

@@ -51,6 +51,7 @@ function renderInventory() {
   $('invOre').textContent = P.ore;
   $('invKeys').textContent = `${P.keys.length}/20`;
   $('invShards').textContent = P.shards;
+  $('mailBtn').hidden = !ACC.mail.length; $('mailN').textContent = ACC.mail.length;
   renderSalvBar();
   let html = '';
   for (let i = 0; i < 30; i++) {

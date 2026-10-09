@@ -35,7 +35,7 @@ function clearEntities() {
 }
 function loadSector(id, pos, restore) {
   const S = SECTORS[id];
-  G.sector = id; G.dungeon = null; G.arena = null;
+  G.sector = id; G.dungeon = null; G.arena = null; P.refund = null;
   WORLD.w = WORLD.h = S.size;
   clearEntities();
   const c = S.size / 2;
@@ -79,6 +79,7 @@ function enterDungeon(gate, key) {
   G.dungeon = { boss: gate.boss, lvl: gate.lvl, room: 0, wave: 0, state: 'fight', waveT: 1.5, portal: null, sector: G.sector };
   if (key) {
     P.keys = P.keys.filter(k => k.id !== key.id);
+    P.refund = { key };
     const sc = nmScale(key.lvl);
     G.dungeon.nm = { k: key.lvl, mods: key.mods, bonus: key.bonus, sc, t: 0, burnT: 3 };
     G.dungeon.lvl = gate.lvl + sc.lvl;
@@ -163,6 +164,7 @@ const roomDef = D => D.climb ? { waves: 0 } : D.pinnacle ? { boss: true } : DUNG
 function enterPinnacle() {
   if (!FRAG_BOSSES.every(k => (P.frags[k] || 0) > 0) || G.dungeon) return;
   for (const k of FRAG_BOSSES) P.frags[k]--;
+  P.refund = { frags: Object.fromEntries(FRAG_BOSSES.map(k => [k, 1])) };
   closePanels();
   G.saved = { sector: G.sector, asteroids, pickups, gates: G.gates, x: P.x, y: P.y };
   const lvl = Math.max(P.level, LEVEL_CAP) + TIERS[G.tier].lvl + 3;

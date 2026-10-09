@@ -7,7 +7,7 @@ function frame(now) {
   last2 = now;
   const sp = G ? G.cheat.speed : 1;
   if (G && G.hitStop > 0 && !G.paused) G.hitStop -= dt;
-  else if (G && G.mode === 'play' && !G.paused && !transitioning && !TOUCH.portrait) {
+  else if (G && G.mode === 'play' && !G.paused && !transitioning && !TOUCH.portrait && !TAB.ro) {
     if (sp < 1) update(dt * sp);
     else for (let i = 0; i < sp && G.mode === 'play' && !transitioning; i++) update(dt);
   }

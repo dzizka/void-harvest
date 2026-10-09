@@ -1,6 +1,20 @@
 'use strict';
 // English dictionary: Slovak source text → English. Keys with {0}, {1}… are templates (see js/i18n.js).
 Object.assign(EN, {
+  "+{0} rudy": "+{0} ore",
+  "Náklad aj sklad sú plné.": "Hold and stash are full.",
+  "<span style=\"color:#ffd36b\">Náklad aj sklad sú plné.</span> {0} čaká v pošte (Inventár).": "<span style=\"color:#ffd36b\">Hold and stash are full.</span> {0} is waiting in the mail (Inventory).",
+  "Z pošty vyzdvihnuté: {0}.": "Collected from mail: {0}.",
+  "Náklad je plný – najprv urob miesto.": "Hold is full – make room first.",
+  "Hra bola zatvorená počas brány – vstupná cena bola vrátená.": "The game was closed during a gate run – the entry cost was refunded.",
+  "Sklad: {0} predmetov dostalo nové označenie (oprava zostáv).": "Stash: {0} items received new IDs (loadout fix).",
+  "<span style=\"color:#ff6b5a\">Uložená hra bola poškodená.</span> Pôvodné dáta sú zálohované v prehliadači, hra pokračuje s novými.": "<span style=\"color:#ff6b5a\">The saved game was damaged.</span> The original data is backed up in the browser; the game continues with a fresh save.",
+  "Kľúčov máš 20 – zlievareň nič neminula.": "You have 20 keys – the smelter spent nothing.",
+  "Pošta": "Mail",
+  "Odmeny, ktoré sa nezmestili do nákladu ani skladu": "Rewards that did not fit in the hold or stash",
+  "Hra beží v inej karte": "The game is running in another tab",
+  "Aby sa postup neprepísal, táto karta je pozastavená a neukladá. Pokračuj v novej karte alebo hru prevezmi sem.": "To keep your progress from being overwritten, this tab is paused and does not save. Continue in the other tab or take the game over here.",
+  "Hrať v tejto karte": "Play in this tab",
   "3D modely": "3D models",
   "3D modely: {0}.": "3D models: {0}.",
   "Lode, nepriatelia a asteroidy ako tieňované 3D modely, alebo pôvodná vektorová grafika": "Ships, enemies and asteroids as shaded 3D models, or the original vector graphics",

@@ -47,6 +47,7 @@
 </section>
 
 <!-- ============ HUD ============ -->
+<div id="tabLock" hidden><div class="frame"><div class="in"><h2>Hra beží v inej karte</h2><p>Aby sa postup neprepísal, táto karta je pozastavená a neukladá. Pokračuj v novej karte alebo hru prevezmi sem.</p><button type="button" class="btn primary" id="tabTake">Hrať v tejto karte</button></div></div></div>
 <div id="hud" hidden>
   <div class="hud-tl" id="hudTl">
     <span id="devTag" hidden>DEV</span>
@@ -151,6 +152,7 @@
             <span class="ore">Ruda <b id="invOre">0</b></span>
             <span>Kľúče <b id="invKeys">0</b></span>
             <span>Úlomky <b id="invShards" style="color:#9a8cff">0</b></span>
+            <button type="button" id="mailBtn" hidden title="Odmeny, ktoré sa nezmestili do nákladu ani skladu"><span>Pošta</span> · <b id="mailN">0</b></button>
           </div>
           <div class="salv-bar" id="salvBar"></div>
           <div id="grid"></div>

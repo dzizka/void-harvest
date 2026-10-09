@@ -174,6 +174,7 @@ function dropItem(x, y, ilvl, tier) {
 }
 
 function killEnemy(e) {
+  if (G.dungeon && P.refund) P.refund = null;   // the run is paying out: no entry refund any more
   if (e.dead) return; e.dead = true;
   G.kills++;
   if (P.stats.legend.capacitor) P.missileT = Math.max(0, P.missileT - 0.5);
@@ -393,7 +394,7 @@ function collect(p) {
     const amt = p.amount + (s.legend.magnetar ? 1 : 0);
     P.ore += amt; G.oreTotal += amt; ACC.st.ore += amt;
     if (s.legend.oreArmor) { P.oreStacks = Math.min(15, P.oreStacks + 1); P.oreStackT = 6; }
-    addText(P.x, P.y - 26, '+' + p.amount + ' rudy', '#c8a27c', 11, 0.6);
+    addText(P.x, P.y - 26, _T`+${p.amount} rudy`, '#c8a27c', 11, 0.6);
     if (s.mineShield) P.shield = Math.min(s.maxShield, P.shield + p.amount * 2);
     const tx = s.tx;
     if (tx.sCollect) P.shield = Math.min(s.maxShield, P.shield + s.maxShield * tx.sCollect / 100 * Math.min(5, amt));
@@ -428,9 +429,12 @@ function collect(p) {
 function die() {
   if (G.mode !== 'play') return;
   if (G.dungeon && G.dungeon.climb && G.dungeon.state === 'climb' && !G.dungeon.weekly) recordClimb(G.dungeon.floor, true);
+  // the repair cost is paid now and saved, so reloading on the death screen cannot dodge it
+  const b = P.bestItem, loss = Math.floor(P.ore * 0.15);
+  P.ore -= loss; P.repairLoss = loss; P.refund = null;
+  saveGame();
   G.mode = 'dead';
   burst(P.x, P.y, CLASSES[P.cls].color, 120, 600, 3, 1.2); ring(P.x, P.y, '#ff6b5a', 260, 0.9);
-  const b = P.bestItem, loss = Math.floor(P.ore * 0.15);
   $('deadStats').innerHTML = _T`
     <dt>Miesto</dt><dd>${G.dungeon ? BOSSES[G.dungeon.boss].lair : curSector().name}</dd>
     <dt>Úroveň</dt><dd>${P.level}</dd>
@@ -444,8 +448,7 @@ function die() {
   setTimeout(() => { if (G && G.mode === 'dead') $('dead').hidden = false; }, 900);
 }
 function respawn() {
-  const loss = Math.floor(P.ore * 0.15);
-  P.ore -= loss;
+  const loss = P.repairLoss || 0; P.repairLoss = 0;
   recalcStats();
   P.hull = P.stats.maxHull; P.shield = P.stats.maxShield;
   G.mode = 'play'; G.saved = null; G.dungeon = null;

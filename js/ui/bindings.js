@@ -122,6 +122,9 @@ $('abInv').addEventListener('click', () => openPanel('inv'));
 $('abTal').addEventListener('click', () => openPanel('tal'));
 $('abMap').addEventListener('click', () => { if (G && G.panel !== 'map') G.mapSel = G.sector; openPanel('map'); });
 $('respawn').addEventListener('click', respawn);
+$('mailBtn').addEventListener('click', () => { claimMail(); renderInventory(); });
+// another tab owns the save: reload here to continue with its latest data
+$('tabTake').addEventListener('click', () => location.reload());
 let hangarArmed = -99;
 function goToHangar() {
   if (!G || transitioning) return;

@@ -69,7 +69,7 @@ Bot hral 45 herných minút s auto-bojom, auto-ťažbou a auto-schopnosťami. Ne
 
 Každá fáza je samostatný commit, po ktorom prejde `npm test` a cielený test fázy. Staré uložené hry sa musia načítať (migrácie v `restoreSave` / `loadAccount`).
 
-### Fáza 1 – ochrana uložených dát
+### Fáza 1 – ochrana uložených dát ✅ hotová
 | Zmena | Riziko | Ako mu predísť |
 |---|---|---|
 | Jeden čítač ID pre celý účet (`ACC.itemId`) + oprava existujúcich duplicít v sklade | Zostavy inej lode, ktoré odkazujú na prečíslovaný predmet zo skladu, ho už nenájdu | Prečíslovať len duplicitné kusy v sklade; zostava navyše kontroluje, že predmet patrí do slotu; chýbajúci kus hlási ako doteraz |
