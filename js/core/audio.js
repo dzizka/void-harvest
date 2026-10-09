@@ -7,8 +7,10 @@
    Browsers allow audio only after a user gesture, so the context starts on
    the first click / key / touch.
    ===================================================================== */
-const AUD = { ctx: null, master: null, sfx: null, mus: null, noise: null, voices: 0, last: {}, set: { sfx: true, music: true, vol: 0.7 }, pad: null, mood: 'calm' };
+const AUD = { ctx: null, master: null, sfx: null, mus: null, noise: null, voices: 0, last: {}, set: { sfx: true, music: false, vol: 0.7 }, pad: null, mood: 'calm' };
 try { Object.assign(AUD.set, JSON.parse(localStorage.getItem('void-harvest-audio') || '{}')); } catch (e) { /* defaults */ }
+// the old synthesised pad was switched on by default; start silent until proper music tracks are in
+if (!AUD.set.mv) { AUD.set.music = false; AUD.set.mv = 1; }
 function saveAudioSet() { try { localStorage.setItem('void-harvest-audio', JSON.stringify(AUD.set)); } catch (e) { /* ignore */ } }
 
 function audioInit() {
