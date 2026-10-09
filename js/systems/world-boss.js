@@ -64,7 +64,7 @@ function exitDungeon() {
 let transitioning = false;
 function transition(label, cb) {
   if (transitioning) return;
-  transitioning = true;
+  transitioning = true; sfx('warp');
   $('fadeTxt').textContent = label; $('fade').classList.add('on');
   input.fire = false; input.missile = false;
   setTimeout(() => {

@@ -25,6 +25,7 @@ function ring(x, y, color, r, life) { particles.push({ ring: true, x, y, r0: 4, 
 function shake(v) { G.shake = Math.min(14, G.shake + v); }
 
 function fireLaser() {
+  sfx('laser');
   const s = P.stats, ca = Math.cos(P.a), sa = Math.sin(P.a);
   const mx = P.x + ca * 20, my = P.y + sa * 20;
   const shots = s.legend.prism ? [[0, 1], [-0.15, 0.6], [0.15, 0.6]] : [[0, 1]];
@@ -45,6 +46,7 @@ function fireLaser() {
 }
 
 function fireMissiles(forced, mult) {
+  sfx('missile');
   const s = P.stats;
   const mw = mouseWorld();
   let target = forced || null, best = 650 * 650;
@@ -118,6 +120,7 @@ function damageEnemy(e, amt, crit, quiet, echo) {
   if ((e.elite || e.isBoss) && P.stats.eliteDmg) amt *= 1 + P.stats.eliteDmg / 100;
   if (e.prot > G.time) amt *= 0.5;
   if (e.vulnT > G.time) amt *= 1.25;   // covered by a shield bearer
+  if (!quiet) sfx(crit ? 'crit' : 'hit', e.x, e.y);
   e.lastHitT = G.time;
   if (e.esh > 0) {
     const a = Math.min(e.esh, amt); e.esh -= a; amt -= a;
@@ -162,6 +165,7 @@ function dropOre(x, y, total) {
 function dropItem(x, y, ilvl, tier) {
   const item = generateItem(ilvl, rollRarity(tier));
   dropPickup('item', x, y, 1, item);
+  if (!(ASV().auto && shouldSalvage(item))) { if (item.rarity === 'mythic' || item.primal) sfx('mythic'); else if (item.rarity === 'legendary' || item.rarity === 'set') sfx('legend'); }
   if (item.primal) { banner(_T`<span style="color:#ff5a5a">${item.name}</span><small>Prvotný predmet · všetky hody na maxime</small>`); ring(x, y, '#ff3b3b', 260, 1.1); }
   const ns = gaExtra(item), gn = gaN(item);
   if (ns >= 2 && !(ASV().auto && shouldSalvage(item))) {
@@ -189,6 +193,7 @@ function killEnemy(e) {
   if (G.dungeon && G.dungeon.climb && G.dungeon.state === 'climb' && !e.minion && !e.isBoss) G.dungeon.prog += e.elite ? 6 : e.small ? 0.3 : 1;
   if (e.elite) contractTick('elite');
   if (e.ev && G.event && G.event.type === 'invasion' && G.event.state === 'active') G.event.prog++;
+  sfx(e.elite || e.isBoss ? 'boom' : 'pop', e.x, e.y, e.minion ? 0.5 : 1);
   burst(e.x, e.y, e.T.color, e.elite ? 50 : 26, e.elite ? 420 : 300, 2.6, 0.7);
   shards(e.x, e.y, e.T.color, e.elite ? 12 : 5, e.elite ? 380 : 260);
   if (e.elite || e.isBoss) G.hitStop = Math.max(G.hitStop || 0, e.isBoss ? 0.25 : 0.06);
@@ -248,6 +253,7 @@ function killEnemy(e) {
 function breakAsteroid(a) {
   if (a.dead) return; a.dead = true;
   const S = AST_SIZE[a.size], K = a.K, s = P.stats;
+  sfx('rock', a.x, a.y, 0.6 + a.size * 0.2);
   burst(a.x, a.y, K.stroke, 10 + a.size * 8, 120 + a.size * 50, 2.4, 0.8);
   if (K.vein) burst(a.x, a.y, K.vein, 8, 200, 1.8, 0.6);
   shake(a.size * 0.8);
@@ -303,12 +309,12 @@ function hurtPlayer(amt) {
   const hadShield = P.shield > 0;
   let rem = amt;
   if (P.shield > 0) {
-    const a = Math.min(P.shield, rem); P.shield -= a; rem -= a; P.shieldFlash = 0.2;
+    const a = Math.min(P.shield, rem); P.shield -= a; rem -= a; P.shieldFlash = 0.2; sfx('shield');
     if (tx.kUnbroken && a > 0 && P.unbrokenT <= 0) { P.unbrokenT = 0.5; splash(P.x, P.y, 210, s.laserHit * 3 * dmgBuff(), null, '#9fd0ff'); }
   }
   if (hadShield && P.shield <= 0 && s.legend.nova && P.novaT <= 0) triggerNova();
   if (rem > 0) {
-    P.hull -= rem; P.hitFlash = 0.25; shake(4);
+    P.hull -= rem; P.hitFlash = 0.25; shake(4); sfx('hurt');
     if (G.dungeon) G.dungeon.hurt = true;
     if (rem > s.maxHull * 0.15) G.hitStop = Math.max(G.hitStop || 0, 0.05);
     addText(P.x, P.y - 22, '-' + fmtD(rem), '#ff6b5a', 13, 0.7);
@@ -358,7 +364,7 @@ function gainXp(amt) {
       const need = paraNeed(P.para.lvl);
       if (P.xp < need) break;
       P.xp -= need; P.para.lvl++; P.para.pts++;
-      ring(P.x, P.y, '#e8e2ff', 240, 0.8); burst(P.x, P.y, '#e8e2ff', 40, 400, 2.5, 0.8);
+      ring(P.x, P.y, '#e8e2ff', 240, 0.8); burst(P.x, P.y, '#e8e2ff', 40, 400, 2.5, 0.8); sfx('level');
       banner(_T`Paragon ${P.para.lvl}<small>+1 hviezdny bod · stlač P</small>`);
       continue;
     }
@@ -367,7 +373,7 @@ function gainXp(amt) {
     if (P.level === LEVEL_CAP) log(_L('<span style="color:#e8e2ff">Maximálna úroveň 50.</span> Ďalšie skúsenosti plnia hviezdne konštelácie (P).'));
     recalcStats();
     P.shield = P.stats.maxShield; P.hull = Math.min(P.stats.maxHull, P.hull + P.stats.maxHull * 0.35);
-    ring(P.x, P.y, '#b48cff', 220, 0.8); burst(P.x, P.y, '#b48cff', 40, 400, 2.5, 0.8);
+    ring(P.x, P.y, '#b48cff', 220, 0.8); burst(P.x, P.y, '#b48cff', 40, 400, 2.5, 0.8); sfx('level');
     banner(_T`Úroveň ${P.level}<small>+1 bod talentu · stlač K</small>`);
     log(_T`Úroveň ${P.level}. Máš ${P.points} ${P.points === 1 ? _L('voľný bod') : _L('voľné body')}.`);
     for (const id in SECTORS) if (SECTORS[id].min === P.level && P.level > 1) log(_T`<span style="color:#5be09a">Odomknutý sektor ${SECTORS[id].name}.</span> Otvor mapu (M).`);
@@ -378,12 +384,12 @@ function collect(p) {
   const s = P.stats;
   if (p.kind === 'xp') { gainXp(p.amount); }
   else if (p.kind === 'gem') {
-    P.gems[p.gem.t][p.gem.q]++;
+    P.gems[p.gem.t][p.gem.q]++; sfx('chime');
     log(_T`Drahokam: <span style="color:${GEMS[p.gem.t].color}">${gemName(p.gem.t, p.gem.q)}</span>`);
   }
   else if (p.kind === 'key') {
     if (P.keys.length >= 20) { P.ore += 40; log(_L('Kľúčov máš 20. Nadbytočný kľúč premenený na 40 rudy.')); return true; }
-    P.keys.push(p.key);
+    P.keys.push(p.key); sfx('chime');
     log(_T`<span style="color:#ff6b5a">Kľúč od nočnej brány · úroveň ${p.key.lvl}</span>`);
     saveGame();
   }
@@ -392,7 +398,7 @@ function collect(p) {
   }
   else if (p.kind === 'ore') {
     const amt = p.amount + (s.legend.magnetar ? 1 : 0);
-    P.ore += amt; G.oreTotal += amt; ACC.st.ore += amt;
+    P.ore += amt; G.oreTotal += amt; ACC.st.ore += amt; sfx('ore');
     if (s.legend.oreArmor) { P.oreStacks = Math.min(15, P.oreStacks + 1); P.oreStackT = 6; }
     addText(P.x, P.y - 26, _T`+${p.amount} rudy`, '#c8a27c', 11, 0.6);
     if (s.mineShield) P.shield = Math.min(s.maxShield, P.shield + p.amount * 2);
@@ -417,7 +423,7 @@ function collect(p) {
       p.vx = (p.x - P.x) * 4; p.vy = (p.y - P.y) * 4; p.cool = 1.5;
       return false;
     }
-    const it = p.item; P.inv.push(it);
+    const it = p.item; P.inv.push(it); sfx(RARITY[it.rarity].rank >= 2 ? 'rare' : 'item');
     if (it.rarity === 'mythic') { G.found[it.legend] = true; saveGame(); }
     if (!P.bestItem || RARITY[it.rarity].rank > RARITY[P.bestItem.rarity].rank) P.bestItem = it;
     log(_T`Získané: <span style="color:${RARITY[it.rarity].color}">${it.name}</span> <span style="color:#7f8ca8">iLvl ${it.ilvl}</span>`);
@@ -433,7 +439,7 @@ function die() {
   const b = P.bestItem, loss = Math.floor(P.ore * 0.15);
   P.ore -= loss; P.repairLoss = loss; P.refund = null;
   saveGame();
-  G.mode = 'dead';
+  G.mode = 'dead'; sfx('death');
   burst(P.x, P.y, CLASSES[P.cls].color, 120, 600, 3, 1.2); ring(P.x, P.y, '#ff6b5a', 260, 0.9);
   $('deadStats').innerHTML = _T`
     <dt>Miesto</dt><dd>${G.dungeon ? BOSSES[G.dungeon.boss].lair : curSector().name}</dd>

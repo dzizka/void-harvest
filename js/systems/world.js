@@ -128,6 +128,7 @@ function spawnBoss(key, x, y, lvl) {
   const e = spawnEnemy('boss', x, y, lvl, false);
   e.T = { ...ENEMY_TYPES.boss, name: B.name, color: B.color };
   if (key === 'architect') { e.hp *= 2.5; e.maxHp = e.hp; e.r = 62; e.arch = { phase: 1, pylons: [] }; }
+  sfx('boss');
   e.B = B; e.bossKey = key; e.isBoss = true; e.pat = null; e.patT = 2; e.patStep = 0; e.patClock = 0; e.spA = 0; e.ph2 = false;
   G.boss = e;
   ring(e.x, e.y, B.color, 260, 0.9); shake(8);

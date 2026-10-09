@@ -155,6 +155,8 @@ function updateHUD() {
   $('abAutoS').textContent = G.autoFire ? _L('ZAP') : _L('VYP'); $('abAuto').classList.toggle('on', G.autoFire);
   $('abLangS').textContent = LANG === 'sk' ? 'SK' : 'EN';
   $('abMineS').textContent = G.autoMine ? _L('ZAP') : _L('VYP'); $('abMine').classList.toggle('on', G.autoMine);
+  $('abSfxS').textContent = AUD.set.sfx ? _L('ZAP') : _L('VYP'); $('abSfx').classList.toggle('on', AUD.set.sfx);
+  $('abMusicS').textContent = AUD.set.music ? _L('ZAP') : _L('VYP'); $('abMusic').classList.toggle('on', AUD.set.music);
   $('abModelsS').textContent = GFX.models ? _L('ZAP') : _L('VYP'); $('abModels').classList.toggle('on', GFX.models);
   $('abTouchS').textContent = TOUCH.pref === 'auto' ? 'AUTO' : TOUCH.pref === 'on' ? _L('ZAP') : _L('VYP'); $('abTouch').classList.toggle('on', TOUCH.on);
   $('abGfxS').textContent = GFX.q === 'high' ? _L('vysoká') : GFX.q === 'mid' ? _L('stredná') : _L('nízka');
@@ -205,7 +207,7 @@ function syncPanels() {
 function openPanel(name) {
   if (!G || G.mode !== 'play' || transitioning) return;
   if (G.panel === 'horde' || G.panel === 'dlg') return;
-  G.panel = G.panel === name ? null : name;
+  G.panel = G.panel === name ? null : name; sfx('click');
   syncPanels();
 }
 function closePanels() { if (G) { G.panel = null; G.fromStation = false; syncPanels(); saveGame(); } }

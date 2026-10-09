@@ -81,7 +81,7 @@ Každá fáza je samostatný commit, po ktorom prejde `npm test` a cielený test
 | Mýtické, setové a legendárne predmety na zemi nezmiznú | Viac predmetov v pamäti | Týka sa len vzácnych kusov |
 | Sezóna sa pri posune času dozadu nezmaže, rafinéria sa nezasekne | Posun dopredu stále urýchli časovače | Hra je offline a pre jedného hráča; dôležité je, aby sa nič nestratilo |
 
-### Fáza 2 – zvuk a herný pocit
+### Fáza 2 – zvuk a herný pocit ✅ hotová
 Syntetizované zvuky cez WebAudio (bez súborov), hlasitosť a vypnutie v Menu, predvolene stlmené do prvého kliknutia (pravidlo prehliadačov). Riziko: veľa zvukov naraz v hordách → limit súbežných zvukov a zoskupovanie rovnakých zvukov. Stĺp svetla pri legendárke, silnejšie výbuchy elít a bossov.
 
 ### Fáza 3 – balans

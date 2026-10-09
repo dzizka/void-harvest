@@ -18,7 +18,7 @@ function frame(now) {
     let tx = P.x + (mw.x - P.x) * 0.12, ty = P.y + (mw.y - P.y) * 0.12;
     if (G.intro && !G.intro.e.dead) { const k = clamp(Math.min(G.intro.t, G.intro.t0 - G.intro.t) / 0.4, 0, 1) * 0.75; tx = lerp(tx, G.intro.e.x, k); ty = lerp(ty, G.intro.e.y, k); }
     cam.x = lerp(cam.x, tx, Math.min(1, 8 * dt)); cam.y = lerp(cam.y, ty, Math.min(1, 8 * dt));
-    G.hudT -= dt; if (G.hudT <= 0 && G.mode === 'play') { G.hudT = 0.1; updateHUD(); }
+    G.hudT -= dt; if (G.hudT <= 0 && G.mode === 'play') { G.hudT = 0.1; updateHUD(); audioTick(0.1); }
     G.mmT -= dt; if (G.mmT <= 0) { G.mmT = 0.08; drawMinimap(); }
     G.saveT -= dt; if (G.saveT <= 0 && G.mode === 'play') { G.saveT = 15; saveGame(); }
     G.achT = (G.achT || 0) - dt; if (G.achT <= 0 && G.mode === 'play') { G.achT = 2; checkAch(); }

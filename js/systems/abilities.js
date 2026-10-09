@@ -108,11 +108,11 @@ function useDodge() {
   const D = dodgeDef(), a = moveDir(), s = P.stats;
   if (D === PHASE_DODGE) {
     if (P.dashCd > 0) return;
-    P.dashA = a; P.dashT = 0.24; P.dashCd = D.cd * cdMult(); P.dashHit = new Set();
+    P.dashA = a; P.dashT = 0.24; P.dashCd = D.cd * cdMult(); P.dashHit = new Set(); sfx('dodge');
     ring(P.x, P.y, '#e14bff', 60, 0.3); onDodge(); return;
   }
   if (P.dodgeCh <= 0) return;
-  P.dodgeCh--; if (P.dodgeCd <= 0) P.dodgeCd = dodgeCd();
+  P.dodgeCh--; if (P.dodgeCd <= 0) P.dodgeCd = dodgeCd(); sfx('dodge');
   const x0 = P.x, y0 = P.y;
   if (P.cls === 'interceptor') { blinkTo(a, 220); P.invulnT = 0.3; }
   else if (P.cls === 'juggernaut') {
@@ -145,7 +145,7 @@ function castSkill(slot, auto) {
   G.autoCasting = !!auto;
   const ok = SKILL_FX[id](id) !== false;
   G.autoCasting = false;
-  if (ok) P.skCd[id] = skillCd(id);
+  if (ok) { P.skCd[id] = skillCd(id); sfx('skill'); }
   return ok;
 }
 const critRoll = () => Math.random() * 100 < P.stats.crit + (P.critT > 0 ? 20 : 0) + hb('crit');

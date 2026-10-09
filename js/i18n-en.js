@@ -1,6 +1,10 @@
 'use strict';
 // English dictionary: Slovak source text → English. Keys with {0}, {1}… are templates (see js/i18n.js).
 Object.assign(EN, {
+  "Zvukové efekty": "Sound effects",
+  "Ambientná hudba": "Ambient music",
+  "Zvuky": "Sounds",
+  "Hudba": "Music",
   "+{0} rudy": "+{0} ore",
   "Náklad aj sklad sú plné.": "Hold and stash are full.",
   "<span style=\"color:#ffd36b\">Náklad aj sklad sú plné.</span> {0} čaká v pošte (Inventár).": "<span style=\"color:#ffd36b\">Hold and stash are full.</span> {0} is waiting in the mail (Inventory).",

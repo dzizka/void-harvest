@@ -143,6 +143,8 @@ $('restart').addEventListener('click', goToHangar);
 $('abHangar').addEventListener('click', () => { setMore(false); goToHangar(); });
 $('abLang').addEventListener('click', () => { setMore(false); setLang(LANG === 'sk' ? 'en' : 'sk'); });
 document.querySelector('.lang-pick').addEventListener('click', e => { const b = e.target.closest('[data-lang]'); if (b) setLang(b.dataset.lang); });
+$('abSfx').addEventListener('click', () => { audioInit(); setAudio('sfx', !AUD.set.sfx); updateHUD(); });
+$('abMusic').addEventListener('click', () => { audioInit(); setAudio('music', !AUD.set.music); updateHUD(); });
 $('abModels').addEventListener('click', () => { setModels(!GFX.models); updateHUD(); log(_T`3D modely: ${GFX.models ? _L('zapnuté') : _L('vypnuté')}.`); });
 $('abGfx').addEventListener('click', () => { setGfx(GFX.q === 'high' ? 'mid' : GFX.q === 'mid' ? 'low' : 'high'); log(_T`Grafika: ${GFX.q === 'high' ? _L('vysoká (žiara, scenéria, stopy)') : GFX.q === 'mid' ? _L('stredná (bez žiary)') : _L('nízka (menej častíc, bez scenérie)')}.`); updateHUD(); });
 $('contracts').addEventListener('click', e => {
