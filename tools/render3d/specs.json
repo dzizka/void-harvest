@@ -113,7 +113,7 @@
   "tilt": 0.45,
   "out": "en_drone",
   "url": "/models/majadroid/m1-ship1.obj",
-  "yaw": -1.5707963267948966,
+  "yaw": 1.5707963267948966,
   "all": {
    "color": "#a8384c",
    "metal": 0.5,
@@ -127,7 +127,7 @@
   "tilt": 0.45,
   "out": "en_fighter",
   "url": "/models/majadroid/m3-ship3.obj",
-  "yaw": -1.5707963267948966,
+  "yaw": 1.5707963267948966,
   "all": {
    "color": "#b04a86",
    "metal": 0.5,
@@ -141,7 +141,7 @@
   "tilt": 0.45,
   "out": "en_gunship",
   "url": "/models/majadroid/m1-ship2.obj",
-  "yaw": -1.5707963267948966,
+  "yaw": 1.5707963267948966,
   "all": {
    "color": "#b8613f",
    "metal": 0.5,
@@ -155,7 +155,7 @@
   "tilt": 0.45,
   "out": "en_sniper",
   "url": "/models/majadroid/m4-ship3.obj",
-  "yaw": -1.5707963267948966,
+  "yaw": 1.5707963267948966,
   "all": {
    "color": "#b59a2a",
    "metal": 0.5,
