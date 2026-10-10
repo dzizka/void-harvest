@@ -29,6 +29,8 @@ const starMult = it => it.anc && it.rarity !== 'mythic' ? 1.2 : 1;
 const gaN = it => (it.affixes || []).filter(a => a.greater).length;
 const gaExtra = it => Math.max(0, gaN(it) - (it.rarity === 'mythic' ? 1 : 0));   // a mythic's first greater affix is guaranteed
 const starMark = it => { const n = gaN(it); return (it.anc ? `<span class="ancc" title="${_L('Pradávny')}"></span>` : '') + (n ? `<span class="ancm g${Math.min(3, gaExtra(it))}" title="${n}× ${_L('väčší afix')}">${'✦'.repeat(n)}</span>` : ''); };
+// rarity also by shape (◇ ◆ ★ ❖ ✹), not only by colour
+const rarMark = it => RARITY[it.rarity].mark ? `<i class="rmark" aria-hidden="true">${RARITY[it.rarity].mark}</i>` : '';
 const gaCls = it => gaExtra(it) >= 2 ? 'st' + Math.min(3, gaExtra(it)) : '';
 // chance per affix line to roll greater: world II 1,5 %, III 4 %, IV 8 % (+ nightmare level, climb floor, arena); rares half
 function gaChance(rarity) {

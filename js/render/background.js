@@ -40,6 +40,11 @@ try { GFX.q = localStorage.getItem('void-harvest-gfx') || 'high'; } catch (e) { 
 const GLOW = { c: document.createElement('canvas') };
 GLOW.g = GLOW.c.getContext('2d');
 GLOW.g.filter = 'blur(2px)'; GLOW.ok = GLOW.g.filter === 'blur(2px)'; GLOW.g.filter = 'none';
+// interface scale and screen shake (Menu), per device
+const UIS = { scale: 1, shake: true };
+try { Object.assign(UIS, JSON.parse(localStorage.getItem('void-harvest-ui') || '{}')); } catch (e) { /* ignore */ }
+function applyUi() { document.documentElement.style.setProperty('--ui', UIS.scale); try { localStorage.setItem('void-harvest-ui', JSON.stringify(UIS)); } catch (e) { /* ignore */ } }
+applyUi();
 function setGfx(q) {
   GFX.q = q;
   try { localStorage.setItem('void-harvest-gfx', q); } catch (e) { /* ignore */ }

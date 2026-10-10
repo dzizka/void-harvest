@@ -1,6 +1,12 @@
 'use strict';
 // English dictionary: Slovak source text → English. Keys with {0}, {1}… are templates (see js/i18n.js).
 Object.assign(EN, {
+  "Veľkosť rozhrania": "Interface size",
+  "Väčšie písmo a tlačidlá HUD a okien": "Larger text and buttons in the HUD and windows",
+  "Otrasy obrazovky": "Screen shake",
+  "Otrasy obrazovky pri zásahoch a výbuchoch": "Screen shake on hits and explosions",
+  "Veľkosť rozhrania: {0} %.": "Interface size: {0} %.",
+  "Otrasy obrazovky {0}.": "Screen shake {0}.",
   "OBSADENÁ PEVNOSŤ · OD ÚROVNE 5": "OCCUPIED STRONGHOLD · FROM LEVEL 5",
   "{0}<small>nepriatelia +{1} úr. · viac elít a lepší loot</small>": "{0}<small>enemies +{1} Lv · more elites and better loot</small>",
   "+{0} % rudy a +{1} % XP": "+{0} % ore and +{1} % XP",
@@ -11,7 +17,7 @@ Object.assign(EN, {
   "ikona ▦ · ťukni na nasadený predmet": "▦ icon · tap an equipped item",
   "G na minimape · tlačidlo pri bráne": "G on the minimap · button at the gate",
   "Brány (G na minimape) vedú k bossom. Mapa a inventár sú vpravo hore, stanica cez tlačidlo pri majáku.": "Gates (G on the minimap) lead to bosses. Map and inventory are top right, the station via the button at the beacon.",
-  "Gamepad pripojený: ľavá páčka let, pravá mierenie a streľba (alebo RT), LT rakety, A úhyb, X / Y schopnosti, B interakcia, LB skener, Start inventár, Back mapa, D-pad auto-boj / auto-ťažba.": "Gamepad connected: left stick flies, right stick aims and fires (or RT), LT missiles, A dodge, X / Y skills, B interact, LB scanner, Start inventory, Back map, D-pad auto-combat / auto-mining.",
+  "Gamepad pripojený: ľavá páčka let, pravá mierenie a streľba (alebo RT), LT rakety, A úhyb, X / Y schopnosti, B interakcia, LB skener, Start inventár, Back mapa, stlačená pravá páčka Menu, D-pad auto-boj / auto-ťažba. V oknách D-pad vyberá, A potvrdí, X rozoberie, B zavrie.": "Gamepad connected: left stick flies, right stick aims and fires (or RT), LT missiles, A dodge, X / Y skills, B interact, LB scanner, Start inventory, Back map, right stick click Menu, D-pad auto-combat / auto-mining. In windows the D-pad selects, A confirms, X salvages, B closes.",
   "Odomkne sa na úrovni {0}": "Unlocks at level {0}",
   "{0} sa odomkne na úrovni {1}.": "{0} unlocks at level {1}.",
   "Zostrelenie: 50 % šanca postaviť minióna (max 4)": "Kill: 50 % chance to build a minion (max 4)",

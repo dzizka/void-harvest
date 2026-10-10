@@ -7,7 +7,7 @@ function render() {
   drawBackground();
   if (!G) return;
   drawBackdrop();
-  const sx = (Math.random() - 0.5) * G.shake, sy = (Math.random() - 0.5) * G.shake;
+  const shk = UIS.shake ? G.shake : 0, sx = (Math.random() - 0.5) * shk, sy = (Math.random() - 0.5) * shk;
   ctx.setTransform(dpr * z, 0, 0, dpr * z, dpr * (W / 2 - cam.x * z + sx), dpr * (H / 2 - cam.y * z + sy));
   const hw = W / 2 / z + 120, hh = H / 2 / z + 120;
   const vis = (x, y, r) => Math.abs(x - cam.x) < hw + r && Math.abs(y - cam.y) < hh + r;

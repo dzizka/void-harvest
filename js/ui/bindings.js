@@ -147,6 +147,8 @@ document.querySelector('.lang-pick').addEventListener('click', e => { const b = 
 $('abSfx').addEventListener('click', () => { audioInit(); setAudio('sfx', !AUD.set.sfx); updateHUD(); });
 $('abMusic').addEventListener('click', () => { audioInit(); setAudio('music', !AUD.set.music); updateHUD(); });
 $('abModels').addEventListener('click', () => { setModels(!GFX.models); updateHUD(); log(_T`3D modely: ${GFX.models ? _L('zapnuté') : _L('vypnuté')}.`); });
+$('abUi').addEventListener('click', () => { UIS.scale = UIS.scale >= 1.3 ? 1 : UIS.scale >= 1.15 ? 1.3 : 1.15; applyUi(); log(_T`Veľkosť rozhrania: ${Math.round(UIS.scale * 100)} %.`); updateHUD(); });
+$('abShake').addEventListener('click', () => { UIS.shake = !UIS.shake; applyUi(); log(_T`Otrasy obrazovky ${UIS.shake ? _L('zapnuté') : _L('vypnuté')}.`); updateHUD(); });
 $('abGfx').addEventListener('click', () => { setGfx(GFX.q === 'high' ? 'mid' : GFX.q === 'mid' ? 'low' : 'high'); log(_T`Grafika: ${GFX.q === 'high' ? _L('vysoká (žiara, scenéria, stopy)') : GFX.q === 'mid' ? _L('stredná (bez žiary)') : _L('nízka (menej častíc, bez scenérie)')}.`); updateHUD(); });
 $('contracts').addEventListener('click', e => {
   const c = e.target.closest('[data-claim]'), r = e.target.closest('[data-reroll]');

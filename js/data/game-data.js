@@ -43,12 +43,12 @@ const CLASSES = {
 };
 
 const RARITY = {
-  common:    { name: _L('Bežný'),    color: '#e6e9ef', affixes: [0, 0], baseMult: 1.00, rank: 0 },
-  magic:     { name: _L('Magický'),     color: '#6f9bff', affixes: [1, 2], baseMult: 1.08, rank: 1 },
-  rare:      { name: _L('Vzácny'),      color: '#ffe14d', affixes: [3, 4], baseMult: 1.18, rank: 2 },
-  legendary: { name: _L('Legendárny'), color: '#ff8a1f', affixes: [4, 4], baseMult: 1.30, rank: 3 },
-  mythic:    { name: _L('Mýtický'),    color: '#e14bff', affixes: [4, 4], baseMult: 1.45, rank: 4 },
-  set:       { name: _L('Setový'),       color: '#5be09a', affixes: [4, 4], baseMult: 1.40, rank: 3 }
+  common:    { name: _L('Bežný'),    color: '#e6e9ef', mark: '', affixes: [0, 0], baseMult: 1.00, rank: 0 },
+  magic:     { name: _L('Magický'),     color: '#6f9bff', mark: '◇', affixes: [1, 2], baseMult: 1.08, rank: 1 },
+  rare:      { name: _L('Vzácny'),      color: '#ffe14d', mark: '◆', affixes: [3, 4], baseMult: 1.18, rank: 2 },
+  legendary: { name: _L('Legendárny'), color: '#ff8a1f', mark: '★', affixes: [4, 4], baseMult: 1.30, rank: 3 },
+  mythic:    { name: _L('Mýtický'),    color: '#e14bff', mark: '✹', affixes: [4, 4], baseMult: 1.45, rank: 4 },
+  set:       { name: _L('Setový'),       color: '#5be09a', mark: '❖', affixes: [4, 4], baseMult: 1.40, rank: 3 }
 };
 
 const SLOTS = {

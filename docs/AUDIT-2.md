@@ -174,7 +174,14 @@ Zmeny:
 | Simulácia v menších krokoch pri nízkom FPS namiesto spomalenia | Ešte nižšie FPS na slabých zariadeniach | Max. 3 kroky na snímku, potom až spomalenie |
 | Test na skutočnom S25 (FPS, teplota, batéria) | – | Debug info v cheat menu; ak treba, menej častíc na mobile |
 
-### Fáza E – gamepad a prístupnosť
+### Fáza E – gamepad a prístupnosť ✅ hotová
+Zmeny:
+- **Gamepad mimo letu:** v hangári, v oknách, na obrazovke smrti a v Menu sa D-padom alebo ľavou páčkou presúva zvýraznenie medzi tlačidlami a predmetmi (priestorová navigácia podľa polohy na obrazovke, opakovanie pri podržaní). A klikne, X je akcia pravého tlačidla (rozobratie), B zavrie okno, stlačená pravá páčka otvorí Menu. Pri predmete sa ukáže tooltip s porovnaním. Prvé zvýraznenie padne na loď / Pokračovať v hangári a na výbavu v inventári. Myš a dotyk fungujú ako predtým.
+- **Veľkosť rozhrania** 100 / 115 / 130 % (Menu, iba PC; dotykový režim má vlastné rozloženie). Zväčšuje HUD, okná, tooltip a obrazovku smrti; okná sa zmestia na obrazovku, log ukazuje najnovšie riadky.
+- **Otrasy obrazovky** sa dajú vypnúť (Menu). Hitstop a efekty ostávajú.
+- **Rarita aj tvarom:** ◇ magický, ◆ vzácny, ★ legendárny, ❖ setový, ✹ mýtický, v rohu predmetu v inventári, sklade, dielni aj vo výbave.
+- Nastavenia sa ukladajú pre zariadenie (`void-harvest-ui`).
+
 | Zmena | Riziko | Ako mu predísť |
 |---|---|---|
 | Gamepad v hangári (výber lode, Pokračovať) a pohyb po oknách (výber ťahaním D-padom, A potvrdí) | Rozbitie myši a dotyku | Fokus iba keď je gamepad aktívny; testy myši a dotyku ostávajú |

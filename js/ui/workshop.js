@@ -18,7 +18,7 @@ const mwRerollCost = it => ({ ore: Math.round(upgradeCost(it) * 2), sh: 25 });
 const imprintCost = it => ({ ore: Math.round(lateCost(it.ilvl) * (150 + 10 * it.ilvl)), sh: 8 });
 function craftItem(ref) { return ref && ref[0] === 'e' ? P.equip[ref.slice(2)] : ref ? P.inv[+ref.slice(2)] : null; }
 function itemCell(it, attr, extra) {
-  return `<button type="button" class="cell item ${it.rarity} ${it.primal ? 'primal' : ''} ${gaCls(it)} ${extra || ''}" ${attr} style="--rc:${RARITY[it.rarity].color}" aria-label="${it.name}">${qBar(it)}${ICONS[it.slot]}<span class="il">${it.ilvl}</span>${starMark(it)}</button>`;
+  return `<button type="button" class="cell item ${it.rarity} ${it.primal ? 'primal' : ''} ${gaCls(it)} ${extra || ''}" ${attr} style="--rc:${RARITY[it.rarity].color}" aria-label="${it.name}">${qBar(it)}${rarMark(it)}${ICONS[it.slot]}<span class="il">${it.ilvl}</span>${starMark(it)}</button>`;
 }
 function renderCraft() {
   G.craftTab = G.craftTab || 'forge';

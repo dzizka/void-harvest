@@ -159,6 +159,8 @@ function updateHUD() {
   $('abMusicS').textContent = AUD.set.music ? _L('ZAP') : _L('VYP'); $('abMusic').classList.toggle('on', AUD.set.music);
   $('abModelsS').textContent = GFX.models ? _L('ZAP') : _L('VYP'); $('abModels').classList.toggle('on', GFX.models);
   $('abTouchS').textContent = TOUCH.pref === 'auto' ? 'AUTO' : TOUCH.pref === 'on' ? _L('ZAP') : _L('VYP'); $('abTouch').classList.toggle('on', TOUCH.on);
+  $('abUiS').textContent = Math.round(UIS.scale * 100) + ' %';
+  $('abShakeS').textContent = UIS.shake ? _L('zapnuté') : _L('vypnuté');
   $('abGfxS').textContent = GFX.q === 'high' ? _L('vysoká') : GFX.q === 'mid' ? _L('stredná') : _L('nízka');
   const C = G.cheat;
   $('devTag').hidden = !(C.god || C.oneHit || C.unlock || C.mythBoost || C.speed !== 1);

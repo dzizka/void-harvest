@@ -39,7 +39,7 @@ function renderInventory() {
     const it = P.equip[slot], col = RARITY[it.rarity].color;
     const upTxt = it.upg >= MAX_UPG ? _L('Max. vylepšenie') : _T`Vylepšiť: ${upgradeCost(it)} rudy`;
     return _T`<button type="button" class="eslot" data-slot="${slot}" style="--rc:${col}">
-      <span class="ico">${ICONS[slot]}</span>
+      <span class="ico">${ICONS[slot]}${rarMark(it)}</span>
       <span><span class="eyebrow">${SLOTS[slot].name}</span><b>${it.name}${it.upg ? ' +' + it.upg : ''}</b><small>iLvl ${it.ilvl} · ${upTxt}</small></span>
     </button>`;
   }).join('');
@@ -57,7 +57,7 @@ function renderInventory() {
   for (let i = 0; i < 30; i++) {
     const it = P.inv[i];
     if (!it) { html += '<div class="cell"></div>'; continue; }
-    html += `<button type="button" class="cell item ${it.rarity} ${it.primal ? 'primal' : ''} ${gaCls(it)}" data-idx="${i}" style="--rc:${RARITY[it.rarity].color}" aria-label="${it.name}">${qBar(it)}${ICONS[it.slot]}<span class="il">${it.ilvl}</span>${starMark(it)}${betterMark(upgradeState(it))}</button>`;
+    html += `<button type="button" class="cell item ${it.rarity} ${it.primal ? 'primal' : ''} ${gaCls(it)}" data-idx="${i}" style="--rc:${RARITY[it.rarity].color}" aria-label="${it.name}">${qBar(it)}${rarMark(it)}${ICONS[it.slot]}<span class="il">${it.ilvl}</span>${starMark(it)}${betterMark(upgradeState(it))}</button>`;
   }
   $('grid').innerHTML = html;
 }
@@ -200,7 +200,8 @@ function placeTip(x, y) {
   if (tx < 8) tx = 8;
   if (ty + r.height > innerHeight - 8) ty = innerHeight - r.height - 8;
   if (ty < 8) ty = 8;
-  tip.style.left = tx + 'px'; tip.style.top = ty + 'px';
+  const k = TOUCH.on ? 1 : UIS.scale || 1;   // the tooltip is zoomed with the interface: its own px are scaled
+  tip.style.left = tx / k + 'px'; tip.style.top = ty / k + 'px';
 }
 function hideTip() { tip.hidden = true; tip.classList.remove('sheet'); tipTarget = null; }
 function tipFromEl(el, x, y) {
