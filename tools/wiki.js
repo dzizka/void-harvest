@@ -95,6 +95,7 @@ function render(d, lang, version) {
       <div class="card"><h4>${L('Dôležité pravidlá', 'Key rules')}</h4><ul>
         <li>${L(`Maximálna úroveň je ${d.levelCap}, potom pokračuje Paragon.`, `The level cap is ${d.levelCap}; Paragon continues after that.`)}</li>
         <li>${L('Pri smrti stratíš 15 % nesenej rudy a loď sa opraví na stanici Haven.', 'Dying costs 15 % of the ore you carry; the ship is repaired at Haven Station.')}</li>
+        <li>${L('Hra sa ukladá každých 15 s, pri zatvorení okna a pri odchode zo stránky. Postup je v prehliadači; zálohu do súboru (aj na prenos PC ↔ mobil) spravíš v hangári alebo v Menu → Exportovať / Importovať zálohu.', 'The game saves every 15 s, when a window closes and when you leave the page. Progress lives in the browser; back it up to a file (also to move it PC ↔ phone) in the hangar or Menu → Export / Import backup.')}</li>
         <li>${L('Sklad, materiály, základňa, úspechy a sezóna sú spoločné pre všetky lode.', 'Stash, materials, home base, achievements and the season are shared by all ships.')}</li>
         <li>${L('Systémy sa odomykajú postupne: Dielňa 5, Základňa 8, Sezóna 10, Výzvy 12 (podľa najvyššej úrovne účtu).', 'Systems unlock gradually: Workshop 5, Base 8, Season 10, Challenges 12 (by your best account level).')}</li>
       </ul></div>
@@ -219,7 +220,7 @@ function render(d, lang, version) {
   /* ----- endgame ----- */
   add('endgame', L('Endgame', 'Endgame'), `
     <h3>${L('Nočné brány', 'Nightmare Gates')}</h3>
-    <p>${L(`Kľúč premení ľubovoľnú bránu na nočnú. Limit ${Math.floor(d.nmLimit / 60)}:00 – v limite dostaneš kľúč o úroveň vyšší, za polovicu o dve. Pri smrti kľúč stratíš. Každý kľúč má 1–3 hrozby a 1 bonus.`, `A key turns any gate into a Nightmare Gate. Limit ${Math.floor(d.nmLimit / 60)}:00 – in time you get a key one level higher, within half the limit two. Dying loses the key. Each key has 1–3 threats and 1 bonus.`)}</p>
+    <p>${L(`Kľúč premení ľubovoľnú bránu na nočnú. Limit ${Math.floor(d.nmLimit / 60)}:00 – v limite dostaneš kľúč o úroveň vyšší, za polovicu o dve. Pri smrti kľúč stratíš. Každý kľúč má 1–3 hrozby a 1 bonus. Kľúčov môžeš mať najviac 20 na loď (ďalší sa premení na 40 rudy); nepotrebný kľúč rozoberieš v okne brány za 40 + 10 × úroveň rudy.`, `A key turns any gate into a Nightmare Gate. Limit ${Math.floor(d.nmLimit / 60)}:00 – in time you get a key one level higher, within half the limit two. Dying loses the key. Each key has 1–3 threats and 1 bonus. You can hold up to 20 keys per ship (more turn into 40 ore); scrap a key you don't need in the gate window for 40 + 10 × level ore.`)}</p>
     ${tbl([L('Úroveň kľúča', 'Key level'), L('Nepriatelia navyše', 'Extra enemy levels'), L('Životy', 'HP'), L('Poškodenie', 'Damage'), L('Predmety od bossa navyše', 'Extra boss items'), L('Legendárky', 'Legendaries')], d.nmScale.map(r => [r[0], '+' + r[1], x(r[2]), x(r[3]), '+' + r[4], '+' + r[5] + ' %']))}
     <div class="grid2"><div class="card"><h4>${L('Hrozby', 'Threats')}</h4><ul class="small">${d.nmMods.map(([n, t]) => `<li><b class="neg">${esc(n)}</b> – ${esc(t)}</li>`).join('')}</ul></div>
       <div class="card"><h4>${L('Bonusy', 'Bonuses')}</h4><ul class="small">${d.nmBonus.map(([n, t]) => `<li><b class="pos">${esc(n)}</b> – ${esc(t)}</li>`).join('')}</ul></div></div>

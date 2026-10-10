@@ -73,4 +73,6 @@ kbd{font:600 10px/1 var(--f-mono);padding:3px 5px;border:1px solid var(--line-hi
 .sel-foot span{display:inline-flex;gap:6px;align-items:center}
 .touch-note{color:var(--accent);font-size:13px;display:none}
 
+.save-io{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 10px;font:600 10.5px/1 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
+.save-io .btn{padding:7px 10px;font-size:10.5px}
 .credits{margin:0;color:var(--dim);font-size:11px;line-height:1.5;opacity:.75}

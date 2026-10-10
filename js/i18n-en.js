@@ -1,6 +1,21 @@
 'use strict';
 // English dictionary: Slovak source text → English. Keys with {0}, {1}… are templates (see js/i18n.js).
 Object.assign(EN, {
+  "Rozobrať": "Scrap",
+  "Naozaj rozobrať?": "Really scrap?",
+  "Kľúč úrovne {0} rozobraný → <span style=\"color:#c8a27c\">+{1} rudy</span>.": "Level {0} key scrapped → <span style=\"color:#c8a27c\">+{1} ore</span>.",
+  "Záloha postupu": "Progress backup",
+  "Exportovať": "Export",
+  "Importovať": "Import",
+  "Stiahne súbor so všetkými loďami, skladom a nastaveniami": "Downloads a file with all ships, the stash and settings",
+  "Načíta postup zo súboru (napr. z iného zariadenia)": "Loads progress from a file (e.g. from another device)",
+  "Exportovať zálohu": "Export backup",
+  "Importovať zálohu": "Import backup",
+  "Zatiaľ nie je čo zálohovať.": "Nothing to back up yet.",
+  "Záloha uložená do súboru.": "Backup saved to a file.",
+  "Tento súbor nie je záloha Void Harvest alebo je poškodený.": "This file is not a Void Harvest backup or it is damaged.",
+  "Načítať zálohu? Nahradí celý súčasný postup (lode: {0}). Súčasný stav sa odloží ako záloha pred importom.": "Load this backup? It replaces all current progress (ships: {0}). The current state is kept as a pre-import backup.",
+  "Zálohu sa nepodarilo uložiť (plné úložisko prehliadača?).": "Could not store the backup (browser storage full?).",
   "Mechaniky, buildy, predmety a kde čo padá": "Mechanics, builds, items and where things drop",
   "Mechaniky, buildy, predmety a kde čo padá (nová karta)": "Mechanics, builds, items and where things drop (new tab)",
   "+{0} ďalších": "+{0} more",

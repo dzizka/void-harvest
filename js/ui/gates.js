@@ -1,5 +1,7 @@
 'use strict';
 /* ---------- gate entry & nightmare keys ---------- */
+// a key you won't use can be scrapped for ore (a full key ring already turns new keys into 40 ore)
+const keyScrap = k => 40 + 10 * k.lvl;
 function renderGate() {
   const g = G.gateSel, B = BOSSES[g.boss];
   $('gateTitle').textContent = B.lair;
@@ -20,7 +22,8 @@ function renderGate() {
       <div class="khead"><span class="kl">${k.lvl}</span><span class="chips">${chips}</span></div>
       <div class="kline" ${tipAttr(_L('Úroveň nepriateľov · ich životy · ich poškodenie · časový limit'))}>☠ ${g.lvl + sc.lvl} · ♥ ×${x1(sc.hp)} · ⚔ ×${x1(sc.dmg)} · ⌛ ${fmtTime(NM_LIMIT)}</div>
       <div class="kline good" ${tipAttr(_L('Predmety od bossa navyše · šanca na legendárky · šanca na mýtické predmety (od úrovne kľúča 10)'))}>✚ ${1 + Math.floor(k.lvl / 8)} · ★ +${k.lvl * 4} %${myth ? ` · ✹ ×${x1(1 + k.lvl * 0.1)}` : ''}</div>
-      <button type="button" class="btn primary" data-key="${k.id}">${_L('Aktivovať')}</button></div>`;
+      <div class="kacts"><button type="button" class="btn primary" data-key="${k.id}">${_L('Aktivovať')}</button>
+        <button type="button" class="btn ${G.keyDel === k.id ? 'warn' : ''}" data-kdel="${k.id}">${G.keyDel === k.id ? _L('Naozaj rozobrať?') : _L('Rozobrať')} ${curIco('ore', keyScrap(k))}</button></div></div>`;
   }
   const nmTxt = _T`Kľúč zmení bránu na nočnú: silnejší nepriatelia, nebezpečné modifikátory a lepší loot. Dokonči ju do ${fmtTime(NM_LIMIT)} a dostaneš kľúč o úroveň vyšší, za polovicu limitu o dve. Pri smrti kľúč stratíš.`;
   $('gateBody').innerHTML = `
@@ -35,7 +38,15 @@ function renderGate() {
     </div>`;
 }
 $('gateBody').addEventListener('click', e => {
-  const t = e.target.closest('[data-ksel]'); if (t) { G.keySel = +t.dataset.ksel; renderGate(); return; }
+  const t = e.target.closest('[data-ksel]'); if (t) { G.keySel = +t.dataset.ksel; G.keyDel = null; renderGate(); return; }
+  const del = e.target.closest('[data-kdel]');
+  if (del) {
+    const id = +del.dataset.kdel, k = P.keys.find(x => x.id === id); if (!k) return;
+    if (G.keyDel !== id) { G.keyDel = id; renderGate(); return; }   // second click confirms
+    P.keys = P.keys.filter(x => x.id !== id); P.ore += keyScrap(k); G.keyDel = null; sfx('click');
+    log(_T`Kľúč úrovne ${k.lvl} rozobraný → <span style="color:#c8a27c">+${keyScrap(k)} rudy</span>.`);
+    renderGate(); updateHUD(); return;
+  }
   const b = e.target.closest('[data-key]'); if (!b) return;
   const g = G.gateSel;
   if (b.dataset.key === 'none') enterDungeon(g);

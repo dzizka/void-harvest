@@ -46,6 +46,7 @@
       <span><kbd>K</kbd> talenty</span>
       <span><kbd>H</kbd> hangár (iná loď)</span>
     </div>
+    <div class="save-io"><span>Záloha postupu</span><button type="button" class="btn" data-backup="export" title="Stiahne súbor so všetkými loďami, skladom a nastaveniami">Exportovať</button><button type="button" class="btn" data-backup="import" title="Načíta postup zo súboru (napr. z iného zariadenia)">Importovať</button></div>
     <p class="credits">Hudba: Leonardo Paz – Outer Space Music Pack (CC-BY 4.0) · „Starfire“ – Scott Buckley, scottbuckley.com.au (CC-BY 4.0) · Outer Space Loop – wipics (CC0). 3D modely a planéty: Kenney, Quaternius, Majadroid (CC0).</p>
   </div>
 </section>
@@ -133,6 +134,8 @@
           <button type="button" class="kb-only" id="abUi" title="Väčšie písmo a tlačidlá HUD a okien"><kbd>A</kbd><span>Veľkosť rozhrania</span><em id="abUiS"></em></button>
           <button type="button" id="abShake" title="Otrasy obrazovky pri zásahoch a výbuchoch"><kbd>≋</kbd><span>Otrasy obrazovky</span><em id="abShakeS"></em></button>
           <button type="button" id="abGfx" title="Žiara, scenéria, častice"><kbd>⚙</kbd><span>Grafika</span><em id="abGfxS"></em></button>
+          <button type="button" data-backup="export" title="Stiahne súbor so všetkými loďami, skladom a nastaveniami"><kbd>⇩</kbd><span>Exportovať zálohu</span><em></em></button>
+          <button type="button" data-backup="import" title="Načíta postup zo súboru (napr. z iného zariadenia)"><kbd>⇧</kbd><span>Importovať zálohu</span><em></em></button>
           <button type="button" id="abWiki" title="Mechaniky, buildy, predmety a kde čo padá (nová karta)"><kbd>?</kbd><span>Wiki</span><em>↗</em></button>
           <button type="button" id="abHangar" title="Uloží postup a vráti ťa do hangára k výberu lode"><kbd>H</kbd><span>Hangár · iná loď</span><em></em></button>
         </div>
@@ -440,6 +443,7 @@
 <script src="js/ui/bindings.js"></script>
 <script src="js/ui/touch.js"></script>
 <script src="js/ui/hints.js"></script>
+<script src="js/ui/backup.js"></script>
 <script src="js/ui/gamepad.js"></script>
 <script src="js/main.js"></script>
 </body>

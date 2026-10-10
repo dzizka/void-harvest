@@ -270,3 +270,6 @@ body.touch .info::before{font-size:13px}
 @media (max-width:900px){.bres{grid-template-columns:1fr}}
 @media (max-width:640px){.bres-i{grid-template-columns:minmax(0,1fr) auto}.bres-i>.note{grid-column:1}}
 .ach-more{margin-top:8px}
+
+.kdetail .kacts{display:flex;gap:8px;flex-wrap:wrap}
+.btn.warn{border-color:var(--bad);color:var(--bad)}
