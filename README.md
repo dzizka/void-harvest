@@ -8,7 +8,7 @@
 
 **Hrať lokálne:** stiahni repozitár a otvor `index.html` v prehliadači (stačí dvojklik, server netreba).
 
-Technická dokumentácia (ako hra funguje a kde čo zmeniť): [docs/TECHNICKA-DOKUMENTACIA.md](docs/TECHNICKA-DOKUMENTACIA.md)
+Technická dokumentácia (ako hra funguje a kde čo zmeniť): [docs/TECHNICKA-DOKUMENTACIA.md](docs/TECHNICKA-DOKUMENTACIA.md) · audity: [1](docs/AUDIT.md), [2](docs/AUDIT-2.md)
 
 ## Ovládanie
 `WASD` pohyb · myš mierenie · `LMB` laser a ťažba · `RMB` rakety · `Space` úhyb · `Q` / `Shift` schopnosti · `C` skener · `F` / `R` auto-boj / auto-ťažba (aj v Menu) · `I` inventár · `K` talenty · `P` paragon · `M` mapa · `E` interakcia · `Esc` zavrieť
