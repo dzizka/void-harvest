@@ -3,8 +3,8 @@
 const canPay = c => P.ore >= c.ore && P.shards >= (c.sh || 0);
 const pay = c => { P.ore -= c.ore; P.shards -= c.sh || 0; };
 const costTxt = c => _T`${c.ore} rudy${c.sh ? _T` · ${c.sh} úlomkov` : ''}`;
-const rerollCostOf = it => ({ ore: Math.round((40 + 4 * it.ilvl) * (1 + 0.5 * (it.rerolls || 0))), sh: 2 + (it.rerolls || 0) });
-const socketCost = it => { const n = (it.sockets || []).length; return { ore: 60 * (n + 1), sh: 3 * (n + 1) }; };
+const rerollCostOf = it => ({ ore: Math.round(lateCost(it.ilvl) * (40 + 4 * it.ilvl) * (1 + 0.5 * (it.rerolls || 0))), sh: 2 + (it.rerolls || 0) });
+const socketCost = it => { const n = (it.sockets || []).length; return { ore: Math.round(lateCost(it.ilvl) * 60 * (n + 1)), sh: 3 * (n + 1) }; };
 const temperCost = it => it.upg >= 10 ? { ore: Math.round(upgradeCost(it) * 3), sh: 10 * (it.upg - 9) } : { ore: Math.round(upgradeCost(it) * 1.5), sh: (it.upg - 4) * 2 };
 const MW_MAX = 15, MW_HIT = [12, 15];   // these levels empower a random affix ×1.25
 const maxTemper = it => RARITY[it.rarity].rank >= 3 ? MW_MAX : 10;
@@ -15,7 +15,7 @@ function mwEmpower(it, avoid) {
   return i;
 }
 const mwRerollCost = it => ({ ore: Math.round(upgradeCost(it) * 2), sh: 25 });
-const imprintCost = it => ({ ore: 150 + 10 * it.ilvl, sh: 8 });
+const imprintCost = it => ({ ore: Math.round(lateCost(it.ilvl) * (150 + 10 * it.ilvl)), sh: 8 });
 function craftItem(ref) { return ref && ref[0] === 'e' ? P.equip[ref.slice(2)] : ref ? P.inv[+ref.slice(2)] : null; }
 function itemCell(it, attr, extra) {
   return `<button type="button" class="cell item ${it.rarity} ${it.primal ? 'primal' : ''} ${gaCls(it)} ${extra || ''}" ${attr} style="--rc:${RARITY[it.rarity].color}" aria-label="${it.name}">${qBar(it)}${ICONS[it.slot]}<span class="il">${it.ilvl}</span>${starMark(it)}</button>`;

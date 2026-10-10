@@ -27,9 +27,9 @@ const CLASSES = {
     name: _L('Scavenger'), role: _L('Obchodník / Ťažiar'), color: '#7ee0a8',
     desc: _L('Priemyselná loď s traktorovým magnetom. Z každého asteroidu vytiahne viac a ťažba jej dobíja štíty.'),
     hull: 100, shield: 60, speed: 290, accel: 850, crit: 5, dodge: 4, magnet: 270, fireMult: 1,
-    yieldBonus: 40, xpBonus: 25, mineShield: true,
+    yieldBonus: 40, xpBonus: 10, mineShield: true,
     meters: { 'Rýchlosť': 3, 'Odolnosť': 3, 'Útok': 2, 'Ťažba': 5 },
-    perks: [_L('Magnet lootu s dosahom 270'), _L('+40 % Výnos ťažby, +25 % XP'), _L('Zásahy asteroidov a zber rudy dobíjajú štít')],
+    perks: [_L('Magnet lootu s dosahom 270'), _L('+40 % Výnos ťažby, +10 % XP'), _L('Zásahy asteroidov a zber rudy dobíjajú štít')],
     start: { weapon: 'pulse', secondary: 'swarm', shield: 'matrix', engine: 'phase', reactor: 'zeroPoint', drones: 'mining', armor: 'ablative' }
   },
   carrier: {
@@ -263,9 +263,9 @@ for (const m of MYTHIC_LIST) LEGEND_INDEX[m.id] = m;
 const TIER_UNLOCK = { 2: 'dread', 3: 'gravit' };   // world tier IV comes from the Architect
 const TIERS = [null,
   { roman: 'I',   name: _L('I · Prieskum'),         lvl: 0,  hp: 1.0, dmg: 1.0,  xp: 1.0, leg: 1.0, req: 0,  anc: 0,    myth: 0, trash: 1, elite: 1, desc: _L('Základná obťažnosť. Bez pradávnych a mýtických predmetov.') },
-  { roman: 'II',  name: _L('II · Veterán'),         lvl: 4,  hp: 1.3, dmg: 1.15, xp: 1.5, leg: 2.2, req: 15, anc: 0,    myth: 0, trash: 1, elite: 1, desc: _L('Nepriatelia +4 úr. · XP ×1,5 · legendárky ×2,2') },
-  { roman: 'III', name: _L('III · Nočná mora'),     lvl: 9,  hp: 1.8, dmg: 1.3,  xp: 2.2, leg: 3.5, req: 35, anc: 0.10, myth: 1, trash: 0.85, elite: 1.15, desc: _L('Nepriatelia +9 úr. · bežní −15 % HP, elity +15 % · XP ×2,2 · pradávne 10 % · mýtické predmety') },
-  { roman: 'IV',  name: _L('IV · Peklo Prázdnoty'), lvl: 15, hp: 2.6, dmg: 1.5,  xp: 3.0, leg: 5.0, req: 50, anc: 0.25, myth: 2, trash: 0.7, elite: 1.3, desc: _L('Nepriatelia +15 úr. · bežní −30 % HP, elity a bossovia +30 % · XP ×3 · pradávne 25 % · mýtické ×2') }
+  { roman: 'II',  name: _L('II · Veterán'),         lvl: 4,  hp: 1.3, dmg: 1.15, xp: 1.5, leg: 1.5, req: 15, anc: 0.05, myth: 0, trash: 1, elite: 1, desc: _L('Nepriatelia +4 úr. · XP ×1,5 · legendárky ×1,5 · pradávne 5 % · väčšie afixy ✦') },
+  { roman: 'III', name: _L('III · Nočná mora'),     lvl: 9,  hp: 1.8, dmg: 1.3,  xp: 2.2, leg: 2,   req: 35, anc: 0.15, myth: 1, trash: 0.85, elite: 1.15, desc: _L('Nepriatelia +9 úr. · bežní −15 % HP, elity +15 % · XP ×2,2 · legendárky ×2 · pradávne 15 % · mýtické predmety') },
+  { roman: 'IV',  name: _L('IV · Peklo Prázdnoty'), lvl: 15, hp: 2.6, dmg: 1.5,  xp: 3.0, leg: 2.5, req: 50, anc: 0.35, myth: 2, trash: 0.7, elite: 1.3, desc: _L('Nepriatelia +15 úr. · bežní −30 % HP, elity a bossovia +30 % · XP ×3 · legendárky ×2,5 · pradávne 35 % · mýtické ×2') }
 ];
 const RARE_PREFIX = [_L('Hviezdny'), _L('Temný'), _L('Prázdnotný'), _L('Kométin'), _L('Pulzarový'), _L('Krvavý'), _L('Mrazivý'), _L('Zlatý'), _L('Tichý'), _L('Žeravý'), _L('Nebulárny')];
 const RARE_NOUN = {

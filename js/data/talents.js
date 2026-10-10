@@ -85,7 +85,7 @@ const TREES = {
         N('sConv', _L('Kinetická konverzia'), 3, 1, 20, v => _T`${v} % bonusovej ťažobnej sily → Všetko poškodenie`),
         N('sCrush', _L('Drvič'), 3, 1, 3, v => _T`rozbitý asteroid: +${v} % poškodenie na 6 s (max 5×)`),
         N('sBoom', _L('Výbušná ruda'), 3, 2, 100, v => _T`rozbitý asteroid vybuchne za ${v} % poškodenia lasera`),
-        N('sProfit', _L('Zisk'), 3, 2, 10, v => _T`+${v} % XP a rudy`, (s, p, a, v) => { s.xpMult += v / 100; })
+        N('sProfit', _L('Zisk'), 3, 2, 10, v => _T`+${v} % rudy a +${Math.round(v * 0.4)} % XP`, (s, p, a, v) => { s.xpMult += v * 0.4 / 100; })
       ],
       key: { id: 'kRush', name: _L('Zlatá horúčka'), text: _L('Každých 100 zozbieranej rudy spustí 10 s Zlatej horúčky: +40 % poškodenie a +20 % kadencia.') } },
     { id: 'hive', name: _L('Rojník'), color: '#7ee0a8', desc: _L('Silnejšie a početnejšie drony, ktoré vybuchujú a kriticky zasahujú.'),

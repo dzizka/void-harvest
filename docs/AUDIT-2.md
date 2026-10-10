@@ -106,7 +106,24 @@ Hotovo: hudba sa pozastaví v skrytej karte; tutoriál a úvodný log majú v do
 | Limit častíc aj pre kruhy a lúče | Chýbajúci dôležitý efekt | Limit iba pre dekoratívne efekty; kruhy bossov a legendárok vždy |
 | Zmazať 3 duplicitné preklady a nepoužité premenné | Žiadne | ESLint po zmene |
 
-### Fáza B – loot a ekonomika
+### Fáza B – loot a ekonomika ✅ hotová
+Zmeny:
+- **Svety:** násobok legendárok ×1,5 / ×2 / ×2,5 (bolo ×2,2 / ×3,5 / ×5). Pradávne predmety 5 / 15 / 35 % (bolo 0 / 10 / 25 %), väčšie afixy ✦ 1,5 / 4 / 8 % na riadok (bolo 1 / 2,5 / 5 %). Popisy svetov a kódex sú upravené.
+- **Dielňa:** ceny vylepšenia, prekovania, pätíc a odtlačku rastú pre predmety nad úrovňou 20 o 8 % za úroveň (`lateCost`; úroveň 30 ×1,8, úroveň 50 ×3,4). Do úrovne 20 sa nič nemení.
+- **Scavenger:** vlastný bonus XP +10 % (bolo +25 %), talent Zisk dáva +10 / 20 / 30 % rudy a +4 / 8 / 12 % XP (bolo +10 / 20 / 30 % XP). Meranie ukázalo, že hlavným zdrojom náskoku bol práve talent.
+- Automatické rozoberanie: hra ho už má (filter v inventári), preto sa nemenilo.
+
+Overenie botom (15 min na svet, najlepšia výbava, legendárky za hodinu; vzorky sú malé, čísla kolíšu ±30 %):
+
+| Svet | Pred | Po | Pradávne predmety za 15 min (pred → po) |
+|---|---|---|---|
+| I | 40 | 36 | – |
+| II | 76 | 24 | 0 → 5 |
+| III | 72 | 52 | 17 → 24 |
+| IV | 124–188 | 72 | 64 → 53 (pri menšom počte legendárok vyšší podiel) |
+
+Tempo po 90 min (svet I): Scavenger 33 (bolo 35), Interceptor 31, Juggernaut 31, Carrier 31, rozdiel medzi loďami 2 úrovne (bolo 6).
+
 | Zmena | Riziko | Ako mu predísť |
 |---|---|---|
 | Násobok legendárok svetov znížiť (×2,2 / ×3,5 / ×5 → napr. ×1,5 / ×2 / ×2,5) a vyšším svetom dať radšej lepšie afixy (vyšší podiel väčších afixov ✦) | Hráči na svete IV pocítia menej lootu | Viac väčších afixov a pradávnych predmetov vyváži počet kvalitou; overiť botom |

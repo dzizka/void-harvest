@@ -30,11 +30,11 @@ const gaN = it => (it.affixes || []).filter(a => a.greater).length;
 const gaExtra = it => Math.max(0, gaN(it) - (it.rarity === 'mythic' ? 1 : 0));   // a mythic's first greater affix is guaranteed
 const starMark = it => { const n = gaN(it); return (it.anc ? `<span class="ancc" title="${_L('Pradávny')}"></span>` : '') + (n ? `<span class="ancm g${Math.min(3, gaExtra(it))}" title="${n}× ${_L('väčší afix')}">${'✦'.repeat(n)}</span>` : ''); };
 const gaCls = it => gaExtra(it) >= 2 ? 'st' + Math.min(3, gaExtra(it)) : '';
-// chance per affix line to roll greater: world II 1 %, III 2,5 %, IV 5 % (+ nightmare level, climb floor, arena); rares half
+// chance per affix line to roll greater: world II 1,5 %, III 4 %, IV 8 % (+ nightmare level, climb floor, arena); rares half
 function gaChance(rarity) {
   if (!G || rarity === 'common' || rarity === 'magic') return 0;
   const D = G.dungeon;
-  let c = [0, 0, 0.01, 0.025, 0.05][G.tier] + nmK() * 0.0005 + (D && D.climb ? Math.min(0.03, D.floor * 0.001) : 0) + (D && D.rush ? 0.01 : 0);
+  let c = [0, 0, 0.015, 0.04, 0.08][G.tier] + nmK() * 0.0005 + (D && D.climb ? Math.min(0.03, D.floor * 0.001) : 0) + (D && D.rush ? 0.01 : 0);
   if (rarity === 'rare') c *= 0.5;
   if (seasonMod('greater')) c *= 2;
   return Math.min(0.2, c);
@@ -115,6 +115,8 @@ function starLabel(it) {
 }
 const shardsFor = it => SHARDS_FOR[RARITY[it.rarity].rank] + 3 * gaExtra(it);
 const salvageValue = it => Math.round([4, 10, 24, 60, 200][RARITY[it.rarity].rank] * (1 + 0.15 * (it.ilvl - 1)) * (1 + 0.3 * it.upg) * (1 + 0.25 * gaExtra(it)));
-const upgradeCost = it => Math.round(costDisc() * 25 * Math.pow(it.upg + 1, 1.6) * (1 + 0.1 * (it.ilvl - 1)) * [1, 1.3, 1.7, 2.4, 3.2][RARITY[it.rarity].rank]);
+// ore prices grow faster for item level 21+ (ore income scales with the zone, early game unchanged)
+const lateCost = il => il > 20 ? 1 + (il - 20) * 0.08 : 1;
+const upgradeCost = it => Math.round(lateCost(it.ilvl) * costDisc() * 25 * Math.pow(it.upg + 1, 1.6) * (1 + 0.1 * (it.ilvl - 1)) * [1, 1.3, 1.7, 2.4, 3.2][RARITY[it.rarity].rank]);
 const gambleCost = () => Math.round(costDisc() * 70 * (1 + 0.15 * (P.level + TIERS[G.tier].lvl - 1)));
 const MAX_UPG = 5;
