@@ -454,6 +454,7 @@ const MUSIC = {
 | `i18n-check.js` | Prejde kód (parser `acorn`), nájde všetky `_L` / `_T` a texty s diakritikou bez prekladu. |
 | `smoke.js` | Automatický test cez Playwright (pozri kapitolu 2), hlási aj neplatné čísla (NaN / Infinity). |
 | `lint.js` | ESLint nad všetkými skriptmi naraz (zdieľajú globálny priestor) + duplicitné kľúče v anglickom slovníku. Hlásenia ukazujú pôvodný súbor a riadok. |
+| `wiki.js` + `wiki-extract.js` | Wiki pre hráčov: otvorí hru, vytiahne všetky dáta (SK aj EN) a zapíše `wiki/index.html` a `wiki/en.html`. Ručne písané časti (buildy, pravidlá lootu) sú v `wiki.js`. Spusti `npm run wiki` po zmene dát. |
 | `balance.js` | Balansový bot: lode hrajú paralelne bez kreslenia, výsledkom je tabuľka (úroveň, časy, smrti, DPS, predmety a legendárky za hodinu, ruda). Prepínače `--min`, `--cls`, `--tier`, `--lv`, `--deep`. |
 | `render3d/` | `server.js` (lokálny server), `render.html` (three.js scéna), `sheet.js` (riadi renderovanie), `specs.json` (nastavenie každého spritu). |
 

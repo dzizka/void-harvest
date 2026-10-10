@@ -8,6 +8,8 @@
 
 **Hrať lokálne:** stiahni repozitár a otvor `index.html` v prehliadači (stačí dvojklik, server netreba).
 
+**Wiki pre hráčov** (mechaniky, lode, buildy, predmety, kde čo padá): https://dzizka.github.io/void-harvest/wiki/ · [English](https://dzizka.github.io/void-harvest/wiki/en.html)
+
 Technická dokumentácia (ako hra funguje a kde čo zmeniť): [docs/TECHNICKA-DOKUMENTACIA.md](docs/TECHNICKA-DOKUMENTACIA.md) · audity: [1](docs/AUDIT.md), [2](docs/AUDIT-2.md)
 
 ## Ovládanie

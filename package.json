@@ -8,7 +8,8 @@
     "test": "node tools/build.js && node tools/i18n-check.js && node tools/smoke.js",
     "i18n": "node tools/i18n-check.js",
     "lint": "node tools/lint.js",
-    "balance": "node tools/balance.js"
+    "balance": "node tools/balance.js",
+    "wiki": "node tools/wiki.js"
   },
   "devDependencies": {
     "playwright": "^1.47.0",

@@ -82,7 +82,7 @@ function renderEnc() {
       <p class="note" style="margin-top:6px">Nočné brány pridávajú +1 úroveň nepriateľov (a iLvl) za každé 3 úrovne kľúča. Výstup do Prázdnoty dáva iLvl podľa tvojej úrovne.</p></section>
     <section><h3>Kde čo padá</h3>
       <table><tr><th>Korisť</th><th>Zdroj a šanca (svet ${TIERS[G.tier].roman})</th></tr>
-        <tr><td>Legendárky</td><td>bežný nepriateľ ${pct(0.8 * legM)} · tvrdší ${pct(2.5 * legM)} · elita a boss ${pct(8 * legM)} za predmet · boss brány 35 % (prvé víťazstvo 100 %) · lovec 100 % · Hviezdožrút 2× · Výstup 1 + 1 za 10 poschodí · burza</td></tr>
+        <tr><td>Legendárky</td><td>bežný nepriateľ ${pct(RARITY_TABLES[0].legendary * legM)} · tvrdší ${pct(RARITY_TABLES[1].legendary * legM)} · elita a boss ${pct(RARITY_TABLES[2].legendary * legM)} za predmet · boss brány 50 % (prvé víťazstvo 100 %) · lovec 100 % · Hviezdožrút 2× · Výstup 1 + 1 za 10 poschodí · burza</td></tr>
         <tr><td>Sety</td><td>boss brány: svet II 15 %, III–IV 25 % (+1 % za úroveň nočnej brány) · Architekt 100 % · Hviezdožrút 50 % (od sveta II) · Výstup od 15. poschodia 50 %</td></tr>
         <tr><td>Prvotné</td><td>pradávna legendárka alebo set so všetkými hodmi na maxime: Výstup od 30. poschodia 5 % + 0,5 % za poschodie · nočné brány 50+ vo svete IV 5 % · Architekt vo svete IV 1 garantovaný</td></tr>
         <tr><td>Pradávne</td><td>rare, legendárne a setové predmety: svet II 5 %, III 15 %, IV 35 % (+1 % za úroveň nočnej brány) · všetky hodnoty +20 % · mýtické sú pradávne vždy · v inventári zlatý roh</td></tr>
