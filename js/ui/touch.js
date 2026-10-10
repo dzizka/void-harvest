@@ -132,6 +132,8 @@ $('tbAct').addEventListener('click', () => {
 });
 // the left HUD panel folds out on tap
 $('hudTl').addEventListener('click', () => { if (TOUCH.on) $('hudTl').classList.toggle('open'); });
+$('hudFold').addEventListener('click', e => { e.stopPropagation(); UIS.hudMini = !UIS.hudMini; applyUi(); $('hudTl').classList.toggle('mini', !!UIS.hudMini); });
+$('hudTl').classList.toggle('mini', !!UIS.hudMini);
 
 // cooldown rings + context button, refreshed with the HUD (10× per second)
 function touchHud() {

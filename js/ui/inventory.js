@@ -37,7 +37,7 @@ function renderInventory() {
   const s = P.stats;
   $('eslots').innerHTML = SLOT_ORDER.map(slot => {
     const it = P.equip[slot], col = RARITY[it.rarity].color;
-    const upTxt = it.upg >= MAX_UPG ? _L('Max. vylepšenie') : _T`Vylepšiť: ${upgradeCost(it)} rudy`;
+    const upTxt = it.upg >= MAX_UPG ? _L('Max. vylepšenie') : _T`Vylepšiť: ${curIco('ore', fmtN(upgradeCost(it)))}`;
     return _T`<button type="button" class="eslot" data-slot="${slot}" style="--rc:${col}">
       <span class="ico">${ICONS[slot]}${rarMark(it)}</span>
       <span><span class="eyebrow">${SLOTS[slot].name}</span><b>${it.name}${it.upg ? ' +' + it.upg : ''}</b><small>iLvl ${it.ilvl} · ${upTxt}</small></span>

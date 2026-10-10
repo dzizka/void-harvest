@@ -2,7 +2,7 @@
 /* ---------- workshop: forge, gems, stash ---------- */
 const canPay = c => P.ore >= c.ore && P.shards >= (c.sh || 0);
 const pay = c => { P.ore -= c.ore; P.shards -= c.sh || 0; };
-const costTxt = c => _T`${c.ore} rudy${c.sh ? _T` · ${c.sh} úlomkov` : ''}`;
+const costTxt = c => curIco('ore', fmtN(c.ore)) + (c.sh ? ' ' + curIco('sh', c.sh) : '');
 const rerollCostOf = it => ({ ore: Math.round(lateCost(it.ilvl) * (40 + 4 * it.ilvl) * (1 + 0.5 * (it.rerolls || 0))), sh: 2 + (it.rerolls || 0) });
 const socketCost = it => { const n = (it.sockets || []).length; return { ore: Math.round(lateCost(it.ilvl) * 60 * (n + 1)), sh: 3 * (n + 1) }; };
 const temperCost = it => it.upg >= 10 ? { ore: Math.round(upgradeCost(it) * 3), sh: 10 * (it.upg - 9) } : { ore: Math.round(upgradeCost(it) * 1.5), sh: (it.upg - 4) * 2 };
@@ -17,6 +17,7 @@ function mwEmpower(it, avoid) {
 const mwRerollCost = it => ({ ore: Math.round(upgradeCost(it) * 2), sh: 25 });
 const imprintCost = it => ({ ore: Math.round(lateCost(it.ilvl) * (150 + 10 * it.ilvl)), sh: 8 });
 function craftItem(ref) { return ref && ref[0] === 'e' ? P.equip[ref.slice(2)] : ref ? P.inv[+ref.slice(2)] : null; }
+const FORGE_TXT = () => _L('Hodnota: ponechá afix a hodí novú hodnotu. Afix: nahradí ho náhodným iným. Každé prekovanie predmetu zdraží ďalšie.');
 function itemCell(it, attr, extra) {
   return `<button type="button" class="cell item ${it.rarity} ${it.primal ? 'primal' : ''} ${gaCls(it)} ${extra || ''}" ${attr} style="--rc:${RARITY[it.rarity].color}" aria-label="${it.name}">${qBar(it)}${rarMark(it)}${ICONS[it.slot]}<span class="il">${it.ilvl}</span>${starMark(it)}</button>`;
 }
@@ -46,7 +47,7 @@ function renderForge() {
       G.rsel = worst; G.rselItem = it.id;
     }
     const si = G.rsel, cur = it.affixes[si];
-    acts += _T`<div class="fact"><span class="eyebrow">Prekovanie · ${costTxt(c)} · klikni na riadok pre náhľad</span>
+    acts += _T`<div class="fact"><span class="eyebrow">Prekovanie · ${costTxt(c)} · klikni na riadok pre náhľad${hintQ(FORGE_TXT())}</span>
       ${it.affixes.map((a, i) => { const r = affixRange(it, a.key, a.greater), q = rollQ(a.val, r); return _T`<div class="frow ${i === si ? 'rsel' : ''}"><span class="pick" data-act="rsel" data-i="${i}" style="color:${a.greater ? '#ffd36b' : wish.includes(a.key) ? 'var(--r-magic)' : '#8b96ad'}">${a.greater ? '✦ ' : ''}${AFFIXES[a.key].label(a.val)} <em style="color:${qCol(q)};font-style:normal;font-size:10.5px">${Math.round(q * 100)} %</em></span>
         <span class="rbtns"><button type="button" class="btn" data-act="rerollv" data-i="${i}" ${myth || !canPay(c) ? 'disabled' : ''} title="${a.greater ? _L('Ponechá väčší afix ✦, nový hod hodnoty') : _L('Ponechá afix, nový hod hodnoty · šanca na ✦')}">Hodnota</button><button type="button" class="btn" data-act="reroll" data-i="${i}" ${(a.greater && myth) || !canPay(c) ? 'disabled' : ''} title="${a.greater ? _L('Nahradí afix iným · ✦ sa stratí, ak nepadne znova') : _L('Nahradí afix iným · šanca na ✦')}">Afix</button></span></div>`; }).join('')}`;
     if (cur && !(cur.greater && myth)) {
@@ -60,7 +61,7 @@ function renderForge() {
         ${pool.map(k => { const r = affixRange(it, k); return `<div class="opt ${wish.includes(k) ? 'want' : 'no'}"><span>${wish.includes(k) ? '✓' : '·'}</span><span>${AFFIXES[k].label('').replace(/^\+%?\s*/, '')}${k === cur.key ? _L(' (súčasný)') : ''}</span><em>${r[0]}–${r[1]}</em><em>${Math.round(100 / pool.length)} %</em></div>`; }).join('')}
       </div>`;
     }
-    acts += _T`<p class="note">Hodnota: ponechá afix a hodí novú hodnotu. Afix: nahradí ho náhodným iným. Každé prekovanie predmetu zdraží ďalšie.</p></div>`;
+    acts += hintP('forge', FORGE_TXT()) + '</div>';
   }
   // sockets
   const maxS = MAX_SOCKETS[rk];

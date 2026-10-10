@@ -7,11 +7,11 @@
    and runs on real time, so it keeps working while you are away (max 8 h).
    ===================================================================== */
 const MATS = {
-  iron:    { name: _L('Železo'),          color: '#b8c4d6' },
-  crystal: { name: _L('Kryštál'),         color: '#6fe3ff' },
-  plasma:  { name: _L('Plazma'),          color: '#ff6bd0' },
-  dark:    { name: _L('Temná hmota'),     color: '#9a6bff' },
-  exotic:  { name: _L('Exotická látka'),  color: '#ffd36b' }
+  iron:    { name: _L('Železo'),          color: '#b8c4d6', icon: '■' },
+  crystal: { name: _L('Kryštál'),         color: '#6fe3ff', icon: '◇' },
+  plasma:  { name: _L('Plazma'),          color: '#ff6bd0', icon: '●' },
+  dark:    { name: _L('Temná hmota'),     color: '#9a6bff', icon: '▲' },
+  exotic:  { name: _L('Exotická látka'),  color: '#ffd36b', icon: '✦' }
 };
 const MAT_KEYS = Object.keys(MATS);
 const SECTOR_MAT = { kepler: 'iron', ruby: 'plasma', vex: 'plasma', baria: 'dark', hercules: 'dark', rim: 'exotic' };
@@ -24,7 +24,7 @@ function baseState() {
   const B = ACC.base; B.store = B.store || {}; B.res = B.res || {}; B.exp = B.exp || [];
   return B;
 }
-const matStr = c => Object.entries(c).filter(([, v]) => v > 0).map(([k, v]) => k === 'ore' ? _T`${fmtN(v)} rudy` : `${v} ${MATS[k].name}`).join(' · ');
+const matStr = c => Object.entries(c).filter(([, v]) => v > 0).map(([k, v]) => curIco(k, k === 'ore' ? fmtN(v) : v)).join(' ');
 const canAfford = c => Object.entries(c).every(([k, v]) => k === 'ore' ? P.ore >= v : (ACC.mats[k] || 0) >= v);
 function payMats(c) { for (const [k, v] of Object.entries(c)) { if (k === 'ore') P.ore -= v; else ACC.mats[k] -= v; } }
 function giveMat(k, n) { baseState(); ACC.mats[k] = (ACC.mats[k] || 0) + n; }
@@ -260,7 +260,7 @@ function renderBase() {
   const mats = MAT_KEYS.map(k => `<span class="mat" style="--mc:${MATS[k].color}"><i></i>${MATS[k].name} <b>${M[k]}</b></span>`).join('');
   const mods = MOD_KEYS.map(k => {
     const lv = B.lv[k] || 0, D = MODULES[k], next = lv < D.max ? moduleCost(k, lv + 1) : null;
-    return _T`<div class="bmod"><div class="bmod-top"><b>${D.name}</b><span>${lv}/${D.max}</span></div><p>${D.desc}</p>
+    return `<div class="bmod"><div class="bmod-top"><b>${D.name}${hintQ(D.desc)}</b><span>${lv}/${D.max}</span></div>
       ${next ? `<div class="frow"><span class="note">${matStr(next)}</span>${btn(`data-bup="${k}"`, canAfford(next), lv ? _L('Vylepšiť') : _L('Postaviť'))}</div>` : _L('<span class="note">Maximálna úroveň</span>')}</div>`;
   }).join('');
   // refinery
@@ -272,7 +272,7 @@ function renderBase() {
   const labL = B.lv.lab || 0;
   const lab = _T`<div class="bsec"><span class="eyebrow">Laboratórium · ${labL ? _T`${labL}. úroveň` : _L('nepostavené')}${B.rs ? _T` · prebieha ${RESEARCH[B.rs.id].name} · ${fmtTime(Math.max(0, (B.rs.end - now) / 1000))}` : ''}</span>
     <div class="bres">${Object.entries(RESEARCH).map(([id, R]) => { const r = resRank(id), nx = r + 1, c = researchCost(Math.min(3, nx)), ok = !B.rs && nx <= 3 && nx <= labL && canAfford(c);
-      return _T`<div class="bres-i"><b>${R.name}</b><span class="pips">${[1, 2, 3].map(i => `<i class="${i <= r ? 'on' : ''}"></i>`).join('')}</span><small>${r ? R.txt(r) : R.txt(1)}</small>
+      return `<div class="bres-i"><span class="rn"><b>${R.name}</b><span class="pips">${[1, 2, 3].map(i => `<i class="${i <= r ? 'on' : ''}"></i>`).join('')}</span><small>${r ? R.txt(r) : R.txt(1)}</small></span>
       ${nx <= 3 ? `<small class="note">${matStr(c)} · ${Math.round(researchMin(nx))} min</small>${btn(`data-bres="${id}"`, ok, nx > labL ? _T`Lab ${nx}` : _L('Skúmať'))}` : _L('<small class="note">Hotovo</small>')}</div>`; }).join('')}</div></div>`;
   // hangar
   const hs = expSlots();
@@ -285,7 +285,7 @@ function renderBase() {
   const green = _T`<div class="bsec"><span class="eyebrow">Skleník · stimulanty na ${Math.round(stimDur() / 60)} min hry</span>
     ${Object.entries(STIMS).map(([k, S]) => _T`<div class="frow"><span><b>${S.name}</b> · ${S.txt}${stimOn(k) ? _T` · <span style="color:#7ee0a8">aktívny ${fmtTime(P.stim[k])}</span>` : ''}<br><small class="note">${matStr(S.cost)}${gL < S.lv ? _T` · skleník ${S.lv}` : ''}</small></span>${btn(`data-bstim="${k}"`, gL >= S.lv && canAfford(S.cost), _L('Vypestovať'))}</div>`).join('')}</div>`;
   const smeltH = _T`<div class="bsec"><span class="eyebrow">Zlievareň</span>${SMELT.map((S, i) => `<div class="frow"><span>${S.name} <small class="note">${matStr(S.cost)}</small></span>${btn(`data-bsmelt="${i}"`, canAfford(S.cost), _L('Vyrobiť'))}</div>`).join('')}</div>`;
-  $('baseBody').innerHTML = _T`<div class="bmats">${mats}</div>
-    <p class="note">Materiály padajú z asteroidov (železo, kryštál) a z nepriateľov podľa sektora: Rubínová hmlovina a Vex plazma, Bárijský roj a Herkules temná hmota, Okraj Prázdnoty exotická látka. Základňa je spoločná pre všetky lode a pracuje aj keď nehráš (najviac 8 h).</p>
+  const baseTxt = _L('Materiály padajú z asteroidov (železo, kryštál) a z nepriateľov podľa sektora: Rubínová hmlovina a Vex plazma, Bárijský roj a Herkules temná hmota, Okraj Prázdnoty exotická látka. Základňa je spoločná pre všetky lode a pracuje aj keď nehráš (najviac 8 h).');
+  $('baseBody').innerHTML = `<div class="bmats">${mats}${hintQ(baseTxt)}</div>${hintP('base', baseTxt)}
     <div class="bmods">${mods}</div><div class="bgrid">${ref}${lab}${exp}${green}${smeltH}</div>`;
 }

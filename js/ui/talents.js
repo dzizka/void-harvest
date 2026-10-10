@@ -66,7 +66,7 @@ function setTalTab(t) {
   G.talTab = t;
   document.querySelectorAll('#talTabs [data-tt]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.tt === t)));
   $('talTree').hidden = t !== 'tree'; $('skillPane').hidden = t !== 'skills';
-  document.querySelector('#tal header .hint').hidden = t !== 'tree';
+  document.querySelector('#tal header .info').hidden = t !== 'tree';
   if (t === 'skills') renderSkills();
 }
 function skillCardHTML(id, def, isDodge) {

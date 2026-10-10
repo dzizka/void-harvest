@@ -54,6 +54,7 @@
 <div id="tabLock" hidden><div class="frame"><div class="in"><h2>Hra beží v inej karte</h2><p>Aby sa postup neprepísal, táto karta je pozastavená a neukladá. Pokračuj v novej karte alebo hru prevezmi sem.</p><button type="button" class="btn primary" id="tabTake">Hrať v tejto karte</button></div></div></div>
 <div id="hud" hidden>
   <div class="hud-tl" id="hudTl">
+    <button type="button" class="kb-only" id="hudFold" title="Zbaliť alebo rozbaliť prehľad (úlohy, kontrakty, štatistiky)" aria-label="Zbaliť prehľad">▾</button>
     <span id="devTag" hidden>DEV</span>
     <span class="zone" id="hZone">Bezpečná zóna</span>
     <div class="sector" id="hSector">Kepler-7 Pás</div>
@@ -176,7 +177,7 @@
     <header>
       <h2>Strom talentov</h2>
       <div class="tabs" id="talTabs"><button type="button" data-tt="tree" aria-pressed="true">Talenty</button><button type="button" data-tt="skills" aria-pressed="false">Schopnosti <em id="talSkN"></em></button></div>
-      <span class="hint">Každá loď má vlastný strom. 1 bod za úroveň (max 49) — celý strom sa naplniť nedá, vyber si build.</span>
+      <span class="info" title="Každá loď má vlastný strom. 1 bod za úroveň (max 49) — celý strom sa naplniť nedá, vyber si build.">ⓘ</span>
       <span class="tal-points">Voľné body <b id="talPts">0</b></span>
       <button class="close" type="button" data-close>ESC</button>
     </header>
@@ -185,7 +186,7 @@
       <div class="tal-budget" id="talBudget"></div>
       <div class="tal-cols" id="talCols"></div>
       <div class="tal-foot">
-        <span>Ranky z výbavy (+talent na predmete, legendárky buildu) platia pre talenty s aspoň 1 bodom, najviac +3 nad maximum. Reset je do úrovne 10 zadarmo.</span>
+        <span class="note">Ranky z výbavy<span class="info" title="Ranky z výbavy (+talent na predmete, legendárky buildu) platia pre talenty s aspoň 1 bodom, najviac +3 nad maximum. Reset je do úrovne 10 zadarmo.">ⓘ</span></span>
         <button type="button" class="btn" id="respec">Reset talentov</button>
       </div>
     </div>
@@ -229,7 +230,7 @@
           <p>Loď sa pri dokovaní automaticky opraví.</p>
         </div>
         <div class="st-card full" data-st-card="chal">
-          <span class="eyebrow">Svetová úroveň<span class="info" title="Vyššia úroveň prinesie silnejších nepriateľov, viac XP a lepší loot.">ⓘ</span></span>
+          <span class="eyebrow">Svetová úroveň<span class="info" title="Vyššia úroveň prinesie silnejších nepriateľov, viac XP a lepší loot. ☠ úroveň nepriateľov · ♥ ich životy · ⚔ ich poškodenie · ★ legendárky · ✦ väčšie afixy · ▲ pradávne predmety · ✹ mýtické predmety.">ⓘ</span></span>
           <div class="tiers" id="tiers"></div>
           <p id="nmInfo"></p>
         </div>

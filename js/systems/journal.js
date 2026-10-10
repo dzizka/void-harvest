@@ -117,16 +117,24 @@ function renderAch() {
   if (G.achTab === 'story') { $('achBody').innerHTML = renderStoryTab(); return; }
   if (G.achTab === 'season') { $('achBody').innerHTML = renderSeasonTab(); return; }
   const titles = ACH.filter(A => ACC.ach[A.id]).map(A => A.title).concat(ACC.titles || []);
+  G.achF = G.achF || 'open';
+  const prog = A => Math.min(1, A.v() / A.n);
+  const open = ACH.filter(A => !ACC.ach[A.id]).sort((a, b) => prog(b) - prog(a));
+  const achList = G.achF === 'all' ? ACH : G.achF === 'done' ? ACH.filter(A => ACC.ach[A.id]) : open.slice(0, 9);
   const cur = ACC.skin[P.cls] || null;
   $('achBody').innerHTML = _T`<div class="ach-top">
       <label class="field">Titul <select id="achTitle"><option value="">— bez titulu —</option>${titles.map(t => `<option ${ACC.title === t ? 'selected' : ''}>${t}</option>`).join('')}</select></label>
       <div><span class="eyebrow">Farba lode ${CLASSES[P.cls].name}</span><div class="skins" style="margin-top:6px">${allSkins().map((k, i) => `<button type="button" data-skin="${i}" title="${k.name}${done < k.n ? _T` · odomkne ${k.n} výziev` : ''}" style="--sk:${k.c || CLASSES[P.cls].color}" aria-pressed="${(k.c || null) === cur}" ${done < k.n ? 'disabled' : ''}></button>`).join('')}</div></div>
     </div>
-    <div class="ach-grid">${ACH.map(A => { const v = Math.min(A.n, A.v()), ok = !!ACC.ach[A.id]; return _T`<div class="crow ${ok ? 'done' : ''}"><div class="ct"><b>${A.desc}</b>
+    <div class="ach-grid">${achList.map(A => { const v = Math.min(A.n, A.v()), ok = !!ACC.ach[A.id]; return `<div class="crow ${ok ? 'done' : ''}"><div class="ct"><b>${A.desc}</b>
       <div class="bar"><i style="width:${(v / A.n * 100).toFixed(0)}%"></i></div>
-      <small>${fmtN(v)}/${fmtN(A.n)} · titul „${A.title}“ · ${A.sh} úlomkov</small></div></div>`; }).join('')}</div>`;
+      <small>${fmtN(v)}/${fmtN(A.n)} · <span ${tipAttr(_L('Titul za splnenie (vyberieš ho hore)'))}>„${A.title}“</span> ${curIco('sh', A.sh)}</small></div></div>`; }).join('')}</div>`;
+  // filter: in progress (closest to done first) / completed / all
+  if (G.achF === 'open' && open.length > 9) $('achBody').querySelector('.ach-grid').insertAdjacentHTML('afterend', `<button type="button" class="chipbtn ach-more" data-achf="all">${_T`+${open.length - 9} ďalších`}</button>`);
+  $('achBody').querySelector('.ach-grid').insertAdjacentHTML('beforebegin', `<div class="ach-filter">${[['open', _L('Rozpracované')], ['done', _L('Splnené')], ['all', _L('Všetky')]].map(([k, t]) => `<button type="button" class="chipbtn" data-achf="${k}" aria-pressed="${G.achF === k}">${t} <em>${k === 'open' ? ACH.length - done : k === 'done' ? done : ACH.length}</em></button>`).join('')}</div>`);
 }
 $('achTabs').addEventListener('click', e => { const b = e.target.closest('[data-at]'); if (b && !lockedMsg(b, b.dataset.at)) { G.achTab = b.dataset.at; renderAch(); } });
+$('achBody').addEventListener('click', e => { const b = e.target.closest('[data-achf]'); if (b) { G.achF = b.dataset.achf; renderAch(); } });
 $('achBody').addEventListener('change', e => { if (e.target.id === 'achTitle') { ACC.title = e.target.value; saveAccount(); updateHUD(); } });
 $('achBody').addEventListener('click', e => {
   const b = e.target.closest('[data-skin]'); if (!b || b.disabled) return;

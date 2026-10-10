@@ -10,7 +10,7 @@ function renderStation() {
   const BS = baseState();
   const dots = { base: BS.exp.some(E => Date.now() >= E.end) || Object.values(BS.store).some(v => v >= 20), port: contractsOn() && (P.contracts || []).some(c => c.done), chal: FRAG_BOSSES.every(k => (P.frags[k] || 0) > 0) || (P.vaultFrags || 0) >= VAULT_FRAGS };
   document.querySelectorAll('#stTabs [data-st]').forEach(b => { b.setAttribute('aria-pressed', String(b.dataset.st === G.stTab)); b.classList.toggle('dot', !!dots[b.dataset.st]); });
-  $('stMats').innerHTML = _T`ruda <b style="color:var(--ore)">${fmtN(P.ore)}</b> · úlomky <b style="color:#9a8cff">${P.shards}</b> · kľúče <b style="color:#ff6b5a">${P.keys.length}</b>`;
+  $('stMats').innerHTML = `${curIco('ore', fmtN(P.ore))} ${curIco('sh', P.shards)} ${curIco('key', P.keys.length)}`;
   const owned = [...SLOT_ORDER.map(sl => P.equip[sl]), ...P.inv, ...P.stash].filter(it => it && it.set && it.setCls === P.cls);
   $('setArch').innerHTML = TREES[P.cls].map(B => _T`<div class="set-row" style="--bc:${B.color}"><b>${setName(B.id)}</b>${SET_SLOTS.map(sl => `<span class="${owned.some(it => it.set === B.id && it.slot === sl) ? 'have' : ''}">◆ ${SET_NOUN[sl]}</span>`).join('')}<span class="bn" style="color:var(--dim)">(2) +15 % Všetko poškodenie, +1 ku talentom vetvy · (4) ${SET4[B.id].t}</span></div>`).join('');
   $('codexInfo').textContent = _T`Kódex legendárnych schopností: ${Object.keys(G.codex || {}).length}/${LEGEND_POOL.length} (používa sa v dielni na prenos schopnosti).`;
@@ -19,14 +19,14 @@ function renderStation() {
   const opts = [['any', _L('Náhodný slot')]].concat(SLOT_ORDER.map(s => [s, SLOTS[s].name]));
   $('gamble').innerHTML = opts.map(([slot, name]) => {
     const cost = slot === 'any' ? Math.round(c * 0.8) : c;
-    return _T`<button type="button" data-gamble="${slot}" ${P.ore < cost || full ? 'disabled' : ''}>${ICONS[slot]}<span>${name}<small>${cost} rudy</small></span></button>`;
+    return _T`<button type="button" data-gamble="${slot}" ${P.ore < cost || full ? 'disabled' : ''}>${ICONS[slot]}<span>${name}<small>${curIco('ore', fmtN(cost))}</small></span></button>`;
   }).join('');
   renderLoadouts();
   $('exchange').innerHTML = exchangeOffers().map((o, i) => _T`<button type="button" class="btn" data-ex="${i}" ${P.ore < o.cost || o.off ? 'disabled' : ''} title="${o.tip || ''}">${o.label} · ${o.cost} rudy</button>`).join('');
   $('tiers').innerHTML = [1, 2, 3, 4].map(t => {
     const T = TIERS[t], low = P.level < T.req, locked = t > G.maxTier || (low && !G.cheat.unlock);
     const how = t === 4 ? _L('Architekt Prázdnoty na svete III') : t > 1 ? _T`${BOSSES[TIER_UNLOCK[t]].name} na svete ${TIERS[t - 1].roman}` : '';
-    const why = t > G.maxTier ? _T`Odomkne: ${how}${T.req ? _T` · úroveň ${T.req}` : ''}` : low ? _T`Vyžaduje úroveň ${T.req}` : T.desc;
+    const why = t > G.maxTier ? _T`Odomkne: ${how}${T.req ? _T` · úroveň ${T.req}` : ''}` : low ? _T`Vyžaduje úroveň ${T.req}` : tierLine(T);
     return `<button type="button" class="tier ${t === G.tier ? 'cur' : ''}" data-tier="${t}" ${locked ? 'disabled' : ''}>
       <b>${T.name}</b><small>${why}</small></button>`;
   }).join('');
@@ -34,8 +34,8 @@ function renderStation() {
   $('contracts').innerHTML = (P.contracts || []).map(c => _T`<div class="crow ${c.done ? 'done' : ''}">
       <div class="ct"><b>${CONTRACTS[c.type].text(c)}</b>
         <div class="bar"><i style="width:${(c.prog / c.n * 100).toFixed(0)}%"></i></div>
-        <small>${c.prog}/${c.n} · odmena ${c.ore} rudy · ${c.tier === 2 ? _L('magický až legendárny') : _L('náhodný')} predmet${c.key ? _L(' · kľúč') : ''} · XP</small></div>
-      <div class="acts">${c.done ? _T`<button type="button" class="btn primary" data-claim="${c.id}">Vyzdvihnúť</button>` : _T`<button type="button" class="btn" data-reroll="${c.id}" ${P.ore < rerollCost() ? 'disabled' : ''}>Vymeniť · ${rerollCost()} rudy</button>`}</div>
+        <small>${c.prog}/${c.n} · odmena ${curIco('ore', c.ore)} · ${c.tier === 2 ? _L('magický až legendárny') : _L('náhodný')} predmet${c.key ? _L(' · kľúč') : ''} · XP</small></div>
+      <div class="acts">${c.done ? _T`<button type="button" class="btn primary" data-claim="${c.id}">Vyzdvihnúť</button>` : _T`<button type="button" class="btn" data-reroll="${c.id}" ${P.ore < rerollCost() ? 'disabled' : ''}>Vymeniť · ${curIco('ore', rerollCost())}</button>`}</div>
     </div>`).join('');
   $('archKills').textContent = G.archKills || 0;
   $('frags').innerHTML = FRAG_BOSSES.map(k => `<span class="frag ${(P.frags[k] || 0) ? '' : 'no'}" style="--fc:${BOSSES[k].color}">${BOSSES[k].name} ×${P.frags[k] || 0}</span>`).join('');
@@ -59,7 +59,7 @@ function renderStation() {
   $('climbStart').innerHTML = starts.map(f => _T`<button type="button" class="btn ${f === Math.max(1, best) ? 'primary' : ''}" data-climb="${f}" ${okC ? '' : 'disabled'}>Od poschodia ${f}</button>`).join('') + (okC ? '' : _L('<span class="cheat-note">Odomkne sa na úrovni 50.</span>'));
   const runs = ACC.climbRuns || [];
   $('climbBoard').innerHTML = runs.length ? _L('<span class="eyebrow">Rebríček (všetci piloti)</span>') + runs.slice(0, 5).map((r, i) => _T`<div>${i + 1}. <b style="color:${CLASSES[r.cls].color}">${CLASSES[r.cls].name}</b> · poschodie <b>${r.floor}</b>${r.key ? ' · ' + r.key : ''}${r.died ? _L(' · zničený') : ''} · ${new Date(r.d).toLocaleDateString('sk-SK')}</div>`).join('') : '';
-  $('nmInfo').textContent = _T`Nočné brány: najvyššia dokončená úroveň ${G.nmBest || 0} · kľúče ${P.keys.length}/20. Kľúče padajú z bossov a elít, použiješ ich pri ľubovoľnej bráne.`;
+  $('nmInfo').innerHTML = _T`Nočné brány: rekord ${G.nmBest || 0} · kľúče ${P.keys.length}/20` + hintQ(_L('Rekord je najvyššia dokončená úroveň nočnej brány. Kľúče padajú z bossov a elít, použiješ ich pri ľubovoľnej bráne.'));
   $('mythCount').textContent = `${Object.keys(G.found).length}/${MYTHIC_LIST.length}`;
   $('archive').innerHTML = MYTHIC_LIST.map(m => {
     const f = G.found[m.id];

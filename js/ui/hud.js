@@ -13,12 +13,15 @@ const ICONS = {
   any: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M3 8l9-5 9 5v8l-9 5-9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/></svg>'
 };
 
+// the same message again only bumps a ×n counter on the last line; lines fade after 5 s
+const logArm = d => { clearTimeout(d._t1); clearTimeout(d._t2); d.classList.remove('fade'); d._t1 = setTimeout(() => d.classList.add('fade'), 5000); d._t2 = setTimeout(() => d.remove(), 5700); };
 function log(html) {
-  const el = $('log'), d = document.createElement('div');
-  d.innerHTML = html; el.appendChild(d);
-  while (el.children.length > 6) el.removeChild(el.firstChild);
-  setTimeout(() => d.classList.add('fade'), 6000);
-  setTimeout(() => d.remove(), 6700);
+  const el = $('log'), last = el.lastElementChild;
+  if (last && last.dataset.h === html) { const n = (+last.dataset.n || 1) + 1; last.dataset.n = n; last.innerHTML = `${html} <b class="lx">×${n}</b>`; logArm(last); return; }
+  const d = document.createElement('div');
+  d.dataset.h = html; d.innerHTML = html; el.appendChild(d);
+  while (el.children.length > 5) el.removeChild(el.firstChild);
+  logArm(d);
 }
 let bannerT = null;
 function banner(html) {
