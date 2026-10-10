@@ -25,7 +25,7 @@ function padRelease() {
 }
 
 /* ---------- menu navigation (spatial focus) ---------- */
-const PAD_NAV = 'button:not([disabled]), [data-idx], [data-slot], [data-mv], input, select';
+const PAD_NAV = 'button:not([disabled]), [data-idx], [data-slot], [data-mv], .info, input, select';
 // the screen the pad currently drives outside of flight (null = flying)
 function padScope() {
   if (!$('tabLock').hidden) return $('tabLock');
@@ -42,7 +42,8 @@ function padFocus(el) {
   try { el.focus({ preventScroll: true }); } catch (e) { /* ignore */ }
   el.scrollIntoView({ block: 'nearest', inline: 'nearest' });
   const r = el.getBoundingClientRect(); PAD.fx = r.left + r.width / 2; PAD.fy = r.top + r.height / 2;
-  if (el.matches('[data-idx], [data-slot], [data-mv]') && typeof tipFromEl === 'function') { try { tipFromEl(el, r.right, r.top); } catch (e) { hideTip(); } } else hideTip();
+  if (el.matches('[data-tip], .info')) { const t = el.dataset.tip || el.dataset.t || el.title; if (t) showTip(`<p class="tip-txt">${t}</p>`, 'var(--accent)', r.right, r.top); }
+  else if (el.matches('[data-idx], [data-slot], [data-mv]') && typeof tipFromEl === 'function') { try { tipFromEl(el, r.right, r.top); } catch (e) { hideTip(); } } else hideTip();
 }
 // keep a focus inside the current screen; after a click re-renders a window, pick the element nearest the old spot
 function padEnsure(root) {

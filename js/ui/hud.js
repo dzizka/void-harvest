@@ -212,7 +212,7 @@ function openPanel(name) {
   G.panel = G.panel === name ? null : name; sfx('click');
   syncPanels();
 }
-function closePanels() { if (G) { G.panel = null; G.fromStation = false; syncPanels(); saveGame(); } }
+function closePanels() { commitHints(); if (G) { G.panel = null; G.fromStation = false; syncPanels(); saveGame(); } }
 
 // Space / Q / Shift slots with cooldown bars
 function updateSkillBar() {

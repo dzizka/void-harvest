@@ -1,6 +1,16 @@
 'use strict';
 // English dictionary: Slovak source text → English. Keys with {0}, {1}… are templates (see js/i18n.js).
 Object.assign(EN, {
+  "Kľúč zmení bránu na nočnú: silnejší nepriatelia, nebezpečné modifikátory a lepší loot. Dokonči ju do {0} a dostaneš kľúč o úroveň vyšší, za polovicu limitu o dve. Pri smrti kľúč stratíš.": "A key turns the gate into a Nightmare Gate: stronger enemies, dangerous modifiers and better loot. Finish it within {0} and you get a key one level higher, within half the limit two levels higher. If you die, you lose the key.",
+  "Tri komnaty a boss na úrovni {0}. Bez časového limitu. Boss pustí kľúč od nočnej brány.": "Three chambers and a boss at level {0}. No time limit. The boss drops a Nightmare Gate key.",
+  "Bežný vstup": "Normal entry",
+  "Vstúpiť bez kľúča": "Enter without a key",
+  "Nočná brána · kľúče {0}/20 · rekord {1}": "Nightmare Gate · keys {0}/20 · record {1}",
+  "Kľúč úrovne {0}": "Level {0} key",
+  "Úroveň nepriateľov · ich životy · ich poškodenie · časový limit": "Enemy level · their HP · their damage · time limit",
+  "Predmety od bossa navyše · šanca na legendárky · šanca na mýtické predmety (od úrovne kľúča 10)": "Extra items from the boss · legendary chance · mythic chance (from key level 10)",
+  "Aktivovať": "Activate",
+  "Zatiaľ nemáš žiadny kľúč. Padá z bossov a elít.": "You have no key yet. Bosses and elites drop them.",
   "Veľkosť rozhrania": "Interface size",
   "Väčšie písmo a tlačidlá HUD a okien": "Larger text and buttons in the HUD and windows",
   "Otrasy obrazovky": "Screen shake",

@@ -199,15 +199,6 @@ const tapItem = (id, sel, fn) => $(id).addEventListener('click', e => {
   const el = e.target.closest(sel); if (!el) return;
   e.stopPropagation(); fn(el);
 }, true);
-// ⓘ hints are hover titles on desktop; on touch a tap shows them in the sheet
-document.addEventListener('click', e => {
-  if (!TOUCH.on) return;
-  const el = e.target.closest('.info[title]'); if (!el) return;
-  e.stopPropagation(); e.preventDefault();
-  TOUCH.acts = [];
-  tip.innerHTML = `<p style="margin:0;line-height:1.5">${el.title}</p><div class="sheet-acts"><button type="button" class="btn" data-sa="x">${_L('Zavrieť')}</button></div>`;
-  tip.style.setProperty('--rc', 'var(--accent)'); tip.classList.add('sheet'); tip.hidden = false;
-}, true);
 tapItem('grid', '[data-idx]', el => invSheet(+el.dataset.idx));
 tapItem('eslots', '[data-slot]', el => slotSheet(el.dataset.slot));
 tapItem('craftBody', '[data-mv]', el => moveSheet(el.dataset.mv));
