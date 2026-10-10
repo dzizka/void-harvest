@@ -15,7 +15,7 @@ function renderStation() {
   $('setArch').innerHTML = TREES[P.cls].map(B => _T`<div class="set-row" style="--bc:${B.color}"><b>${setName(B.id)}</b>${SET_SLOTS.map(sl => `<span class="${owned.some(it => it.set === B.id && it.slot === sl) ? 'have' : ''}">◆ ${SET_NOUN[sl]}</span>`).join('')}<span class="bn" style="color:var(--dim)">(2) +15 % Všetko poškodenie, +1 ku talentom vetvy · (4) ${SET4[B.id].t}</span></div>`).join('');
   $('codexInfo').textContent = _T`Kódex legendárnych schopností: ${Object.keys(G.codex || {}).length}/${LEGEND_POOL.length} (používa sa v dielni na prenos schopnosti).`;
   $('stTitle').textContent = S.kind === 'safe' ? S.name : _L('Maják · ') + S.name;
-  const c = gambleCost(), full = P.inv.length >= 30;
+  const c = gambleCost(), full = P.inv.length >= HOLD_MAX;
   const opts = [['any', _L('Náhodný slot')]].concat(SLOT_ORDER.map(s => [s, SLOTS[s].name]));
   $('gamble').innerHTML = opts.map(([slot, name]) => {
     const cost = slot === 'any' ? Math.round(c * 0.8) : c;
@@ -96,7 +96,7 @@ function applyLoadout(i) {
     // taking the item frees a spot where it lay, so the replaced one always fits (mail only as a last resort)
     const it = f.where === 'i' ? P.inv.splice(f.k, 1)[0] : P.stash.splice(f.k, 1)[0];
     const old = P.equip[sl]; P.equip[sl] = it;
-    if (old) { if (P.inv.length < 30) P.inv.push(old); else if (P.stash.length < STASH_MAX) P.stash.push(old); else ACC.mail.push(old); }
+    if (old) { if (P.inv.length < HOLD_MAX) P.inv.push(old); else if (P.stash.length < STASH_MAX) P.stash.push(old); else ACC.mail.push(old); }
   }
   const sum = o => Object.values(o || {}).reduce((a, b) => a + b, 0);
   const totT = P.points + sum(P.tal), needT = sum(L.tal);
@@ -125,7 +125,7 @@ function exchangeOffers() {
     { label: _L('+5 úlomkov'), cost: c(1250), act: () => addShards(5) },
     { label: _L('+25 úlomkov'), cost: c(6000), act: () => addShards(25) },
     { label: _T`Kľúč nočnej brány úr. ${kl}`, cost: c(900 + 150 * kl), off: P.keys.length >= 20, tip: _L('Úroveň podľa najvyššej dokončenej nočnej brány'), act: () => { P.keys.push(makeKey(kl)); log(_T`Burza: kľúč nočnej brány úr. ${kl}.`); } },
-    { label: _L('Legendárny kontajner'), cost: Math.round(gambleCost() * 10), off: P.inv.length >= 30, tip: _L('Garantovaný legendárny predmet do náhodného slotu'), act: () => { const it = generateItem(P.level + TIERS[G.tier].lvl, 'legendary'); P.inv.push(it); log(_T`Burza: <span style="color:${RARITY.legendary.color}">${it.name}</span>`); } },
+    { label: _L('Legendárny kontajner'), cost: Math.round(gambleCost() * 10), off: P.inv.length >= HOLD_MAX, tip: _L('Garantovaný legendárny predmet do náhodného slotu'), act: () => { const it = generateItem(P.level + TIERS[G.tier].lvl, 'legendary'); P.inv.push(it); log(_T`Burza: <span style="color:${RARITY.legendary.color}">${it.name}</span>`); } },
     ...Object.keys(GEMS).map(t => gem(t, 0)),
     ...Object.keys(GEMS).map(t => gem(t, 1))
   ];
@@ -140,7 +140,7 @@ function setTier(t) {
 }
 function gamble(slot) {
   const cost = slot === 'any' ? Math.round(gambleCost() * 0.8) : gambleCost();
-  if (P.ore < cost || P.inv.length >= 30) return;
+  if (P.ore < cost || P.inv.length >= HOLD_MAX) return;
   P.ore -= cost;
   const it = generateItem(P.level + TIERS[G.tier].lvl, rollRarity(1), slot === 'any' ? null : slot);
   P.inv.push(it);

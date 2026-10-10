@@ -35,8 +35,7 @@ function chainLightning(src, dmg) {
   }
 }
 function reflectShot(b) {
-  let t = null, best = 700 * 700;
-  for (const e of enemies) { if (e.dead) continue; const dd = d2(e.x, e.y, P.x, P.y); if (dd < best) { best = dd; t = e; } }
+  const t = nearestEnemy(P.x, P.y, 700);
   const a = t ? Math.atan2(t.y - P.y, t.x - P.x) : Math.atan2(-b.vy, -b.vx);
   bullets.push({ x: P.x, y: P.y, px: P.x, py: P.y, vx: Math.cos(a) * 980, vy: Math.sin(a) * 980, dmg: P.stats.laserHit * 2 * dmgBuff(), crit: false, life: 0.8, w: 2.5, color: '#9fe6ff', bubble: false });
   addText(P.x, P.y - 24, _L('ODRAZ'), '#9fe6ff', 11, 0.5);

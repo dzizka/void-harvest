@@ -13,6 +13,13 @@ const d2 = (ax, ay, bx, by) => { const dx = ax - bx, dy = ay - by; return dx * d
 function prune(arr, keep) { let j = 0; for (let i = 0; i < arr.length; i++) { const o = arr[i]; if (keep(o)) arr[j++] = o; } arr.length = j; return arr; }
 // ambient/trail effects skip spawning when the particle budget is spent
 const fxFull = () => particles.length >= 1600;
+// nearest living enemy to (x, y) within r (Infinity = any distance); skip(e) excludes more (shielded, cloaked…)
+function nearestEnemy(x, y, r, skip) {
+  let best = null, bd = r * r;
+  for (const e of enemies) { if (e.dead || (skip && skip(e))) continue; const dd = d2(e.x, e.y, x, y); if (dd < bd) { bd = dd; best = e; } }
+  return best;
+}
+const noShield = e => e.shielded;
 const angDiff = (a, b) => { let d = b - a; while (d > Math.PI) d -= TAU; while (d < -Math.PI) d += TAU; return d; };
 function weighted(table) {
   let total = 0; for (const k in table) total += table[k];

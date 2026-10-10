@@ -6,11 +6,14 @@
   "scripts": {
     "build": "node tools/build.js",
     "test": "node tools/build.js && node tools/i18n-check.js && node tools/smoke.js",
-    "i18n": "node tools/i18n-check.js"
+    "i18n": "node tools/i18n-check.js",
+    "lint": "node tools/lint.js",
+    "balance": "node tools/balance.js"
   },
   "devDependencies": {
     "playwright": "^1.47.0",
     "acorn": "^8.12.0",
-    "acorn-walk": "^8.3.0"
+    "acorn-walk": "^8.3.0",
+    "eslint": "^8.57.0"
   }
 }

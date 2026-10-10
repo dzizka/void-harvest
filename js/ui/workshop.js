@@ -125,7 +125,7 @@ function renderGems() {
     </div>`).join('')}</div>`;
 }
 function renderStash() {
-  const inv = Array.from({ length: 30 }, (_, i) => P.inv[i] ? itemCell(P.inv[i], `data-mv="i:${i}"`) : '<div class="cell"></div>').join('');
+  const inv = Array.from({ length: HOLD_MAX }, (_, i) => P.inv[i] ? itemCell(P.inv[i], `data-mv="i:${i}"`) : '<div class="cell"></div>').join('');
   const st = Array.from({ length: STASH_MAX }, (_, i) => P.stash[i] ? itemCell(P.stash[i], `data-mv="s:${i}"`) : '<div class="cell"></div>').join('');
   $('craftBody').innerHTML = _T`<div class="stash2">
     <div><span class="eyebrow">Náklad ${P.inv.length}/30 · klik presunie do skladu</span><div class="g6" style="margin-top:8px">${inv}</div></div>
@@ -213,7 +213,7 @@ $('craftBody').addEventListener('click', e => {
   if (mv) {
     const [k, i] = mv.dataset.mv.split(':');
     if (k === 'i' && P.stash.length < STASH_MAX) P.stash.push(P.inv.splice(+i, 1)[0]);
-    else if (k === 's' && P.inv.length < 30) P.inv.push(P.stash.splice(+i, 1)[0]);
+    else if (k === 's' && P.inv.length < HOLD_MAX) P.inv.push(P.stash.splice(+i, 1)[0]);
     renderCraft(); hideTip();
   }
 });

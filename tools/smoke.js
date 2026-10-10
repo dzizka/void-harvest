@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-// Rýchly test: načíta hru (index.html aj dist/), každou loďou chvíľu hrá, otvorí všetky panely a vypíše chyby.
+// Rýchly test: načíta hru (index.html aj dist/), každou loďou chvíľu hrá, otvorí všetky panely a vypíše chyby
+// aj neplatné čísla (NaN / Infinity) v lodi, štatistikách, materiáloch a nepriateľoch.
 // Použitie: npm test   (vyžaduje: npm install  → nainštaluje Playwright)
 'use strict';
 const { chromium } = require('playwright');
@@ -26,12 +27,18 @@ const root = path.join(__dirname, '..');
         for (let i = 0; i < 12; i++) { const ang = i / 12 * Math.PI * 2; spawnEnemy(weighted(SECTORS.vex.enemies), P.x + Math.cos(ang) * 300, P.y + Math.sin(ang) * 300, zoneLevel(), i < 2); }
         for (let i = 0; i < 60 * 20; i++) { if (i % 240 === 60) { input.dodge = true; input.skill = [true, true]; } update(1 / 60); updateFx(1 / 60); }
         render();
+        // broken numbers (NaN / Infinity) in the ship, its stats or the enemies count as an error
+        const badNum = (o, pre) => Object.keys(o || {}).filter(k => typeof o[k] === 'number' && !Number.isFinite(o[k])).map(k => pre + k);
+        const nan = [...badNum(P, 'P.'), ...badNum(P.stats, 'stats.'), ...badNum(P.stats.pct, 'pct.'), ...badNum(ACC.mats, 'mats.')];
+        for (const e of enemies) if (!Number.isFinite(e.hp) || !Number.isFinite(e.x) || !Number.isFinite(e.y)) { nan.push('enemy ' + e.type); break; }
+        if (nan.length) out.push(`NEPLATNÉ ČÍSLA (${cls}): ${nan.join(', ')}`);
         for (const p of ['inv', 'tal', 'map', 'station', 'craft', 'para', 'ach', 'cheat']) { try { openPanel(p); closePanels(); } catch (e) { out.push(cls + ' panel ' + p + ': ' + e.message); } }
         out.push(`${cls}: lvl ${P.level}, zostrely ${G.kills}`);
       }
       return out;
     });
     console.log(`== ${file} [${lang}]\n  ` + res.join('\n  '));
+    if (res.some(l => l.startsWith('NEPLATNÉ ČÍSLA'))) bad++;
     if (errs.length) { bad++; console.log('  CHYBY:\n  ' + errs.join('\n  ')); } else console.log('  bez chýb');
     await pg.close();
   }

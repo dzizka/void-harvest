@@ -55,7 +55,10 @@ Celá hra beží v prehliadači hráča. Neexistuje backend ani databáza.
 npm install            # nainštaluje playwright, acorn (iba pre testy)
 npm run build          # vytvorí dist/void-harvest.html (všetko v jednom súbore)
 npm run i18n           # vypíše slovenské texty, ktorým chýba anglický preklad
-npm test               # build + kontrola prekladov + automatické odohranie hry
+npm test               # build + kontrola prekladov + automatické odohranie hry (aj kontrola NaN)
+npm run lint           # statická kontrola kódu (ESLint) v poradí z index.html
+npm run balance -- --min 45            # balansový bot: tabuľka úrovní, smrtí a lootu pre každú loď
+npm run balance -- --tier 4 --lv 50    # svet IV od úrovne 50 s najlepšou výbavou (--deep = Hlbina III)
 ```
 
 `npm test` spustí `tools/smoke.js`, ktorý v headless Chromiu:
@@ -449,7 +452,9 @@ const MUSIC = {
 |---|---|
 | `build.js` | Zloží `index.html` + všetky CSS a JS do `dist/void-harvest.html` a prepíše cesty k assetom (`../assets/`). Poradie skriptov berie z `index.html`. |
 | `i18n-check.js` | Prejde kód (parser `acorn`), nájde všetky `_L` / `_T` a texty s diakritikou bez prekladu. |
-| `smoke.js` | Automatický test cez Playwright (pozri kapitolu 2). |
+| `smoke.js` | Automatický test cez Playwright (pozri kapitolu 2), hlási aj neplatné čísla (NaN / Infinity). |
+| `lint.js` | ESLint nad všetkými skriptmi naraz (zdieľajú globálny priestor) + duplicitné kľúče v anglickom slovníku. Hlásenia ukazujú pôvodný súbor a riadok. |
+| `balance.js` | Balansový bot: lode hrajú paralelne bez kreslenia, výsledkom je tabuľka (úroveň, časy, smrti, DPS, predmety a legendárky za hodinu, ruda). Prepínače `--min`, `--cls`, `--tier`, `--lv`, `--deep`. |
 | `render3d/` | `server.js` (lokálny server), `render.html` (three.js scéna), `sheet.js` (riadi renderovanie), `specs.json` (nastavenie každého spritu). |
 
 ---

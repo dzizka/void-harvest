@@ -88,6 +88,7 @@ SLOTS.armor = { name: _L('Pancier trupu'), types: {
   reactive:  { name: _L('Reaktívny pancier'),  hullFlat: 25, dr: 8 },
   ablative:  { name: _L('Ablatívne platne'),   hullFlat: 65, dr: 2 }
 }};
+const HOLD_MAX = 30;   // cargo hold slots (inventory) per ship
 const SLOT_ORDER = ['weapon', 'secondary', 'shield', 'engine', 'reactor', 'drones', 'armor'];
 // percentage stats grow slowly with item level so they never run away
 const SLOW_KEYS = new Set(['cdr', 'regenPct', 'fireRatePct', 'dr', 'droneDmg', 'repairPct']);

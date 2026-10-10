@@ -77,8 +77,7 @@ function updateMissiles(dt) {
     m.life -= dt;
     if (m.homing) {
       if (!m.target || m.target.dead) {
-        m.target = null; let best = 700 * 700;
-        for (const e of enemies) { if (e.dead || e.shielded) continue; const dd = d2(e.x, e.y, m.x, m.y); if (dd < best) { best = dd; m.target = e; } }
+        m.target = nearestEnemy(m.x, m.y, 700, noShield);
       }
       if (m.target) { const want = Math.atan2(m.target.y - m.y, m.target.x - m.x); m.a += clamp(angDiff(m.a, want), -4.5 * dt, 4.5 * dt); }
       m.spd = Math.min(680, m.spd + 900 * dt);

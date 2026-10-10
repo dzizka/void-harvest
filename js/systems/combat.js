@@ -50,8 +50,7 @@ function fireMissiles(forced, mult) {
   sfx('missile');
   const s = P.stats;
   const mw = mouseWorld();
-  let target = forced || null, best = 650 * 650;
-  if (!target) for (const e of enemies) { if (e.shielded) continue; const dd = d2(e.x, e.y, mw.x, mw.y); if (dd < best) { best = dd; target = e; } }
+  const target = forced || nearestEnemy(mw.x, mw.y, 650, noShield);
   const plasma = !s.homing;
   for (let i = 0; i < s.missileCount; i++) {
     const spread = s.missileCount > 1 ? (i / (s.missileCount - 1) - 0.5) * 1.3 : 0;
@@ -421,7 +420,7 @@ function collect(p) {
       if (r.codex) log(_T`Auto-rozobratie · <span style="color:#ff8a1f">${it.name}</span> uložená do kódexu.`);
       return true;
     }
-    if (P.inv.length >= 30) {
+    if (P.inv.length >= HOLD_MAX) {
       if (G.time - G.fullMsgT > 3) { log(_L('<span style="color:#ff6b5a">Náklad je plný. Rozober predmety v inventári (I).</span>')); G.fullMsgT = G.time; }
       p.vx = (p.x - P.x) * 4; p.vy = (p.y - P.y) * 4; p.cool = 1.5;
       return false;

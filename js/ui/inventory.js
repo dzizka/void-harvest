@@ -47,14 +47,14 @@ function renderInventory() {
     + _T`<dt>Všetko poškodenie</dt><dd>+${Math.round(s.pct.allDmg)} %</dd><dt>Dosah magnetu</dt><dd>${Math.round(s.magnet)}</dd>`
     + (s.aura ? _T`<dt>Aura DPS</dt><dd>${fmtN(s.aura.dps)}</dd>` : '')
     + (s.minion ? _T`<dt>Minióni</dt><dd>${s.minion.titan ? _L('Kolos') : 'max ' + s.minion.max} · ${fmtN(s.laserHit * s.minion.dmg)}/zásah</dd>` : '');
-  $('invCap').textContent = `${P.inv.length}/30`;
+  $('invCap').textContent = `${P.inv.length}/${HOLD_MAX}`;
   $('invOre').textContent = P.ore;
   $('invKeys').textContent = `${P.keys.length}/20`;
   $('invShards').textContent = P.shards;
   $('mailBtn').hidden = !ACC.mail.length; $('mailN').textContent = ACC.mail.length;
   renderSalvBar();
   let html = '';
-  for (let i = 0; i < 30; i++) {
+  for (let i = 0; i < HOLD_MAX; i++) {
     const it = P.inv[i];
     if (!it) { html += '<div class="cell"></div>'; continue; }
     html += `<button type="button" class="cell item ${it.rarity} ${it.primal ? 'primal' : ''} ${gaCls(it)}" data-idx="${i}" style="--rc:${RARITY[it.rarity].color}" aria-label="${it.name}">${qBar(it)}${rarMark(it)}${ICONS[it.slot]}<span class="il">${it.ilvl}</span>${starMark(it)}${betterMark(upgradeState(it))}</button>`;
@@ -65,7 +65,7 @@ function renderInventory() {
 // value ranges for an item's rolls, the quality of each roll and build-aware advice
 const ROLL_MULT = r => (r === 'legendary' || r === 'set' || r === 'mythic') ? 1.15 : 1;
 function affixRange(it, key, greater) {
-  const A = AFFIXES[key], myth = it.rarity === 'mythic';
+  const A = AFFIXES[key];
   const sc = (A.slow ? 1 + 0.012 * (it.ilvl - 1) : 1 + 0.05 * (it.ilvl - 1)) * starMult(it) * ROLL_MULT(it.rarity) * (greater ? 1.5 : 1);
   return [Math.max(1, Math.round(A.range[0] * sc)), Math.max(1, Math.round(A.range[1] * sc))];
 }

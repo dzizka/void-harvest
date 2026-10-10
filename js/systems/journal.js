@@ -163,7 +163,7 @@ function tutTick(type) {
   P.ore += T.ore; P.tutP = 0; P.tut++;
   log(_T`<span style="color:#ffd36b">Úloha splnená:</span> ${T.text} · +${T.ore} rudy`);
   if (T.final) {
-    addShards(5); P.inv.length < 30 && P.inv.push(generateItem(P.level + 1, 'rare'));
+    addShards(5); P.inv.length < HOLD_MAX && P.inv.push(generateItem(P.level + 1, 'rare'));
     if (G) dropGem(P.x, P.y, 1);
     banner(_L('Výcvik dokončený<small>Kontrakty na stanici, svetové úrovne a nočné brány čakajú</small>'));
   }
@@ -189,7 +189,7 @@ function claimContract(id) {
   P.ore += c.ore;
   gainXp(c.xp);
   const it = generateItem(P.level + TIERS[G.tier].lvl, rollRarity(c.tier));
-  if (P.inv.length < 30) P.inv.push(it); else P.ore += salvageValue(it);
+  if (P.inv.length < HOLD_MAX) P.inv.push(it); else P.ore += salvageValue(it);
   let keyTxt = '';
   if (c.key && P.keys.length < 20) { const k = makeKey(c.type === 'nm' ? c.lvl + 1 : keyBaseLevel()); P.keys.push(k); keyTxt = _T` · kľúč úr. ${k.lvl}`; }
   log(_T`Odmena za kontrakt: ${c.ore} rudy · <span style="color:${RARITY[it.rarity].color}">${it.name}</span>${keyTxt}`);

@@ -169,8 +169,7 @@ function autoTarget() {
   const cur = P.autoT;
   if (G.autoFire && !G.safe) {
     if (cur && cur.T && !cur.shielded && !cur.cloak && valid(cur, AUTO_RANGE * 1.15)) return cur;
-    let best = null, b = AUTO_RANGE * AUTO_RANGE;
-    for (const e of enemies) { if (e.dead || e.shielded || e.cloak) continue; const dd = d2(e.x, e.y, P.x, P.y); if (dd < b) { b = dd; best = e; } }
+    const best = nearestEnemy(P.x, P.y, AUTO_RANGE, e => e.shielded || e.cloak);
     if (best) return (P.autoT = best);
   }
   if (G.autoMine) {

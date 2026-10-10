@@ -54,7 +54,7 @@ function exitDungeon() {
   // gear left lying in the arena goes straight to the hold so nothing is lost
   for (const p of pickups) {
     if (p.dead) continue;
-    if (p.kind === 'item' && P.inv.length >= 30) { giveItem(p.item); p.dead = true; }
+    if (p.kind === 'item' && P.inv.length >= HOLD_MAX) { giveItem(p.item); p.dead = true; }
     else if (p.kind === 'item' || p.kind === 'key' || p.kind === 'gem' || p.kind === 'mat') { collect(p); p.dead = true; }
   }
   const sv = G.saved; G.saved = null;

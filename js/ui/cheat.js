@@ -131,12 +131,12 @@ function cheatAction(el) {
     case 'climbend': G.dungeon.t = CLIMB_LIMIT; closePanels(); return;
     case 'vfrags': P.vaultFrags = (P.vaultFrags || 0) + 5; break;
     case 'mats': for (const k of MAT_KEYS) giveMat(k, 50); saveAccount(); log(_L('DEV: +50 každého materiálu')); break;
-    case 'stars': { if (P.inv.length >= 30) break; G.forceGA = 3; const it = generateItem(Math.max(60, zoneLevel() + 2), 'legendary'); G.forceGA = 0; P.inv.push(it); log(`DEV: <span style="color:#ffd36b">✦✦✦ ${it.name}</span>`); break; }
-    case 'primal': { if (P.inv.length >= 30) break; G.forcePrimal = true; const it = generateItem(Math.max(60, zoneLevel() + 2), 'legendary'); G.forcePrimal = false; P.inv.push(it); log(`DEV: <span style="color:#ff5a5a">${it.name}</span>`); break; }
-    case 'mythdup': { const w = P.equip.weapon; if (w.rarity === 'mythic' && P.inv.length < 30) P.inv.push(generateItem(w.ilvl, 'mythic', null, null, w.legend)); break; }
+    case 'stars': { if (P.inv.length >= HOLD_MAX) break; G.forceGA = 3; const it = generateItem(Math.max(60, zoneLevel() + 2), 'legendary'); G.forceGA = 0; P.inv.push(it); log(`DEV: <span style="color:#ffd36b">✦✦✦ ${it.name}</span>`); break; }
+    case 'primal': { if (P.inv.length >= HOLD_MAX) break; G.forcePrimal = true; const it = generateItem(Math.max(60, zoneLevel() + 2), 'legendary'); G.forcePrimal = false; P.inv.push(it); log(`DEV: <span style="color:#ff5a5a">${it.name}</span>`); break; }
+    case 'mythdup': { const w = P.equip.weapon; if (w.rarity === 'mythic' && P.inv.length < HOLD_MAX) P.inv.push(generateItem(w.ilvl, 'mythic', null, null, w.legend)); break; }
     case 'achall': for (const A of ACH) ACC.ach[A.id] = ACC.ach[A.id] || Date.now(); saveAccount(); break;
     case 'item': {
-      if (P.inv.length >= 30) { log(_L('DEV: náklad je plný.')); break; }
+      if (P.inv.length >= HOLD_MAX) { log(_L('DEV: náklad je plný.')); break; }
       const it = generateItem(clamp(+$('chIlvl').value || P.level, 1, 60), $('chRar').value, $('chSlot').value || null);
       P.inv.push(it); log(`DEV: <span style="color:${RARITY[it.rarity].color}">${it.name}</span> iLvl ${it.ilvl}`);
       break;
@@ -145,7 +145,7 @@ function cheatAction(el) {
       for (const sl of SLOT_ORDER) P.equip[sl] = generateItem(P.level, 'legendary', sl);
       recalcStats(); P.shield = P.stats.maxShield; log(_L('DEV: legendárny set nasadený.'));
       break;
-    case 'fill': while (P.inv.length < 30) P.inv.push(generateItem(P.level, rollRarity(1))); break;
+    case 'fill': while (P.inv.length < HOLD_MAX) P.inv.push(generateItem(P.level, rollRarity(1))); break;
     case 'clear': P.inv = []; break;
     case 'shards': P.shards += 50; break;
     case 'para5': P.para.lvl += 5; P.para.pts += 5; break;
@@ -162,7 +162,7 @@ function cheatAction(el) {
     }
     case 'boss': {
       const key = G.dungeon ? G.dungeon.boss : S.boss, a = P.a;
-      const e = spawnBoss(key, P.x + Math.cos(a) * 420, P.y + Math.sin(a) * 420, zoneLevel() + 1);
+      spawnBoss(key, P.x + Math.cos(a) * 420, P.y + Math.sin(a) * 420, zoneLevel() + 1);
       closePanels(); return;
     }
     case 'elite': {

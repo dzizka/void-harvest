@@ -36,7 +36,7 @@ addEventListener('storage', e => {
 
 /* ---------- rewards never vanish: hold → shared stash → account mail ---------- */
 function giveItem(it, silent) {
-  if (P.inv.length < 30) { P.inv.push(it); return 'inv'; }
+  if (P.inv.length < HOLD_MAX) { P.inv.push(it); return 'inv'; }
   if (P.stash.length < STASH_MAX) { P.stash.push(it); return 'stash'; }
   ACC.mail.push(it);
   if (!silent) log(_T`<span style="color:#ffd36b">Náklad aj sklad sú plné.</span> ${it.name} čaká v pošte (Inventár).`);
@@ -44,7 +44,7 @@ function giveItem(it, silent) {
 }
 function claimMail() {
   let n = 0;
-  while (ACC.mail.length && P.inv.length < 30) { P.inv.push(ACC.mail.shift()); n++; }
+  while (ACC.mail.length && P.inv.length < HOLD_MAX) { P.inv.push(ACC.mail.shift()); n++; }
   log(n ? _T`Z pošty vyzdvihnuté: ${n}.` : _L('Náklad je plný – najprv urob miesto.'));
   saveGame();
 }

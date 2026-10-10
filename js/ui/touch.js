@@ -178,7 +178,7 @@ function slotSheet(slot) {
 }
 function moveSheet(mv) {
   const [k, i] = mv.split(':'), it = k === 'i' ? P.inv[+i] : P.stash[+i]; if (!it) return;
-  const full = k === 'i' ? P.stash.length >= STASH_MAX : P.inv.length >= 30;
+  const full = k === 'i' ? P.stash.length >= STASH_MAX : P.inv.length >= HOLD_MAX;
   itemSheet(it, 'craft', [{ txt: k === 'i' ? _L('Presunúť do skladu') : _L('Presunúť do nákladu'), cls: 'primary', dis: full, fn: () => {
     if (k === 'i') P.stash.push(P.inv.splice(+i, 1)[0]); else P.inv.push(P.stash.splice(+i, 1)[0]);
     renderCraft();

@@ -13,7 +13,7 @@ function updateDrones(dt) {
       const keep = x => x && x.T && !x.dead && !x.shielded && d2(x.x, x.y, P.x, P.y) < 520 * 520;
       if (keep(d.tgt)) t = d.tgt;
       else if (keep(P.autoT)) t = P.autoT;
-      else { best = 480 * 480; for (const e of enemies) { if (e.dead || e.shielded) continue; const dd = d2(e.x, e.y, P.x, P.y); if (dd < best) { best = dd; t = e; } } }
+      else t = nearestEnemy(P.x, P.y, 480, noShield);
       d.tgt = t;
     }
     if (!t && D.kind === 'mining') {
@@ -39,8 +39,7 @@ function updateDrones(dt) {
   });
   if (D.kind === 'repair' && G.mode === 'play') P.hull = Math.min(s.maxHull, P.hull + s.maxHull * D.repair / 100 * want * dt);
   if (s.legend.kamikaze && P.kamiT <= 0 && !G.safe) {
-    let t = null, best = 600 * 600;
-    for (const e of enemies) { if (e.dead) continue; const dd = d2(e.x, e.y, P.x, P.y); if (dd < best) { best = dd; t = e; } }
+    const t = nearestEnemy(P.x, P.y, 600);
     if (t) {
       P.kamiT = 6;
       const d = P.drones[0];

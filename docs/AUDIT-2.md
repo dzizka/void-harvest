@@ -188,7 +188,15 @@ Zmeny:
 | Zväčšenie rozhrania (100 / 115 / 130 %) a vypnutie otrasov obrazovky v Menu | Prekrývanie okien | CSS premenná mierky; test na 1280×720 a mobile |
 | Rarita aj tvarom alebo značkou (nielen farbou) | Žiadne | Malá značka v rohu ikony |
 
-### Fáza F – údržba
+### Fáza F – údržba ✅ hotová
+Zmeny:
+- **`npm run balance`** (`tools/balance.js`): bot z auditu je súčasťou repozitára. Lode hrajú paralelne a výsledok je tabuľka (úroveň, kedy padla úroveň 10 / 20 / 30, smrti podľa úrovne, zostrely, DPS, predmety, legendárky a pradávne predmety za hodinu, ruda). Prepínače `--min`, `--cls`, `--tier`, `--lv`, `--deep`. 15 herných minút pre 2 lode trvá ~6 s.
+- **`npm run lint`** (`tools/lint.js`): ESLint nad všetkými skriptmi v poradí z `index.html`, hlásenia s pôvodným súborom a riadkom, plus duplicitné kľúče v anglickom slovníku. Teraz 0 chýb a 0 varovaní (odstránené posledné 3 nepoužité premenné).
+- **Smoke test** hlási neplatné čísla (NaN / Infinity) v lodi, štatistikách, materiáloch a nepriateľoch ako chybu.
+- **`nearestEnemy(x, y, r, skip)`** v `util.js` nahradil 6 ručne písaných cyklov (rakety, drony, auto-boj, odraz strely, kamikadze, mierenie rakiet). Ostatné cykly cez nepriateľov robia iné veci (plošné poškodenie, aura, liečenie), tie ostávajú.
+- **`HOLD_MAX`** (veľkosť nákladu 30) v `game-data.js` nahradil číslo 30 v logike na 21 miestach. V dvoch preložených šablónach ostal text „/30“ (zmena by rozbila preklad).
+- `eslint` pribudol do `devDependencies` (`npm install`).
+
 | Zmena | Riziko | Ako mu predísť |
 |---|---|---|
 | Bot ako súčasť repozitára (`npm run balance`, tabuľka úrovní, smrtí a lootu) | Pomalý test | Samostatný príkaz, nie súčasť `npm test` |

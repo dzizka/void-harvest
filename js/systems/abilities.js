@@ -323,7 +323,7 @@ function setTimeout0(fn) { abil.after = fn; }
 /* ---------- per-frame ---------- */
 function updateAbilities(dt) {
   if (!P.skCd) resetAbilities();
-  const s = P.stats, D = dodgeDef();
+  const s = P.stats;
   if (input.dodge) { input.dodge = false; if (G.mode === 'play') useDodge(); }
   for (let i = 0; i < 2; i++) if (input.skill[i]) { input.skill[i] = false; if (G.mode === 'play') castSkill(i); }
   if (abil.after) { const f = abil.after; abil.after = null; f(); }

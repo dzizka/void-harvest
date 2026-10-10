@@ -144,7 +144,7 @@ function updateHUD() {
   $('abDps').textContent = fmtN(s.laserDps) + ' DPS';
   $('abMis').textContent = P.missileT > 0 ? P.missileT.toFixed(1) + ' s' : '✓';
   $('misCd').style.width = (P.missileT > 0 ? (1 - P.missileT / s.missileCd) * 100 : 100) + '%';
-  $('abInvN').textContent = `${P.inv.length}/30`;
+  $('abInvN').textContent = `${P.inv.length}/${HOLD_MAX}`;
   const skf = typeof skPtsFree === 'function' ? skPtsFree() : 0;
   $('abTalN').textContent = (P.points ? `+${P.points}` : '') + (skf > 0 ? ` ✦${skf}` : '');
   $('abAutoSkS').textContent = G.autoSkill ? _L('ZAP') : _L('VYP'); $('abAutoSk').classList.toggle('on', !!G.autoSkill);
