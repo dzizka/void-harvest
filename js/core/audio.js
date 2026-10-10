@@ -150,3 +150,8 @@ function audioTick(dt) {
     if (T.target > 0 && mv > 0 && a.paused && a.readyState >= 2) musPlay(T);
   }
 }
+// a hidden tab freezes the game (no frames), so the music pauses with it; audioTick resumes it on return
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden) return;
+  for (const k in MUS.tracks) for (const a of MUS.tracks[k].els) if (!a.paused) a.pause();
+});

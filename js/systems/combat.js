@@ -21,7 +21,8 @@ function burst(x, y, color, n, spd, size, life) {
     particles.push({ x, y, vx: Math.cos(a) * s, vy: Math.sin(a) * s, life: rand(0.5, 1) * (life || 0.6), max: life || 0.6, size: rand(0.6, 1.2) * (size || 2), color, drag: 2.5 });
   }
 }
-function ring(x, y, color, r, life) { particles.push({ ring: true, x, y, r0: 4, r1: r, life: life || 0.45, max: life || 0.45, color }); }
+// small rings are decoration and skip when the particle budget is spent; big ones (bosses, legendaries) always show
+function ring(x, y, color, r, life) { if (r < 120 && fxFull()) return; particles.push({ ring: true, x, y, r0: 4, r1: r, life: life || 0.45, max: life || 0.45, color }); }
 function shake(v) { G.shake = Math.min(14, G.shake + v); }
 
 function fireLaser() {
@@ -42,7 +43,7 @@ function fireLaser() {
   }
   if (s.legend.singularity && ++P.shotCount % 8 === 0)
     orbs.push({ x: mx, y: my, vx: ca * 340, vy: sa * 340, life: 2.4, tick: 0, dmg: s.laserHit * 1.5 * buff * mres('singularity'), bubble: G.bubble });
-  particles.push({ x: mx, y: my, vx: P.vx, vy: P.vy, life: 0.06, max: 0.06, size: heavy ? 7 : 5, color: CLASSES[P.cls].color, drag: 0 });
+  if (!fxFull()) particles.push({ x: mx, y: my, vx: P.vx, vy: P.vy, life: 0.06, max: 0.06, size: heavy ? 7 : 5, color: CLASSES[P.cls].color, drag: 0 });
 }
 
 function fireMissiles(forced, mult) {

@@ -148,7 +148,7 @@ function startGame(cls, data) {
   $('select').hidden = true; $('dead').hidden = true; $('hud').hidden = false;
   $('log').innerHTML = '';
   log(data ? _T`Postup načítaný: ${CLASSES[cls].name}, úroveň ${P.level}, svet ${TIERS[G.tier].name}.` : _T`${CLASSES[cls].name} pripravený pri majáku Kepler-7. V modrom kruhu ťa nikto nenapadne.`);
-  log(_L('Brány (G na minimape) vedú k bossom. Mapa: M, stanica: E.'));
+  log(TOUCH.on ? _L('Brány (G na minimape) vedú k bossom. Mapa a inventár sú vpravo hore, stanica cez tlačidlo pri majáku.') : _L('Brány (G na minimape) vedú k bossom. Mapa: M, stanica: E.'));
   if (TOUCH.on) { if (!data) G.autoFire = G.autoMine = true; touchFullscreen(); log(_L('Ľavým palcom letíš, pravým mieriš a strieľaš. Auto-boj a auto-ťažba sú zapnuté, vypneš ich v Menu (≡).')); }
   else log(_L('Ľavým tlačidlom strieľaš a ťažíš, pravým odpaľuješ rakety. Automatický boj a ťažbu zapneš v Menu (≡).'));
   syncPanels(); updateHUD();

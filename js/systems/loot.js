@@ -25,7 +25,6 @@ function primalChance() {
   return 0;
 }
 // ancestral items (+20 % to every value) and greater affixes ✦ (one line ×1.5, like Diablo IV)
-const starsOf = it => it.anc ? 1 : 0;
 const starMult = it => it.anc && it.rarity !== 'mythic' ? 1.2 : 1;
 const gaN = it => (it.affixes || []).filter(a => a.greater).length;
 const gaExtra = it => Math.max(0, gaN(it) - (it.rarity === 'mythic' ? 1 : 0));   // a mythic's first greater affix is guaranteed

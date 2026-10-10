@@ -30,7 +30,7 @@ function chainLightning(src, dmg) {
     .sort((a, b) => d2(a.x, a.y, src.x, src.y) - d2(b.x, b.y, src.x, src.y)).slice(0, 2);
   let from = src;
   for (const o of near) {
-    particles.push({ bolt: true, x: from.x, y: from.y, x2: o.x, y2: o.y, life: 0.15, max: 0.15, color: '#9fe6ff' });
+    if (!fxFull()) particles.push({ bolt: true, x: from.x, y: from.y, x2: o.x, y2: o.y, life: 0.15, max: 0.15, color: '#9fe6ff' });
     damageEnemy(o, dmg, false, true); from = o;
   }
 }

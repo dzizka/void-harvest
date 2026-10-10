@@ -83,7 +83,7 @@ function updateHUD() {
   }
   const tu = P.tut != null && P.tut < TUT.length ? TUT[P.tut] : null;
   $('hTut').hidden = !tu;
-  if (tu) { const th = _T`<div>▸ ${tu.text} <b>${P.tutP || 0}/${tu.n}</b></div><small>${tu.hint} · úloha ${P.tut + 1}/${TUT.length}</small>`; if ($('hTut').innerHTML !== th) $('hTut').innerHTML = th; }
+  if (tu) { const th = _T`<div>▸ ${tu.text} <b>${P.tutP || 0}/${tu.n}</b></div><small>${TOUCH.on && tu.th ? tu.th : tu.hint} · úloha ${P.tut + 1}/${TUT.length}</small>`; if ($('hTut').innerHTML !== th) $('hTut').innerHTML = th; }
   if (G.dungeon && G.dungeon.climb) {
     const D = G.dungeon;
     $('evBox').hidden = false; $('evBox').style.setProperty('--ec', '#9a8cff'); $('evBox').style.top = G.boss ? '96px' : '';
@@ -126,7 +126,7 @@ function updateHUD() {
   const W = G.wb, wbOn = W && (W.state === 'warn' || W.state === 'active');
   $('hWb').hidden = !wbOn;
   if (wbOn) $('hWb').textContent = `☄ ${BOSSES.devourer.name} · ${SECTORS[W.sec].name} · ${W.state === 'warn' ? _L('príchod o ') + fmtTime(W.t) : _L('odletí o ') + fmtTime(W.t)}`;
-  const cts = tutDone() || accLvl() >= 8 ? P.contracts || [] : [];
+  const cts = contractsOn() ? P.contracts || [] : [];
   $('hContracts').hidden = !cts.length;
   const chtml = cts.map(c => `<div class="${c.done ? 'done' : ''}">${c.done ? '✓' : '▸'} ${CONTRACTS[c.type].text(c)} <b>${c.prog}/${c.n}</b></div>`).join('');
   if ($('hContracts').innerHTML !== chtml) $('hContracts').innerHTML = chtml;

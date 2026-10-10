@@ -1,6 +1,13 @@
 'use strict';
 // English dictionary: Slovak source text → English. Keys with {0}, {1}… are templates (see js/i18n.js).
 Object.assign(EN, {
+  "pravým palcom mier na asteroid, alebo ho auto-ťažba rozbije sama": "aim at an asteroid with your right thumb, or let auto-mining break it",
+  "ikona ✦ vpravo hore": "✦ icon, top right",
+  "ikona ▦ vpravo hore · zelená ▲ = zlepšenie": "▦ icon, top right · green ▲ = upgrade",
+  "tlačidlo Dokovať pri majáku v strede sektora": "Dock button at the beacon in the sector centre",
+  "ikona ▦ · ťukni na nasadený predmet": "▦ icon · tap an equipped item",
+  "G na minimape · tlačidlo pri bráne": "G on the minimap · button at the gate",
+  "Brány (G na minimape) vedú k bossom. Mapa a inventár sú vpravo hore, stanica cez tlačidlo pri majáku.": "Gates (G on the minimap) lead to bosses. Map and inventory are top right, the station via the button at the beacon.",
   "Gamepad pripojený: ľavá páčka let, pravá mierenie a streľba (alebo RT), LT rakety, A úhyb, X / Y schopnosti, B interakcia, LB skener, Start inventár, Back mapa, D-pad auto-boj / auto-ťažba.": "Gamepad connected: left stick flies, right stick aims and fires (or RT), LT missiles, A dodge, X / Y skills, B interact, LB scanner, Start inventory, Back map, D-pad auto-combat / auto-mining.",
   "Odomkne sa na úrovni {0}": "Unlocks at level {0}",
   "{0} sa odomkne na úrovni {1}.": "{0} unlocks at level {1}.",
@@ -487,7 +494,6 @@ Object.assign(EN, {
   "Všetci mínióni sa vrhnú na nepriateľa pri myši a 5 s majú +50 % poškodenia.": "All minions rush the enemy nearest the cursor and deal +50 % damage for 5 s.",
   "Detonácia": "Detonation",
   "Odpáli všetkých miniónov, každý vybuchne za 300 % poškodenia lasera.": "Detonates all minions; each explodes for 300 % laser damage.",
-  "Odomkne sa na úrovni {0}": "Unlocks at level {0}",
   "V bezpečnej zóne nie": "Not in the Safe Zone",
   "Žiadny asteroid v dosahu": "No asteroid in range",
   "Žiadni mínióni": "No minions",
@@ -1057,7 +1063,6 @@ Object.assign(EN, {
   "Mecenáš": "Patron",
   "Meteorický roj": "Meteor Swarm",
   "Metla Prázdnoty": "Void Scourge",
-  "Minióni": "Minions",
   "Minióni rastú so zbraňou a odpútajú paľbu": "Minions scale with your weapon and draw fire away",
   "Minióni sa vrhajú na nepriateľov a pri náraze vybuchnú za 400 % poškodenia lasera. Šanca postaviť minióna ×2.": "Minions hurl themselves at enemies and explode on impact for 400 % laser damage. Chance to build a minion ×2.",
   "Minióni žijú krátko a končia výbuchom.": "Minions live briefly and end in an explosion.",
@@ -1318,7 +1323,6 @@ Object.assign(EN, {
   "Rýchle nakladanie": "Fast Loading",
   "Rýchlopalný laser": "Rapid-Fire Laser",
   "Rýchlostné jadro": "Speed Core",
-  "Rýchlosť": "Speed",
   "Rýchlosť streľby": "Attack Speed",
   "Rýchlosť, úhyb a výboje pri úhybe. Poškodenie rastie s pohybom.": "Speed, dodge and arcs on dodge. Damage grows with movement.",
   "Rýchly": "Fast",

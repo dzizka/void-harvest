@@ -52,7 +52,6 @@ const SKILLS = {
 };
 const CLS_SKILLS = {};
 for (const id in SKILLS) (CLS_SKILLS[SKILLS[id].cls] = CLS_SKILLS[SKILLS[id].cls] || []).push(id);
-const SKILL_KEYS = ['Q', 'Shift'];
 
 /* ---------- state helpers ---------- */
 function skState() {

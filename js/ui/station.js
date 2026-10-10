@@ -8,7 +8,7 @@ function renderStation() {
   if (G.stTab === 'base') renderBase();
   document.querySelectorAll('#station [data-st-card]').forEach(c => { c.hidden = c.dataset.stCard !== G.stTab; });
   const BS = baseState();
-  const dots = { base: BS.exp.some(E => Date.now() >= E.end) || Object.values(BS.store).some(v => v >= 20), port: (P.contracts || []).some(c => c.done), chal: FRAG_BOSSES.every(k => (P.frags[k] || 0) > 0) || (P.vaultFrags || 0) >= VAULT_FRAGS };
+  const dots = { base: BS.exp.some(E => Date.now() >= E.end) || Object.values(BS.store).some(v => v >= 20), port: contractsOn() && (P.contracts || []).some(c => c.done), chal: FRAG_BOSSES.every(k => (P.frags[k] || 0) > 0) || (P.vaultFrags || 0) >= VAULT_FRAGS };
   document.querySelectorAll('#stTabs [data-st]').forEach(b => { b.setAttribute('aria-pressed', String(b.dataset.st === G.stTab)); b.classList.toggle('dot', !!dots[b.dataset.st]); });
   $('stMats').innerHTML = _T`ruda <b style="color:var(--ore)">${fmtN(P.ore)}</b> · úlomky <b style="color:#9a8cff">${P.shards}</b> · kľúče <b style="color:#ff6b5a">${P.keys.length}</b>`;
   const owned = [...SLOT_ORDER.map(sl => P.equip[sl]), ...P.inv, ...P.stash].filter(it => it && it.set && it.setCls === P.cls);
@@ -30,6 +30,7 @@ function renderStation() {
     return `<button type="button" class="tier ${t === G.tier ? 'cur' : ''}" data-tier="${t}" ${locked ? 'disabled' : ''}>
       <b>${T.name}</b><small>${why}</small></button>`;
   }).join('');
+  const cc = $('contracts').closest('.st-card'); if (!contractsOn()) cc.hidden = true;
   $('contracts').innerHTML = (P.contracts || []).map(c => _T`<div class="crow ${c.done ? 'done' : ''}">
       <div class="ct"><b>${CONTRACTS[c.type].text(c)}</b>
         <div class="bar"><i style="width:${(c.prog / c.n * 100).toFixed(0)}%"></i></div>

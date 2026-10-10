@@ -138,19 +138,21 @@ const UNLOCK = { craft: 5, base: 8, season: 10, chal: 12 };
 const accLvl = () => Math.max(P ? P.level : 1, ...Object.values((ACC && ACC.st.shipLvl) || {}), 1);
 const isUnlocked = k => !UNLOCK[k] || accLvl() >= UNLOCK[k] || (G && G.cheat && G.cheat.unlock);
 const tutDone = () => !P || P.tut == null || P.tut >= TUT.length;
+// contracts wait for the tutorial (veterans see them at once)
+const contractsOn = () => tutDone() || accLvl() >= 8;
 // lock / unlock tab buttons; returns false (and explains) when a locked tab is clicked
 function gateTabs(sel, attr) {
   document.querySelectorAll(sel).forEach(b => { const k = b.dataset[attr], lk = !isUnlocked(k); b.classList.toggle('locked', lk); b.title = lk ? _T`Odomkne sa na úrovni ${UNLOCK[k]}` : ''; });
 }
 function lockedMsg(b, k) { if (isUnlocked(k)) return false; log(_T`${b.textContent.trim()} sa odomkne na úrovni ${UNLOCK[k]}.`); sfx('click'); return true; }
 const TUT = [
-  { type: 'mine',    n: 5,  text: _L('Rozbi 5 asteroidov'), hint: _L('mier na asteroid a drž ľavé tlačidlo'), ore: 25 },
+  { type: 'mine',    n: 5,  text: _L('Rozbi 5 asteroidov'), hint: _L('mier na asteroid a drž ľavé tlačidlo'), th: _L('pravým palcom mier na asteroid, alebo ho auto-ťažba rozbije sama'), ore: 25 },
   { type: 'kill',    n: 10, text: _L('Zostreľ 10 nepriateľov'), hint: _L('mimo modrého kruhu majáka'), ore: 30 },
-  { type: 'talent',  n: 1,  text: _L('Pridaj bod talentu'), hint: _L('stlač K'), ore: 30 },
-  { type: 'equip',   n: 1,  text: _L('Nasaď lepší predmet'), hint: _L('I · zelená ▲ = zlepšenie'), ore: 40 },
-  { type: 'dock',    n: 1,  text: _L('Dokuj na stanici'), hint: _L('E pri majáku v strede sektora'), ore: 40 },
-  { type: 'upgrade', n: 1,  text: _L('Vylepši nasadený predmet'), hint: _L('I · klik na slot vľavo'), ore: 60 },
-  { type: 'gate',    n: 1,  text: _L('Dokonči bránu s bossom'), hint: _L('G na minimape · E pri bráne'), ore: 150, final: true }
+  { type: 'talent',  n: 1,  text: _L('Pridaj bod talentu'), hint: _L('stlač K'), th: _L('ikona ✦ vpravo hore'), ore: 30 },
+  { type: 'equip',   n: 1,  text: _L('Nasaď lepší predmet'), hint: _L('I · zelená ▲ = zlepšenie'), th: _L('ikona ▦ vpravo hore · zelená ▲ = zlepšenie'), ore: 40 },
+  { type: 'dock',    n: 1,  text: _L('Dokuj na stanici'), hint: _L('E pri majáku v strede sektora'), th: _L('tlačidlo Dokovať pri majáku v strede sektora'), ore: 40 },
+  { type: 'upgrade', n: 1,  text: _L('Vylepši nasadený predmet'), hint: _L('I · klik na slot vľavo'), th: _L('ikona ▦ · ťukni na nasadený predmet'), ore: 60 },
+  { type: 'gate',    n: 1,  text: _L('Dokonči bránu s bossom'), hint: _L('G na minimape · E pri bráne'), th: _L('G na minimape · tlačidlo pri bráne'), ore: 150, final: true }
 ];
 function tutTick(type) {
   if (!P || P.tut == null || P.tut >= TUT.length) return;

@@ -44,7 +44,7 @@ function updateDrones(dt) {
     if (t) {
       P.kamiT = 6;
       const d = P.drones[0];
-      particles.push({ bolt: true, x: d.x, y: d.y, x2: t.x, y2: t.y, life: 0.2, max: 0.2, color: '#ff8a5c' });
+      if (!fxFull()) particles.push({ bolt: true, x: d.x, y: d.y, x2: t.x, y2: t.y, life: 0.2, max: 0.2, color: '#ff8a5c' });
       const dmg = s.laserHit * 3 * buff;
       for (const e of enemies) if (!e.dead && d2(e.x, e.y, t.x, t.y) < (80 + e.r) ** 2) damageEnemy(e, dmg, false);
       ring(t.x, t.y, '#ff8a5c', 80, 0.35); burst(t.x, t.y, '#ff8a5c', 20, 260, 2.4, 0.4);

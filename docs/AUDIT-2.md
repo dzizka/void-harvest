@@ -95,7 +95,9 @@ Predmety, ktoré naozaj padli na zem (nie len zdvihnuté):
 
 Každá fáza je samostatný commit. Po nej musí prejsť `npm test` a cielený test fázy. Staré uložené hry sa musia ďalej načítať.
 
-### Fáza A – rýchle opravy
+### Fáza A – rýchle opravy ✅ hotová
+Hotovo: hudba sa pozastaví v skrytej karte; tutoriál a úvodný log majú v dotykovom režime vlastné texty (bez kláves); kontrakty sú aj na stanici skryté do konca tutoriálu (`contractsOn()`); malé kruhy, záblesk pri výstrele a výboje rešpektujú limit častíc (veľké kruhy nad 120 px sa kreslia vždy); odstránené 3 duplicitné preklady a 2 nepoužité premenné.
+
 | Zmena | Riziko | Ako mu predísť |
 |---|---|---|
 | Hudba sa pozastaví, keď je karta skrytá (`visibilitychange`) | Po návrate nehrá | Pri návrate sa skladba obnoví cez `audioTick` (ten už vie spustiť pozastavenú stopu) |
