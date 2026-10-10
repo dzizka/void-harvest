@@ -2,15 +2,18 @@
 /* ---------- main loop ---------- */
 let last = performance.now(), last2 = last, musT = 0;
 function frame(now) {
-  const dt = Math.min(0.05, (now - last) / 1000); last = now;
+  // below 20 FPS the frame is simulated in up to 3 steps of ≤ 0.05 s (no slow motion); below ~7 FPS it slows down
+  const dt = Math.min(0.15, (now - last) / 1000), steps = Math.ceil(dt / 0.05 - 1e-9) || 1, sdt = dt / steps; last = now;
   if (G) G.fps = lerp(G.fps, 1 / Math.max(0.001, (now - last2) / 1000), 0.05);
   last2 = now;
   padPoll();
   const sp = G ? G.cheat.speed : 1;
-  if (G && G.hitStop > 0 && !G.paused) G.hitStop -= dt;
-  else if (G && G.mode === 'play' && !G.paused && !transitioning && !TOUCH.portrait && !TAB.ro) {
-    if (sp < 1) update(dt * sp);
-    else for (let i = 0; i < sp && G.mode === 'play' && !transitioning; i++) update(dt);
+  for (let k = 0; k < steps; k++) {
+    if (G && G.hitStop > 0 && !G.paused) G.hitStop -= sdt;
+    else if (G && G.mode === 'play' && !G.paused && !transitioning && !TOUCH.portrait && !TAB.ro) {
+      if (sp < 1) update(sdt * sp);
+      else for (let i = 0; i < sp && G.mode === 'play' && !transitioning; i++) update(sdt);
+    }
   }
   if (G && !G.paused && !TOUCH.portrait) updateFx(dt * Math.max(1, sp));
   if (G) {
@@ -27,8 +30,12 @@ function frame(now) {
   musT -= dt; if (musT <= 0) { musT = 0.1; audioTick(0.1); }
   render();
   requestAnimationFrame(frame);
+// installable app + offline play; only over http(s) and not from the single-file build in dist/
+if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol) && !location.pathname.includes('/dist/')) navigator.serviceWorker.register('sw.js').catch(() => {});
 }
 
 translateStatic(); document.querySelectorAll('.lang-pick [data-lang]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === LANG)));
 resize(); loadAccount(); migrateLegacySave(); initBackground(); buildSelect(); renderContinue();
 requestAnimationFrame(frame);
+// installable app + offline play; only over http(s) and not from the single-file build in dist/
+if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol) && !location.pathname.includes('/dist/')) navigator.serviceWorker.register('sw.js').catch(() => {});

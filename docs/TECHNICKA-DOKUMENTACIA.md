@@ -82,7 +82,8 @@ npm test               # build + kontrola prekladov + automatické odohranie hry
 void-harvest/
 ├── index.html            kostra stránky: canvas, HUD, všetky okná (panely), poradie skriptov
 ├── css/
-│   ├── base.css          farby (CSS premenné), písma, rámy, výber lode v hangári
+│   ├── fonts.css         písma uložené v repozitári (assets/fonts/, bez Google Fonts)
+│   ├── base.css          farby (CSS premenné), rámy, výber lode v hangári
 │   ├── hud.css           HUD v hre, spodná lišta, bannery
 │   ├── panels.css        inventár, talenty, mapa, stanica, tooltip
 │   ├── features.css      cheat menu, brány, dielňa, paragon, zámky kariet…
@@ -100,9 +101,13 @@ void-harvest/
 │   ├── sprites/*.webp    predrenderované obrázky 3D modelov (sprite sheety)
 │   ├── models/           zdrojové 3D modely (OBJ/GLB) – hra ich priamo nepoužíva
 │   ├── music/            hudba (OGG + MP3)
+│   ├── fonts/            písma Chakra Petch a JetBrains Mono (woff2, licencia OFL)
+│   ├── icons/            ikony aplikácie (PWA, favicon)
 │   └── CREDITS.md        autori a licencie assetov
 ├── tools/                build, test, kontrola prekladov, renderer 3D spritov
-├── docs/                 AUDIT.md, tento dokument
+├── manifest.json         popis aplikácie pre inštaláciu na plochu (PWA)
+├── sw.js                 service worker: offline hra a inštalácia (iba cez http/https)
+├── docs/                 AUDIT.md, AUDIT-2.md, tento dokument
 ├── dist/                 výstup buildu (negeneruje sa do Gitu)
 └── CLAUDE.md, README.md
 ```

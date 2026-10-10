@@ -19,3 +19,12 @@ All 3D models are CC0 (public domain); attribution is not required but appreciat
 - **Majadroid – 3D LowPoly Spaceships and Components** (majadroid.itch.io) – `models/majadroid/` (enemies, several bosses, missiles, wreck anomaly, background wrecks)
 
 `sprites/*.webp` are rendered from these models by `tools/render3d/sheet.js` (settings in `tools/render3d/specs.json`).
+
+## Fonts (SIL Open Font License 1.1)
+- **Chakra Petch** – The Chakra Petch Project Authors – `fonts/chakra-petch-*.woff2` (license `fonts/OFL-ChakraPetch.txt`)
+- **JetBrains Mono** – The JetBrains Mono Project Authors – `fonts/jetbrains-mono-*.woff2` (license `fonts/OFL-JetBrainsMono.txt`)
+
+Latin and Latin Extended subsets from the @fontsource packages, served from this repository (no request to Google Fonts).
+
+## App icons
+`icons/icon-*.png` are rendered from the Interceptor sprite sheet (Quaternius model above).

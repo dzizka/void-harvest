@@ -13,6 +13,8 @@ const style = '<style>\n' + css.map(f => `/* ===== ${f} ===== */\n` + read(f)).j
 // v jednom <script> stačí jedno 'use strict'
 const script = "<script>\n'use strict';\n" + js.map(f => `/* ===== ${f} ===== */\n` + read(f).replace(/^'use strict';\n/, '').replace("const SPR_BASE = 'assets/sprites/'", "const SPR_BASE = '../assets/sprites/'").replace("const MUS_BASE = 'assets/music/'", "const MUS_BASE = '../assets/music/'")).join('\n') + '</script>\n';
 // dist/ leží o priečinok nižšie – sprite sheety berie z ../assets/
+// dist/ lies one folder down: manifest and icons are taken from the root
+html = html.replace('href="manifest.json"', 'href="../manifest.json"').replace(/href="assets\/icons\//g, 'href="../assets/icons/');
 html = html.replace('</head>', style + '</head>').replace('</body>', script + '</body>');
 fs.mkdirSync(path.join(root, 'dist'), { recursive: true });
 const out = path.join(root, 'dist', 'void-harvest.html');

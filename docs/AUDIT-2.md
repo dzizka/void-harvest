@@ -154,7 +154,18 @@ Cieľ ~1 smrť za 20 min v Hlbine III je splnený. Tempo sa nezmenilo, lebo viac
 | Otvorený svet ťažší po úrovni 15 (viac elít v Hlbine, agresívnejšie letky) | Frustrácia slabších lodí | Iba v Hlbine II–III; okraj majáka ostáva pokojný; overiť botom (cieľ ~1 smrť za 20 min v Hlbine III) |
 | Juggernaut: menší rozdiel v tempe (napr. aura škáluje s úrovňou rýchlejšie) | Juggernaut príliš silný | Meniť po malých krokoch a porovnať s botom |
 
-### Fáza D – mobil a distribúcia
+### Fáza D – mobil a distribúcia ✅ hotová
+Zmeny:
+- **PWA:** `manifest.json` (celá obrazovka, na šírku, ikony z modelu Interceptora) a `sw.js`. Hra sa dá pridať na plochu a po prvom načítaní funguje aj offline (overené testom: stránka obnovená bez siete, hra sa spustí).
+  - Kód: najprv sieť, takže aktualizácia sa prejaví pri ďalšom načítaní; bez siete sa použije uložená kópia.
+  - Obrázky, písma, ikony: z cache, na pozadí sa obnovia. Hudba sa necacheuje (streamuje sa).
+  - Service worker sa registruje iba cez http(s), nie zo súboru ani z `dist/`.
+- **Písma** Chakra Petch a JetBrains Mono sú v `assets/fonts/` (licencia OFL, 212 kB, latinka + rozšírená latinka pre diakritiku). Hra už nevolá Google Fonts.
+- **Hudba hangára** prekódovaná na nižší bitrate: OGG 4,7 → 2,3 MB, MP3 4,8 → 2,7 MB, dĺžka bez zmeny.
+- **Nízke FPS:** pod 20 FPS sa snímka simuluje v 2–3 krokoch (≤ 0,05 s), takže hra sa nespomalí. Spomalenie nastane až pod ~7 FPS.
+- Pribudli ikony (favicon, ikona pre iPhone), `theme-color` a popis stránky.
+- Test na skutočnom S25 zostáva na majiteľovi (FPS ukáže Cheat menu → Debug info).
+
 | Zmena | Riziko | Ako mu predísť |
 |---|---|---|
 | PWA: `manifest.json`, ikony, service worker (offline, inštalácia na plochu, celá obrazovka) | Service worker podrží starú verziu hry po aktualizácii | Verzia v názve cache, „network first“ pre `index.html`, test aktualizácie |
