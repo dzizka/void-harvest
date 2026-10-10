@@ -78,6 +78,7 @@ function curFort() {
 const inOutpost = () => { const F = curFort(); return !!(F && F.free && d2(P.x, P.y, F.x, F.y) < FORT_SAFE * FORT_SAFE); };
 function tickFort(dt) {
   const F = curFort(); if (!F || F.free) { G.siege = null; return; }
+  if (earlyGame() && !G.siege) return;   // strongholds wake up from level 5
   const dd = d2(P.x, P.y, F.x, F.y), lvl = zoneLevel() + 3;
   let Sg = G.siege && G.siege.id === F.id ? G.siege : null;
   if (!Sg) {
@@ -280,7 +281,7 @@ function drawEndgameFx() {
     ctx.fillStyle = col; ctx.globalAlpha = 0.5 + 0.3 * Math.sin(t * 3); ctx.beginPath(); ctx.arc(0, 0, 12, 0, TAU); ctx.fill();
     }
     ctx.restore();
-    worldLabel(F.free ? _L('ZÁKLADŇA · BEZPEČNÁ ZÓNA') : G.siege ? _T`PEVNOSŤ · VLNA ${G.siege.wave}/3` : _L('OBSADENÁ PEVNOSŤ'), F.x, F.y + 74, col);
+    worldLabel(F.free ? _L('ZÁKLADŇA · BEZPEČNÁ ZÓNA') : G.siege ? _T`PEVNOSŤ · VLNA ${G.siege.wave}/3` : earlyGame() ? _L('OBSADENÁ PEVNOSŤ · OD ÚROVNE 5') : _L('OBSADENÁ PEVNOSŤ'), F.x, F.y + 74, col);
   }
   if (stormHere() && G.storm.chests) for (const c of G.storm.chests) {
     if (c.gone || !egVis(c.x, c.y, 60)) continue;

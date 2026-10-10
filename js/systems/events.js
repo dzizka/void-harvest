@@ -74,7 +74,7 @@ function endEvent(success, quiet) {
 }
 function updateEvent(dt) {
   const ev = G.event;
-  if (!ev) { G.eventT -= dt; if (G.eventT <= 0) { G.eventT = rand(80, 130); startEvent(); } return; }
+  if (!ev) { G.eventT -= dt; if (G.eventT <= 0) { G.eventT = rand(80, 130); if (!earlyGame() || curSector().kind === 'safe') startEvent(); } return; }
   if (ev.state === 'wait') {
     ev.wait -= dt;
     if (ev.wait <= 0) { log(_T`Udalosť ${ev.E.name} pominula.`); endEvent(false, true); return; }

@@ -9,6 +9,10 @@ function update(dt) {
     log(G.safe ? _L('<span style="color:#5fd4ff">Vstup do bezpečnej zóny.</span> Zbrane neprestrelia bariéru.') : _L('<span style="color:#ff6b5a">Opúšťaš bezpečnú zónu.</span>'));
     G.wasSafe = G.safe;
   }
+  // entering a deeper zone: one banner (not more often than every 30 s)
+  const dpt = G.dungeon ? 0 : depthAt(P.x, P.y);
+  if (dpt > (G.depth || 0) && G.time - (G.depthT || -99) > 30) { G.depthT = G.time; banner(_T`${DEPTH_NAME[dpt]}<small>nepriatelia +${dpt} úr. · viac elít a lepší loot</small>`); }
+  G.depth = dpt;
   updatePlayer(dt);
   updateAbilities(dt);
   if (G.dungeon) dungeonDirector(dt); else { director(dt); updateEvent(dt); }

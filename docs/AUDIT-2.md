@@ -131,7 +131,22 @@ Tempo po 90 min (svet I): Scavenger 33 (bolo 35), Interceptor 31, Juggernaut 31,
 | Ceny v dielni (preroll, pätice) škálovať podľa úrovne predmetu silnejšie | Drahšie aj pre nováčikov | Zmena iba nad úrovňou 20; nižšie ostáva |
 | Bonus Scavengera +25 % XP znížiť alebo obmedziť na ťažbu | Scavenger stratí identitu | Ponechať +40 % výnos ťažby a magnet; XP bonus len za asteroidy |
 
-### Fáza C – výzva v otvorenom svete
+### Fáza C – výzva v otvorenom svete ✅ hotová
+Zmeny:
+- **Hlbina:** pri vstupe do hlbšej zóny sa ukáže banner („Hlbina II · nepriatelia +2 úr. · viac elít a lepší loot“, najviac raz za 30 s). Pilot pod úrovňou 5 stretne najviac Hlbinu I.
+- **Nový účet:** svetové udalosti a pevnosti sa spúšťajú od úrovne 5 (`earlyGame()`, podľa úrovne účtu, takže veterán ich má hneď). Pevnosť dovtedy ukazuje „OD ÚROVNE 5“. V Haven sa meteorický roj spúšťa ako doteraz.
+- **Hlbina II–III od zóny 15:** viac nepriateľov naraz (+3 / +6), vyššia šanca na elitu (+4 / +8 %) a letka v Hlbine III má druhého elitného veliteľa. Okraj majáka a Hlbina I sú bez zmeny.
+- Juggernaut sa nemenil: po fáze B je v tempe s ostatnými (úroveň 31 po 90 min).
+
+Overenie botom, ktorý sa drží v Hlbine III (60 min, svet I):
+
+| Loď | Smrti pred → po | Z toho úroveň < 5 | Úroveň po 60 min |
+|---|---|---|---|
+| Interceptor | 1 → 3 | 1 → 0 | 26 → 27 |
+| Juggernaut | 0 → 3 | 0 → 0 | 26 → 27 |
+
+Cieľ ~1 smrť za 20 min v Hlbine III je splnený. Tempo sa nezmenilo, lebo viac nepriateľov dáva aj viac XP.
+
 | Zmena | Riziko | Ako mu predísť |
 |---|---|---|
 | Varovanie pri vstupe do hlbšej zóny („Hlbina II: nepriatelia +2 úrovne“) a pre úroveň < 5 miernejší skok | Žiadne | Iba banner a farba okraja |

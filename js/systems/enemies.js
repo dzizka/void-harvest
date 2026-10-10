@@ -11,12 +11,14 @@ function director(dt) {
   G.hunterT -= dt;
   if (G.hunterT <= 0) { G.hunterT = rand(150, 240); if (!enemies.some(e => e.hunter) && !G.safe && Math.random() < 0.7) spawnHunter(); }
   const zone = zoneLevel();
-  const target = Math.round(Math.min(4 + Math.round(zone * 1.3), 24) * (stormHere() ? 1.5 : 1));
+  // from zone 15 the deep (Hlbina II–III) gets denser packs and more elites; the beacon's edge stays as it was
+  const late = zone >= 15, pdp = late ? depthAt(P.x, P.y) : 0;
+  const target = Math.round((Math.min(4 + Math.round(zone * 1.3), 24) + (pdp >= 2 ? 3 * (pdp - 1) : 0)) * (stormHere() ? 1.5 : 1));
   G.spawnT -= dt;
   if (G.spawnT <= 0 && enemies.length < target && !G.safe) {
     G.spawnT = rand(0.7, 1.5) * (zone < 3 ? 1.3 : 1) * (stormHere() ? 0.6 : 1);
     const p = spawnPoint();
-    if (p) { const dp = depthAt(p.x, p.y); spawnEnemy(weighted(S.enemies), p.x, p.y, zone + dp + stormLvl() + (Math.random() < 0.3 ? 1 : 0), zone >= 2 && Math.random() < (0.06 + 0.04 * dp + (stormHere() ? 0.04 : 0)) * (seasonMod('elites') ? 1.5 : 1)); }
+    if (p) { const dp = depthAt(p.x, p.y); spawnEnemy(weighted(S.enemies), p.x, p.y, zone + dp + stormLvl() + (Math.random() < 0.3 ? 1 : 0), zone >= 2 && Math.random() < (0.06 + 0.04 * dp + (late && dp >= 2 ? 0.04 * (dp - 1) : 0) + (stormHere() ? 0.04 : 0)) * (seasonMod('elites') ? 1.5 : 1)); }
   }
   G.waveT -= dt;
   if (G.waveT <= 0 && !G.safe) {
@@ -26,6 +28,7 @@ function director(dt) {
       const n = 4 + Math.floor(zone / 2), dp = depthAt(p.x, p.y);
       for (let i = 0; i < n; i++) spawnEnemy(weighted(S.enemies), p.x + rand(-80, 80), p.y + rand(-80, 80), zone + dp, false);
       spawnEnemy(weighted(S.enemies), p.x, p.y, zone + dp + 1, true);
+      if (late && dp >= 3) spawnEnemy(weighted(S.enemies), p.x + 60, p.y, zone + dp + 1, true);   // Hlbina III squads bring a second commander
       banner(_T`Nepriateľská letka<small>Elitný veliteľ nesie vzácnu výbavu</small>`);
     }
   }

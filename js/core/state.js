@@ -54,8 +54,11 @@ const curSector = () => SECTORS[G.sector];
 function depthAt(x, y) {
   if (!G || G.dungeon || !G.station || curSector().kind !== 'hostile') return 0;
   const d = Math.sqrt(d2(x, y, G.station.x, G.station.y));
-  return d < 900 ? 0 : clamp(Math.floor((d - 900) / 500) + 1, 1, 3);
+  // a pilot below level 5 meets at most Hlbina I, so a stray flight out of the beacon is not an instant death
+  return d < 900 ? 0 : clamp(Math.floor((d - 900) / 500) + 1, 1, P && P.level < 5 ? 1 : 3);
 }
+// new account: world events and strongholds wait until level 5 (veterans have them at once)
+const earlyGame = () => accLvl() < 5;
 const DEPTH_NAME = [_L('Okraj majáka'), _L('Hlbina I'), _L('Hlbina II'), _L('Hlbina III')];
 function zoneLevel() {
   if (!G || !P) return 1;

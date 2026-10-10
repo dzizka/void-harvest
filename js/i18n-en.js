@@ -1,6 +1,8 @@
 'use strict';
 // English dictionary: Slovak source text → English. Keys with {0}, {1}… are templates (see js/i18n.js).
 Object.assign(EN, {
+  "OBSADENÁ PEVNOSŤ · OD ÚROVNE 5": "OCCUPIED STRONGHOLD · FROM LEVEL 5",
+  "{0}<small>nepriatelia +{1} úr. · viac elít a lepší loot</small>": "{0}<small>enemies +{1} Lv · more elites and better loot</small>",
   "+{0} % rudy a +{1} % XP": "+{0} % ore and +{1} % XP",
   "pravým palcom mier na asteroid, alebo ho auto-ťažba rozbije sama": "aim at an asteroid with your right thumb, or let auto-mining break it",
   "ikona ✦ vpravo hore": "✦ icon, top right",
